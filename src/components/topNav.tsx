@@ -1,6 +1,7 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
+/* eslint-disable @next/next/no-img-element */
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { PlusIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 
 const user = {
@@ -18,7 +19,7 @@ const userNavigation = [
   { name: 'Your Profile', href: '/member/profile' },
 ]
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 

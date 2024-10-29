@@ -8,12 +8,13 @@ export default function AuthLayout({
   }>) {
     return (
         <div className="flex w-full h-screen">
-            <div className="w-1/6 bg-gray-800">
+            <div className="w-1/6">
             <SideBar/>
             </div>
-            <div className="flex-grow overflow-scroll">
-                <div className="p-4"><TopNav/></div>
-                <div className="grow overflow-scroll border-t-2">{children}</div>
+            <div className="flex-grow overflow-scroll gap-2">
+            <TopNav/>
+                <div className="grow overflow-scroll">
+                    {children}</div>
                 
             </div>
         </div>

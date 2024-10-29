@@ -26,7 +26,7 @@ export default function SideBar() {
       ]
 
       return (
-        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4 ring-1 ring-white/10 h-f">
+        <div className="flex grow flex-col gap-y-5 overflow-y-auto px-6 pb-4 ring-1 ring-white/10 h-f">
                 <div className="flex h-16 shrink-0 items-center">
                   <img
                     alt="Your Company"

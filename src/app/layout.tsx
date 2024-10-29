@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { UserProvider } from '@auth0/nextjs-auth0/client';
+import Theme from "@/components/theme-provider";
 
 
 export const metadata: Metadata = {
@@ -15,11 +16,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
      <UserProvider>
-      <body
-      >
+      <body>
+      <Theme
+          >
         {children}
+        </Theme>
       </body>
       </UserProvider>
     </html>
