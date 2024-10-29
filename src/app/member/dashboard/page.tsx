@@ -1,6 +1,11 @@
-import { withPageAuthRequired, getSession } from '@auth0/nextjs-auth0';
+import AuthLayout from "@/app/layouts/authLayout";
 
-export default withPageAuthRequired(async function Member() {
-  const { user } = await getSession();
-  return <div>Hello {user.name} on member dashboard</div>;
-}, { returnTo: '/member/dashboard' })
+
+export default function MemberDashboard() {
+  
+  return (
+    <AuthLayout>
+   <span>hello</span>
+   </AuthLayout>
+  )
+}
