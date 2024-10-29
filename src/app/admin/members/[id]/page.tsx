@@ -1,20 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
-import AuthLayout from "@/app/layouts/authLayout";
 
-export default async function page(){
+export default async function page() {
     const user = {
         name: 'Rebecca Nicholas',
         role: 'Product Designer',
         imageUrl:
-          'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      }
-      const stats = [
+            'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    }
+    const stats = [
         { label: 'Vacation days left', value: 12 },
         { label: 'Sick days left', value: 4 },
         { label: 'Personal days left', value: 2 },
-      ]
+    ]
     return (
-        <AuthLayout>
+        <>
     <div className="overflow-hidden rounded-lg bg-white shadow">
       <h2 id="profile-overview-title" className="sr-only">
         Profile Overview
@@ -168,7 +167,6 @@ export default async function page(){
        
 </div>
 </div>
-        </AuthLayout>
-   
-);
+</>
+    );
 }

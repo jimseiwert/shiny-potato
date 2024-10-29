@@ -127,80 +127,12 @@ export default function Example() {
   const [selected, setSelected] = useState(moods[5])
 
   return (
-    <>
-      <header className="absolute inset-x-0 top-0 z-50 flex h-16 border-b border-gray-900/10">
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-1 items-center gap-x-6">
-            <button type="button" onClick={() => setMobileMenuOpen(true)} className="-m-3 p-3 md:hidden">
-              <span className="sr-only">Open main menu</span>
-              <Bars3Icon aria-hidden="true" className="h-5 w-5 text-gray-900" />
-            </button>
-            <img
-              alt="Your Company"
-              src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-              className="h-8 w-auto"
-            />
-          </div>
-          <nav className="hidden md:flex md:gap-x-11 md:text-sm/6 md:font-semibold md:text-gray-700">
-            {navigation.map((item, itemIdx) => (
-              <a key={itemIdx} href={item.href}>
-                {item.name}
-              </a>
-            ))}
-          </nav>
-          <div className="flex flex-1 items-center justify-end gap-x-8">
-            <button type="button" className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
-              <span className="sr-only">View notifications</span>
-              <BellIcon aria-hidden="true" className="h-6 w-6" />
-            </button>
-            <a href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">Your profile</span>
-              <img
-                alt=""
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                className="h-8 w-8 rounded-full bg-gray-800"
-              />
-            </a>
-          </div>
-        </div>
-        <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
-          <div className="fixed inset-0 z-50" />
-          <DialogPanel className="fixed inset-y-0 left-0 z-50 w-full overflow-y-auto bg-white px-4 pb-6 sm:max-w-sm sm:px-6 sm:ring-1 sm:ring-gray-900/10">
-            <div className="-ml-0.5 flex h-16 items-center gap-x-6">
-              <button type="button" onClick={() => setMobileMenuOpen(false)} className="-m-2.5 p-2.5 text-gray-700">
-                <span className="sr-only">Close menu</span>
-                <XMarkIconOutline aria-hidden="true" className="h-6 w-6" />
-              </button>
-              <div className="-ml-0.5">
-                <a href="#" className="-m-1.5 block p-1.5">
-                  <span className="sr-only">Your Company</span>
-                  <img
-                    alt=""
-                    src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-                    className="h-8 w-auto"
-                  />
-                </a>
-              </div>
-            </div>
-            <div className="mt-2 space-y-2">
-              {navigation.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-                >
-                  {item.name}
-                </a>
-              ))}
-            </div>
-          </DialogPanel>
-        </Dialog>
-      </header>
+   
 
       <main>
-        <header className="relative isolate pt-16">
+        <header className="relative isolate">
           <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden">
-            <div className="absolute left-16 top-full -mt-16 transform-gpu opacity-50 blur-3xl xl:left-1/2 xl:-ml-80">
+            <div className="absolute top-full -mt-16 transform-gpu opacity-50 blur-3xl xl:left-1/2 xl:-ml-80">
               <div
                 style={{
                   clipPath:
@@ -212,8 +144,8 @@ export default function Example() {
             <div className="absolute inset-x-0 bottom-0 h-px bg-gray-900/5" />
           </div>
 
-          <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-            <div className="mx-auto flex max-w-2xl items-center justify-between gap-x-8 lg:mx-0 lg:max-w-none">
+          <div className="max-w px-4 py-6 sm:px-6 lg:px-8">
+            <div className="flex max-w-2xl items-center justify-between gap-x-8 lg:mx-0 lg:max-w-none">
               <div className="flex items-center gap-x-6">
                 <img
                   alt=""
@@ -227,7 +159,7 @@ export default function Example() {
                   <div className="mt-1 text-base font-semibold text-gray-900">Tuple, Inc</div>
                 </h1>
               </div>
-              <div className="flex items-center gap-x-4 sm:gap-x-6">
+              <div className="flex items-center justify-items-end gap-x-4 sm:gap-x-6">
                 <button type="button" className="hidden text-sm/6 font-semibold text-gray-900 sm:block">
                   Copy URL
                 </button>
@@ -271,7 +203,7 @@ export default function Example() {
           </div>
         </header>
 
-        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="max-w px-4 py-4 sm:px-6 lg:px-8">
           <div className="mx-auto grid max-w-2xl grid-cols-1 grid-rows-1 items-start gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
             {/* Invoice summary */}
             <div className="lg:col-start-3 lg:row-end-1">
@@ -321,43 +253,9 @@ export default function Example() {
             </div>
 
             {/* Invoice */}
-            <div className="-mx-4 px-4 py-8 shadow-sm ring-1 ring-gray-900/5 sm:mx-0 sm:rounded-lg sm:px-8 sm:pb-14 lg:col-span-2 lg:row-span-2 lg:row-end-2 xl:px-16 xl:pb-20 xl:pt-16">
-              <h2 className="text-base font-semibold text-gray-900">Invoice</h2>
-              <dl className="mt-6 grid grid-cols-1 text-sm/6 sm:grid-cols-2">
-                <div className="sm:pr-4">
-                  <dt className="inline text-gray-500">Issued on</dt>{' '}
-                  <dd className="inline text-gray-700">
-                    <time dateTime="2023-23-01">January 23, 2023</time>
-                  </dd>
-                </div>
-                <div className="mt-2 sm:mt-0 sm:pl-4">
-                  <dt className="inline text-gray-500">Due on</dt>{' '}
-                  <dd className="inline text-gray-700">
-                    <time dateTime="2023-31-01">January 31, 2023</time>
-                  </dd>
-                </div>
-                <div className="mt-6 border-t border-gray-900/5 pt-6 sm:pr-4">
-                  <dt className="font-semibold text-gray-900">From</dt>
-                  <dd className="mt-2 text-gray-500">
-                    <span className="font-medium text-gray-900">Acme, Inc.</span>
-                    <br />
-                    7363 Cynthia Pass
-                    <br />
-                    Toronto, ON N3Y 4H8
-                  </dd>
-                </div>
-                <div className="mt-8 sm:mt-6 sm:border-t sm:border-gray-900/5 sm:pl-4 sm:pt-6">
-                  <dt className="font-semibold text-gray-900">To</dt>
-                  <dd className="mt-2 text-gray-500">
-                    <span className="font-medium text-gray-900">Tuple, Inc</span>
-                    <br />
-                    886 Walter Street
-                    <br />
-                    New York, NY 12345
-                  </dd>
-                </div>
-              </dl>
-              <table className="mt-16 w-full whitespace-nowrap text-left text-sm/6">
+            <div className="-mx-4 shadow-sm ring-1 ring-gray-900/5 sm:mx-0 sm:rounded-lg sm:px-8 sm:pb-14 lg:col-span-2 lg:row-span-2 lg:row-end-2 xl:px-16 xl:pb-20 xl:pt-16">
+           
+              <table className="w-full whitespace-nowrap text-left text-sm/6">
                 <colgroup>
                   <col className="w-full" />
                   <col />
@@ -602,6 +500,5 @@ export default function Example() {
           </div>
         </div>
       </main>
-    </>
   )
 }

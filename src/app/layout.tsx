@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import Theme from "@/components/theme-provider";
+import LayoutManager from "./layouts/layoutManager";
 
 
 export const metadata: Metadata = {
@@ -21,7 +22,10 @@ export default function RootLayout({
       <body>
       <Theme
           >
-        {children}
+            <LayoutManager>
+            {children}
+            </LayoutManager>
+       
         </Theme>
       </body>
       </UserProvider>

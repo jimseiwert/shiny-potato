@@ -1,9 +1,15 @@
 import { HomeIcon, UsersIcon, FolderIcon, CalendarIcon, DocumentDuplicateIcon, ChartPieIcon, Cog6ToothIcon } from "@heroicons/react/20/solid"
 import Link from "next/link"
+import { usePathname } from 'next/navigation';
 
 export default function SideBar() {
+    const pathname = usePathname();
 
-    function classNames(...classes) {
+    const isActive = (path: string) => {
+        return pathname === path || pathname.startsWith(`${path}/`);
+      };
+      
+    function classNames(...classes: string[]) {
         return classes.filter(Boolean).join(' ')
       }
 
@@ -43,7 +49,7 @@ export default function SideBar() {
                             <Link
                               href={item.href}
                               className={classNames(
-                                item.current
+                                isActive(item.href)
                                   ? 'bg-gray-800 text-white'
                                   : 'text-gray-400 hover:bg-gray-800 hover:text-white',
                                 'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
@@ -64,7 +70,7 @@ export default function SideBar() {
                             <Link
                               href={item.href}
                               className={classNames(
-                                item.current
+                                isActive(item.href)
                                   ? 'bg-gray-800 text-white'
                                   : 'text-gray-400 hover:bg-gray-800 hover:text-white',
                                 'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
