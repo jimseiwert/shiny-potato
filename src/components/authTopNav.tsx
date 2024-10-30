@@ -28,7 +28,7 @@ function classNames(...classes: string[]) {
 
 export default function AuthTopNav() {
     return (
-        <>
+        <div>
             {/* When the mobile menu is open, add `overflow-hidden` to the `body` element to prevent double scrollbars */}
             <Popover
                 as="header"
@@ -50,12 +50,12 @@ export default function AuthTopNav() {
                             <ThemeToggle />
 
                             {/* Profile dropdown */}
-                            <Menu as="div" className="mx-4 gap-2">
+                            <Menu as="div" className="mx-4 gap-2 py-2">
                                 <div>
                                     <MenuButton className="relative flex rounded-full">
                                         <span className="absolute -inset-1.5" />
                                         <span className="sr-only">Open user menu</span>
-                                        <img alt="" src={user.imageUrl} className="h-10 w-10 rounded-full mx-4" />
+                                        <img alt="" src={user.imageUrl} className=" w-10 rounded-full mx-4" />
                                     </MenuButton>
                                 </div>
                                 <MenuItems
@@ -91,10 +91,10 @@ export default function AuthTopNav() {
                             </a>
                         ))}
                     </div>
-                    <div className="border-t border-gray-200 pb-3 pt-4">
+                    <div className="border-t border-gray-200 pb-3 py-2">
                         <div className="mx-auto flex max-w-3xl items-center px-4 sm:px-6">
                             <div className="flex-shrink-0">
-                                <img alt="" src={user.imageUrl} className="h-10 w-10 rounded-full" />
+                                <img alt="" src={user.imageUrl} className=" w-10 rounded-full" />
                             </div>
                             <div className="ml-3">
                                 <div className="text-base font-medium text-gray-800">{user.name}</div>
@@ -123,6 +123,6 @@ export default function AuthTopNav() {
                     </div>
                 </PopoverPanel>
             </Popover>
-        </>
+        </div>
     )
 }

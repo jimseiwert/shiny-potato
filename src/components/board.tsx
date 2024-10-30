@@ -13,11 +13,9 @@ const people = [
   // More people...
 ]
 
-export default function Example() {
+export default function Board() {
   return (
-    <div className='py-2 px-2 flex flex-col'>
-    <button className="justify-items-end w-1/6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Create Report</button>
-    <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 py-2 px-2">
+    <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {people.map((person) => (
         <li key={person.email} className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">
           <div className="flex w-full items-center justify-between space-x-6 p-6">
@@ -57,6 +55,5 @@ export default function Example() {
         </li>
       ))}
     </ul>
-    </div>
   )
 }

@@ -33,6 +33,7 @@ import {
   CalendarDaysIcon,
   CreditCardIcon,
   EllipsisVerticalIcon,
+  ExclamationTriangleIcon,
   FaceFrownIcon,
   FaceSmileIcon,
   FireIcon,
@@ -254,7 +255,40 @@ export default function Example() {
 
             {/* Invoice */}
             <div className="-mx-4 shadow-sm ring-1 ring-gray-900/5 sm:mx-0 sm:rounded-lg sm:px-8 sm:pb-14 lg:col-span-2 lg:row-span-2 lg:row-end-2 xl:px-16 xl:pb-20 xl:pt-16">
-           
+
+            <div className="rounded-md bg-yellow-50 p-4">
+      <div className="flex">
+        <div className="flex-shrink-0">
+          <ExclamationTriangleIcon aria-hidden="true" className="h-5 w-5 text-yellow-400" />
+        </div>
+        <div className="ml-3">
+          <h3 className="text-sm font-medium text-yellow-400">Attention needed</h3>
+          <div className="mt-2 text-sm text-yellow-400">
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid pariatur, ipsum similique veniam quo
+              totam eius aperiam dolorum.
+            </p>
+          </div>
+          <div className="mt-4">
+            <div className="-mx-2 -my-1.5 flex">
+              <button
+                type="button"
+                className="rounded-md bg-yellow-50 px-2 py-1.5 text-sm font-medium text-yellow-400 hover:bg-yellow-100 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-green-50"
+              >
+                View status
+              </button>
+              <button
+                type="button"
+                className="ml-3 rounded-md bg-yellow-50 px-2 py-1.5 text-sm font-medium text-yellow-400 hover:bg-yellow-100 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-green-50"
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
               <table className="w-full whitespace-nowrap text-left text-sm/6">
                 <colgroup>
                   <col className="w-full" />
