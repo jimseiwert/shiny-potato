@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
 eslint: {
     ignoreDuringBuilds: true,
 },
+transpilePackages: ['lucide-react'] 
   /* config options here */
 };
 

@@ -6,7 +6,7 @@ const stats = [
   { name: 'Expenses', value: '$30,156.00', change: '+10.18%', changeType: 'negative' },
 ]
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 

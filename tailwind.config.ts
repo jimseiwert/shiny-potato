@@ -4,9 +4,7 @@ import type { Config } from "tailwindcss";
 const config: Config = {
     darkMode: ["class"],
     content: [
-		"./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-		"./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-		"./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+		"./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
   	extend: {
@@ -60,7 +58,11 @@ const config: Config = {
   				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
-  			}
+  			},
+			badge: {
+				active: '',
+				terminated: 'bg-red-50 text-red-500 ring-red-600/20'
+			}
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

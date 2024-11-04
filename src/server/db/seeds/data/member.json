@@ -1,0 +1,49 @@
+[
+    {
+        "legacyId": "00118de9-4fc1-4f10-8485-6f19bcfff263",
+        "memberInfo": {
+            "firstName": "Site",
+            "lastName": "Admin",
+            "email": "none@none.com",
+            "occupation": "Volvo Master Tech"
+        },
+        "spouseInfo": {
+            "firstName": "Terry",
+            "lastName": "Wilson",
+            "email": "none@none.com"
+        },
+        "memberType": "Full",
+        "status": "Paid",
+        "declerations": {
+            "isVeteran": false,
+            "isPistolRO": true,
+            "isArcheryRO": false
+        },
+        "address": {
+            "line1": "100 W Roosevelt Ave",
+            "line2": "Unit #201",
+            "city": "Bensenville",
+            "state": "IL",
+            "zip": "60106"
+        },
+        "sponsor": "357b4d7e-4dea-4a79-984f-4c007e89d82c",
+        "activity": [
+            {"dateInducted": "2005-01-06T00:00:00.000Z"},    
+            {"dateApplied": "2018-08-30T18:05:45.899Z"},
+            {"created_at": "2018-10-20T14:00:21.091Z"},
+            { "updated_at": "2023-02-28T22:49:26.560Z"},
+            {"dateDeceased": "2019-12-03T16:26:10.458Z"}
+        ],
+        "workObligation": "Grounds & Maintenance",
+        "waitingListNumber": 0,
+        "picture": "https://s.gravatar.com/avatar/995682bab0d9e3a34663dd0d79148ac3?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fpw.png",
+        "aim": false,
+        "comms": {
+          "roster": { "publishEmail": false, "publishPhone": true }
+        },
+        "keycardAccess": { "kitchen": false, "master": false, "trapCrew": false }
+    }
+]
+
+
+        

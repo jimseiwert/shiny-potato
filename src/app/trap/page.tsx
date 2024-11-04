@@ -1,6 +1,9 @@
+import PublicLayout from "@/app/publicLayout";
 
-export default async function Trap(){
+export default function Trap() {
   return (
-  <span>Trap</span>
-  )
+    <PublicLayout>
+    <span>Trap</span>
+    </PublicLayout>
+  );
 }

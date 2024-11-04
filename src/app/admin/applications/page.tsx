@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 
 const stats = [
   { name: 'Revenue', value: '$405,091.00', change: '+4.75%', changeType: 'positive' },
@@ -6,7 +7,7 @@ const stats = [
   { name: 'Expenses', value: '$30,156.00', change: '+10.18%', changeType: 'negative' },
 ]
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
