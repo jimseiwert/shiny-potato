@@ -16,11 +16,11 @@ import { ArrowRightCircle, Calendar, ChartBar, CircleDollarSign, Cog, CookingPot
 
 const navigation: ISideBarItem[] = [
   { name: 'Dashboard', href: '/member/dashboard', icon: House },
-  { name: 'Forum', href: '/member/forum', icon: User },
-  { name: 'Fishing', href: '/member/fishing', icon: Fish },
+  // { name: 'Forum', href: '/member/forum', icon: User },
+  // { name: 'Fishing', href: '/member/fishing', icon: Fish },
   { name: 'Events', href: '/member/events', icon: Calendar },
   { name: 'Documents', href: '/member/documents', icon: Files },
-  { name: 'Gallery', href: '/member/gallery', icon: Images   },
+  // { name: 'Gallery', href: '/member/gallery', icon: Images   },
 ]
 
 const adminNavigation: ISideBarItem[]  = [

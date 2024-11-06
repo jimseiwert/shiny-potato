@@ -5,8 +5,12 @@ import { CheckIcon } from '@heroicons/react/20/solid'
 import Image from 'next/image'
 import { Bike, Fish, GraduationCap, SquareStack, Target, Tent } from 'lucide-react'
 import PublicLayout from './layouts/layout-public'
+import { Metadata } from 'next'
 
-
+export const metadata: Metadata = {
+  title: "Maywood Sportsmen's Club",
+  description: "A private members only club. Sponsorship required",
+};
 
 const features = [
   {
@@ -106,7 +110,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
+export default function HomePage() {
   return (
     <PublicLayout>
       <main>
@@ -148,7 +152,7 @@ export default function Example() {
                     >
                       Get started
                     </a>
-                    <a href="#" className="text-sm/6 font-semibold text-white">
+                    <a href="#about" className="text-sm/6 font-semibold text-white">
                       Learn more <span aria-hidden="true">→</span>
                     </a>
                   </div>

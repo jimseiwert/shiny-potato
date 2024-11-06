@@ -1,5 +1,12 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
+import { Metadata } from "next";
 import PublicLayout from "../layouts/layout-public";
+
+export const metadata: Metadata = {
+  title: "Terms and Conditions",
+  description: "Terms and Conditions",
+};
+
 
 export default function Terms() {
   return (
