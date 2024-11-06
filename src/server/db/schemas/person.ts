@@ -28,6 +28,10 @@ export const personRelations = relations(persons, ({ one }) => ({
 		fields: [persons.member],
 		references: [members.id],
 	}),
+  personType: one(personTypes, {
+		fields: [persons.type],
+		references: [personTypes.id],
+	}),
 }));
 
 

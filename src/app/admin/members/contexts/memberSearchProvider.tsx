@@ -6,9 +6,9 @@ export const MemberSearchContext = createContext({})
 
 export default function MemberSearchProvider({ children }: { children: React.ReactNode }) {
     const [name, setName] = useState<string>('');
-    const [memberType, setMemberType] = useState();
-    const [status, setStatus] = useState();
-    const [personType, setPersonType] = useState();
+    const [memberType, setMemberType] = useState({id: 1, name: 'Full'});
+    const [status, setStatus] = useState({id: 'all', name: 'All'});
+    const [personType, setPersonType] = useState({id: 1, name: 'Member'});
     const [email, setEmail] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
     const [currentPage, setCurrentPage] = useState(1);

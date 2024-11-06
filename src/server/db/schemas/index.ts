@@ -16,7 +16,6 @@ export { default as statementActivity, statementActivityRelations } from "./stat
 export { default as statementTypes } from "./statement-types";
 export { default as work, workRelations } from "./work";
 export { default as address, addressRelations } from "./address";
-export { default as state } from "./state";
 export { default as forumTopics, forumTopicRelations } from "./forum-topic";
 export { default as forumMessages, forumMessageRelations } from "./forum-messages";
 export { default as persons, personRelations } from "./person";

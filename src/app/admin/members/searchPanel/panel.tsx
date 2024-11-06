@@ -9,7 +9,7 @@ export default async function SearchPanel() {
     const personTypes = await getAllPersonTypes();
 
     return (
-        <aside>
+        <aside className="bg-gray-100 px-4">
             <NameSearch />
             <EmailSearch />
             <PhoneSearch />
