@@ -1,5 +1,5 @@
 
-import AuthTopNav from "@/components/msc/nav/authTopNav";
+import AuthTopNav from "@/components/msc/topNav/authTopNav";
 import Renewal from "@/components/msc/renewal";
 import { AppSidebar } from "@/components/msc/sidebar/SideBar";
 

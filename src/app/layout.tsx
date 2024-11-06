@@ -19,20 +19,29 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <UserProvider>
-        <body>
-          <RouteProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem>
-              <SidebarProvider>
-                {children}
-              </SidebarProvider>
-            </ThemeProvider>
-          </RouteProvider>
-        </body>
-      </UserProvider>
-    </html>
+    <UserProvider>
+      <body>
+        <RouteProvider>
+              {children}
+        </RouteProvider>
+      </body>
+    </UserProvider>
+  </html>
+    // <html lang="en" suppressHydrationWarning>
+    //   <UserProvider>
+    //     <body>
+    //       <RouteProvider>
+    //         <ThemeProvider
+    //           attribute="class"
+    //           defaultTheme="system"
+    //           enableSystem>
+    //           <SidebarProvider>
+    //             {children}
+    //           </SidebarProvider>
+    //         </ThemeProvider>
+    //       </RouteProvider>
+    //     </body>
+    //   </UserProvider>
+    // </html>
   );
 }

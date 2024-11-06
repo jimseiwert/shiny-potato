@@ -1,5 +1,5 @@
 
-import AuthTopNav from "@/components/msc/nav/authTopNav";
+import AuthTopNav from "@/components/msc/topNav/authTopNav";
 import { AppSidebar } from "@/components/msc/sidebar/SideBar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
