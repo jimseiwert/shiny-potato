@@ -1,9 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import { getMember } from "@/server/queries/member";
+import { getMember } from "@/server/queries/member/profile";
 import { redirect } from "next/navigation";
 import InputUpdate from "../components/inputUpdate";
 import AddressWrapper from "@/app/admin/members/components/address";
 import Dependants from "../components/dependants";
+import MemberActivity from "./activity";
+import MemberStats from "./stats";
+import Profile from "./profile";
 
 
 export default async function MemberDetail({
@@ -17,11 +20,7 @@ export default async function MemberDetail({
     redirect('/admin/members')
   }
 
-  const stats = [
-    { label: 'Vacation days left', value: 12 },
-    { label: 'Sick days left', value: 4 },
-    { label: 'Personal days left', value: 2 },
-  ]
+
 
   return (
     <>
@@ -42,38 +41,34 @@ export default async function MemberDetail({
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 divide-y divide-gray-200 border-t border-gray-200 bg-gray-50 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-          {stats.map((stat) => (
-            <div key={stat.label} className="px-6 py-5 text-center text-sm font-medium">
-              <span className="text-gray-900">{stat.value}</span> <span className="text-gray-600">{stat.label}</span>
-            </div>
-          ))}
-        </div>
+        <MemberStats />
       </div>
-      <div className="lg:flex lg:gap-x-16 lg:px-8">
-        <div className="px-4 py-16 sm:px-6 lg:flex-auto lg:px-0 lg:py-20">
-          <div className="space-y-16 sm:space-y-20 lg:mx-0 lg:max-w-none">
-            <div>
-              <h2 className="text-base/7 font-semibold text-gray-900">Profile</h2>
-              <p className="mt-1 text-sm/6 text-gray-500">
-                This information will be displayed publicly so be careful what you share.
-              </p>
+      <div className="flex ...">
+        <div className="grow h-14 ...">
+          <div className="lg:flex lg:gap-x-16 lg:px-8 flex-col">
+            <div className="px-4 py-8 sm:px-6">
+              <div className="space-y-16 sm:space-y-20 lg:mx-0 ">
+                  <Profile firstName={user.memberInfo.firstName} lastName={user.memberInfo.lastName} email={user.memberInfo.email} occupation={user.memberInfo.occupation} />
 
-              <dl className="mt-6 space-y-6 divide-y divide-gray-100 border-t border-gray-200 text-sm/6">
-              <InputUpdate title="Full name" initialValue={`${user.memberInfo.firstName} ${user.memberInfo.lastName}`} />
-              <InputUpdate title="Email Address" initialValue={user.memberInfo.email} />
-              <InputUpdate title="Occupation" initialValue={user.memberInfo.occupation} />
-              </dl>
+                <AddressWrapper memberAddress={user.address} />
+                <Dependants memberDependants={user.dependents} />
+
+
+              </div>
+
             </div>
-
-            <AddressWrapper memberAddress={user.address} />
-            <Dependants memberDependants={user.dependents}/>
-            
 
           </div>
-
+        </div>
+        <div className="flex-none w-1/4 p-1.5 m-5">
+          <MemberActivity activity={user.activity} />
         </div>
       </div>
+
+
+
+
+
     </>
   );
 }

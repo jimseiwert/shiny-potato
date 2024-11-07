@@ -6,12 +6,12 @@ import {
 } from "drizzle-orm/pg-core";
 
 import { baseTimeFields } from "../base";
-import members from "./member";
 import { relations } from "drizzle-orm";
+import persons from "./person";
 
 const declerations = pgTable('declerations', {
 	id: serial('id').primaryKey(),
-  member: integer().references(() => members.id),
+  person: integer().references(() => persons.id),
 	isArcheryRO: boolean().notNull().default(false),
   isPistolRO: boolean().notNull().default(false),
   isVeteran: boolean().notNull().default(false),
@@ -19,9 +19,9 @@ const declerations = pgTable('declerations', {
 });
 
 export const declerationsRelations = relations(declerations, ({ one }) => ({
-	member: one(members, {
-		fields: [declerations.member],
-		references: [members.id],
+	person: one(persons, {
+		fields: [declerations.person],
+		references: [persons.id],
 	}),
 }));
 

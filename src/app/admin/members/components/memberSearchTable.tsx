@@ -1,58 +1,17 @@
 'use client';
-import { MemberSearchResults } from "@/app/interfaces/memberSearchResults.interface";
 import MemberTag from "./memberTag";
-import { useContext } from "react";
-import { MemberSearchContext } from "../contexts/memberSearchProvider";
 import PaginationFooter from "./memberSearchFooter";
+import { getAllMembers } from "@/server/queries/member/search";
+import { useContext, useEffect } from "react";
+import { MemberSearchContext } from "../contexts/memberSearchProvider";
 
-export default function SearchTable({ data }: { data: MemberSearchResults[] }) {
-  const { currentPage, itemsPerPage, handlePageChange, name, email, phone, memberType, status, personType } = useContext(MemberSearchContext)
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
+export default function SearchTable() {
+  
+  const {items} = useContext(MemberSearchContext);
 
-  const filteredData = data.filter((person) => {
-    const fullName = `${person.firstName} ${person.lastName}`;
-    let shouldShowResult = true;
-    if (name != '') {
-      if (!fullName.toLowerCase().includes(name.toLowerCase())) {
-        shouldShowResult = false;
-      }
-    }
 
-    if (email != '') {
-      if (!person.email?.toLowerCase().includes(email.toLowerCase())) {
-        shouldShowResult = false;
-      }
-    }
-
-    if (phone != '') {
-      if (!person.homePhone.toLowerCase().includes(phone.toLowerCase())) {
-        shouldShowResult = false;
-      }
-    }
-
-    if (memberType.id != 'all') {
-      if (person.type.id != memberType.id) {
-        shouldShowResult = false;
-      }
-    }
-
-    if (status.id != 'all') {
-      if (person.status.id != status.id) {
-        shouldShowResult = false;
-      }
-    }
-
-    if (personType.id != 'all') {
-      if (person.personType.id != personType.id) {
-        shouldShowResult = false;
-      }
-    }
-
-    return shouldShowResult;
-  });
-
-  const currentData = filteredData.slice(startIndex, endIndex);
+  console.log(name)
+ // const members = await getAllMembers(searchParams);
 
   return (
     <>
@@ -77,12 +36,12 @@ export default function SearchTable({ data }: { data: MemberSearchResults[] }) {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
-          {currentData.map((person) => (
+          {items.map((person) => (
             <MemberTag key={person.email + person.id} person={person} />
           ))}
         </tbody>
       </table>
-      <PaginationFooter totalItems={filteredData.length} />
+      {/* <PaginationFooter totalItems={members.length} /> */}
     </>
   )
 }

@@ -1,6 +1,6 @@
 import { db } from "../../../../server/db";
-import { eq, or } from "drizzle-orm";
-import { members, persons, address, declerations, memberStatus, memberTypes, state } from "../../../../server/db/schemas";
+import { eq, ne, or } from "drizzle-orm";
+import { members, address, declerations, memberStatus, memberTypes, membersToComms, persons } from "../../../../server/db/schemas";
 
 export async function Members(data: any[]) {
 
@@ -35,11 +35,43 @@ export async function Members(data: any[]) {
         'aim': 'AIM'
     }
     const personTypes = await db.query.personTypes.findMany();
-    const MemberTypeId = personTypes.find((x: personTypes) => x.name === 'Member').id
-    const SpouseTypeId = personTypes.find((x: personTypes) => x.name === 'Spouse').id
+    const MemberTypeId = personTypes.find((x) => x.name === 'Member').id
+    const SpouseTypeId = personTypes.find((x) => x.name === 'Spouse').id
+    const SonTypeId = personTypes.find((x) => x.name === 'Son').id
 
     const memberMapping: any = {};
 
+    const states: string[] = [];
+    for (const doc in data) {
+        const member = data[doc]
+        if (member.address && (member.address.state.toString().toLowerCase() === 'south carolina')) {
+            member.address.state = 'SC'
+        }
+
+        if (member.address && (member.address.state.toString().toLowerCase() === 'north carolina')) {
+            member.address.state = 'NC'
+        }
+
+        if (member.address && (member.address.state.toString().toLowerCase() === 'florida')) {
+            member.address.state = 'FL'
+        }
+        if (member.address && (member.address.state.toString().toLowerCase() === 'wisconsin')) {
+            member.address.state = 'WI'
+        }
+
+        if (member.address && (member.address.state.toString().toLowerCase() === 'michigan')) {
+            member.address.state = 'MI'
+        }
+        if (member.address && (member.address.state.toString().toLowerCase() === 'us' || 
+        member.address.state.toString().toLowerCase() === '60126-2236' || 
+        member.address.state.toString().toLowerCase() === 'illinois' )) {
+            member.address.state = 'IL'
+        }
+
+        if(states.includes(data[doc].address.state) === false) {
+            states.push(member.address.state)
+        }
+    }
 
     for (const doc in data) {
 
@@ -60,13 +92,13 @@ export async function Members(data: any[]) {
             member.address.zip = undefined
         }
 
+       
+
         if (!member.address.state || member.address.state === null || member.address.state === '') {
             member.address.state = undefined
         }
 
-        if (member.address.state === 'US' || member.address.state === '60126-2236' || member.address.state === 'ILLINOIS') {
-            member.address.state = 'IL'
-        }
+
 
         if (!member.address.line1 && !member.address.city && !member.address.zip && !member.address.state ||
             !member.address.line1 && !member.address.city && !member.address.zip && member.address.state === 'IL'
@@ -92,7 +124,6 @@ export async function Members(data: any[]) {
 
     const memberRecordLength = data.length
     let processed = 0;
-    let dataConversion: any[] = [];
     for (const doc in data) {
         const run = {
             name: `${data[doc].memberInfo.firstName} ${data[doc].memberInfo.lastName}`,
@@ -129,50 +160,93 @@ export async function Members(data: any[]) {
                 run.typeFound = true
             }
 
-            const newRecord = await db.insert(members).values({ legacyId: member._id, picture: member.picture, waitingListNumber: member.waitingListNumber, workObligation: member.workObligation, status: foundStatus.id, type: foundType.id }).returning({ id: members.id });
+            const newRecord = await db.insert(members).values({ 
+                legacyId: member._id, 
+                publish_phone: member.comms?.roster?.publishPhone || false, 
+                publish_email: member.comms?.roster?.publishEmail || false, 
+                waitingListNumber: member.waitingListNumber, 
+                workObligation: member.workObligation, 
+                status: foundStatus.id, 
+                picture: member.picture,
+                type: member.aim? 4: 
+                foundType.id }).returning({ id: members.id });
+
             memberMapping[member._id] = newRecord[0].id
             run.memberRecord = newRecord[0].id
             if (member.memberInfo) {
                 console.log('Member Info');
-                await db.insert(persons).values({ member: newRecord[0].id, occupation: member.occupation, firstName: member.memberInfo.firstName, lastName: member.memberInfo.lastName, email: member.memberInfo.email, type: MemberTypeId });
+                const newPersonRecord = await db.insert(persons).values({ member: newRecord[0].id, occupation: member.occupation, firstName: member.memberInfo.firstName, lastName: member.memberInfo.lastName, email: member.memberInfo.email, type: MemberTypeId }).returning({ id: persons.id });
                 run.memberInfo = true
+
+                if (member.declerations) {
+                    console.log('Declerations');
+                    await db.insert(declerations).values({ person: newPersonRecord[0].id, isArcheryRO: member.declerations.isArcheryRO, isPistolRO: member.declerations.isPistolRO, isVeteran: member.declerations.isVeteran });
+                    run.declerations = true
+                };
+
+                if (member.comms) {
+                    if(member.comms.bulletin) {
+                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 1 });
+                    }
+                    if(member.comms.lists.fishing) {
+                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 2 });
+                    }
+                    if(member.comms.lists.lake) {
+                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 3 });
+                    }
+                    if(member.comms.lists.grounds) {
+                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 4 });
+                    }
+                    if(member.comms.lists.trap) {
+                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 5 });
+                    }
+                    if(member.comms.lists.archery) {
+                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 6 });
+                    }
+                    if(member.comms.lists.pistol) {
+                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 7 });
+                    }
+                    await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 8 });
+                    if(member.comms.lists.dinner) {
+                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 9 });
+                    }
+                    await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 10 });
+
+                    if(member.comms.forum.weeklyDigest) {
+                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 11 });
+                    }
+
+                    if(member.comms.forum.all) {
+                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 12 });
+                    }
+
+                    if(member.comms.forum.responses) {
+                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 13 });
+                    }
+                };
             }
             if (member.spouseInfo) {
                 console.log('Spouse Info');
                 await db.insert(persons).values({ member: newRecord[0].id, firstName: member.spouseInfo.firstName, lastName: member.spouseInfo.lastName, email: member.spouseInfo.email, type: SpouseTypeId });
                 run.spouseInfo = true
             }
+            if (member.dependants) {
+                for (const dep in member.dependants) {
+                    await db.insert(persons).values({ member: newRecord[0].id, birthdate: member.dependants[dep].birthDate, overrideBirthdate: member.dependants[dep].overrideBirthdate, comments: member.dependants[dep].comments, firstName: member.dependants[dep].firstName, lastName: member.dependants[dep].lastName, email: member.dependants[dep].email, type: SonTypeId });
+                }
+            }
             if (member.address) {
-                console.log('Address Info');
+                console.log('Address Info', member.address);
                 const postalCode = member.address.zip?.replace('-undefined', '');
-                const stateRecord = await db.query.state.findFirst({ where: or(eq(state.code, member.address.state), eq(state.name, member.address.state)) });
-                if (!stateRecord) {
-                    throw new Error("State not found " + member.address.state);
-                } 
-                await db.insert(address).values({ member: newRecord[0].id, name: 'Home', line1: member.address.line1, line2: member.address.line2, city: member.address.city, state: stateRecord.id, zip: postalCode });
+                await db.insert(address).values({ member: newRecord[0].id, name: 'Home', line1: member.address.line1, line2: member.address.line2, city: member.address.city, state: member.address.state, zip: postalCode });
                 run.address = true
             }
-            if (member.declerations) {
-                console.log('Declerations');
-                await db.insert(declerations).values({ member: newRecord[0].id, isArcheryRO: member.declerations.isArcheryRO, isPistolRO: member.declerations.isPistolRO, isVeteran: member.declerations.isVeteran });
-                run.declerations = true
-            };
+          
         } catch (error) {
-            run.error = error.message
             console.log(run)
-            //console.log(member)
-            dataConversion.push(run)
-
+            throw new Error(error.message)
         }
         processed++;
         console.log('Processed:', processed, 'of', memberRecordLength)
-    }
-
-    console.log('**** Errors ****')
-    console.log(dataConversion)
-    console.log('**** Errors ****')
-
-    if(dataConversion.length > 0) {
-        throw new Error('Member Seeded with Errors');
     }
 }

@@ -14,24 +14,41 @@ async function resetTable(db: db, table: Table){
 }
 
     for(const table of [
-        //schema.state,
-        //schema.memberStatus,
-        //schema.memberTypes,
-        //schema.statementTypes,
-        //schema.roles,
-        //schema.personTypes,
-        //schema.persons,
-        //schema.address,
+        schema.memberStatus,
+        schema.memberTypes,
+        schema.statementTypes,
+        schema.roles,
+        schema.personTypes,
+        schema.persons,
+        schema.address,
         schema.declerations,
-        schema.memos,
+        schema.statements,
+        schema.applications,
+        schema.declerations,
+        schema.dinners,
+        schema.fishing,
+        schema.forumMessages,
+        schema.forumTopics,
+        schema.memberActivity,
+        schema.permissions,
+        schema.roleAssignments,
+        schema.statementActivity,
+        schema.statementConfig,
+        schema.statementLines,
+        schema.statementPayments,
+        schema.work,
+        schema.membersToComms,
+        schema.comms,
+        schema.members,
+        
     ]){
         await resetTable(db, table);
     }
 
-    // await seeds.status(db);
-    // await seeds.types(db);
-    // await seeds.states(db);
-    // await seeds.statementTypes(db);
-    // await seeds.roles(db);
-    // await seeds.personTypes(db);
+    await seeds.status(db);
+    await seeds.types(db);
+    await seeds.statementTypes(db);
+    await seeds.roles(db);
+    await seeds.personTypes(db);
+    await seeds.comms(db);
     //await seeds.members(db);

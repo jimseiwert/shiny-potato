@@ -11,7 +11,7 @@ export default function MemberTag({ person }: { person: MemberSearchResults }) {
     const fullName = `${person.firstName} ${person.lastName}`;
 
     return (
-        <tr className="cursor-pointer" onClick={() => { redirect(`/admin/members/${person.id}`) }}>
+        <tr className="cursor-pointer" onClick={() => { redirect(`/admin/members/${person.memberId}`) }}>
             <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                 <div className="flex items-center">
                     <div className="h-11 w-11 flex-shrink-0">
@@ -24,7 +24,7 @@ export default function MemberTag({ person }: { person: MemberSearchResults }) {
                 </div>
             </td>
             <td className="whitespace-nowrap px-3 py-5 text-sm">
-                <div>{person.personType?.name}</div>
+                <div>{person.type?.name}</div>
             </td>
             <td className="whitespace-nowrap px-3 py-5 text-sm">
                 <span className={classNames(
@@ -34,7 +34,7 @@ export default function MemberTag({ person }: { person: MemberSearchResults }) {
                     {person.status.name}
                 </span>
             </td>
-            <td className="whitespace-nowrap px-3 py-5 text-sm">{person.type.name}</td>
+            <td className="whitespace-nowrap px-3 py-5 text-sm">{person.personType.name}</td>
         </tr>
     );
 }

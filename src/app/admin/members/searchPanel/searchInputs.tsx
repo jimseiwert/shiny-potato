@@ -1,11 +1,15 @@
 "use client";
+
 import React, { useContext } from "react";
 import { MemberSearchContext } from "../contexts/memberSearchProvider";
-import { CheckIcon, ChevronUpDownIcon, ExclamationCircleIcon } from "@heroicons/react/20/solid";
-import { Combobox, Label, ComboboxInput, ComboboxButton, ComboboxOptions, ComboboxOption, Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
+import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
 
 export function NameSearch() {
-    const {name, setName, setCurrentPage} = useContext(MemberSearchContext);
+  const { name, setName} = useContext(MemberSearchContext);
+
+
+    
     return (
         <div className="py-2">
         <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
@@ -14,7 +18,7 @@ export function NameSearch() {
         <div className="relative mt-2 rounded-md shadow-sm">
             <input
                 value={name}
-                onChange={(e) => {setCurrentPage(1); setName(e.target.value)}}
+                onChange={(e) => {setName(e.target.value);}}
                 id="name"
                 name="name"
                 type="text"
@@ -27,7 +31,9 @@ export function NameSearch() {
 }
 
 export function EmailSearch() {
-    const {email, setEmail, setCurrentPage} = useContext(MemberSearchContext);
+    const {email, setEmail} = useContext(MemberSearchContext);
+
+
     return (
         <div className="py-2">
         <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
@@ -36,7 +42,7 @@ export function EmailSearch() {
         <div className="relative mt-2 rounded-md shadow-sm">
             <input
                 value={email}
-                onChange={(e) => {setCurrentPage(1); setEmail(e.target.value)}}
+                onChange={(e) => {setEmail(e.target.value)}}
                 id="email"
                 name="email"
                 type="email"
@@ -49,7 +55,10 @@ export function EmailSearch() {
 }
 
 export function PhoneSearch() {
-    const {phone, setPhone, setCurrentPage} = useContext(MemberSearchContext);
+    const { phone, setPhone} = useContext(MemberSearchContext);
+
+
+
     return (
         <div className="py-2">
         <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
@@ -58,7 +67,7 @@ export function PhoneSearch() {
         <div className="relative mt-2 rounded-md shadow-sm">
             <input
                 value={phone}
-                onChange={(e) => {setCurrentPage(1); setPhone(e.target.value)}}
+                onChange={(e) => {setPhone(e.target.value)}}
                 id="phone-number"
             name="phone-number"
             type="text"
@@ -74,9 +83,10 @@ export function PhoneSearch() {
 export function MemberType({memberTypes}: {memberTypes: any[]}) {
     const {memberType, setMemberType, setCurrentPage} = useContext(MemberSearchContext);
     
+
     return (
         <div className="py-2">
-        <Listbox value={memberType} onChange={setMemberType}>
+        <Listbox value={memberType.id} onChange={setMemberType}>
         <Label className="block text-sm/6 font-medium text-gray-900">Member Type</Label>
         <div className="relative mt-2">
           <ListboxButton className="relative w-full cursor-default rounded-full bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm/6">
@@ -112,10 +122,10 @@ export function MemberType({memberTypes}: {memberTypes: any[]}) {
 
 
 export function PersonType({personTypes}: {personTypes: any[]}) {
-    const {personType, setPersonType, setCurrentPage} = useContext(MemberSearchContext);
+    const {personType, setPersonType} = useContext(MemberSearchContext);
     
     return (
-        <Listbox value={personType} onChange={setPersonType}>
+        <Listbox value={personType.id} onChange={setPersonType}>
         <Label className="block text-sm/6 font-medium text-gray-900">Person Type</Label>
         <div className="relative mt-2">
           <ListboxButton className="relative w-full cursor-default rounded-full bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm/6">
@@ -149,10 +159,10 @@ export function PersonType({personTypes}: {personTypes: any[]}) {
 }
 
 export function MemberStatus({memberStatus}: {memberStatus: any[]}) {
-    const {status, setStatus, setCurrentPage} = useContext(MemberSearchContext);
+    const {status, setStatus} = useContext(MemberSearchContext);
   
     return (
-        <Listbox value={status} onChange={setStatus}>
+        <Listbox value={status.id} onChange={setStatus}>
         <Label className="block text-sm/6 font-medium text-gray-900">Member Status</Label>
         <div className="relative mt-2">
           <ListboxButton className="relative w-full cursor-default rounded-full bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm/6">

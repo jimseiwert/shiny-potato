@@ -1,5 +1,6 @@
 export interface MemberSearchResults {
     id: number;
+    memberId: number;
     firstName: string;
     lastName: string;
     email: string;
