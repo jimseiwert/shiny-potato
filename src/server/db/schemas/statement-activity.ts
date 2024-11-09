@@ -10,7 +10,7 @@ import { baseTimeFields } from "../base";
 
 const statementactivity = pgTable('statement_activity', {
   id: serial().primaryKey(),
-  statement: integer().references(() => statements.id),
+  statement: integer().references(() => statements.id, { onDelete: 'cascade' }),
   activity: varchar({ length: 256 }).notNull(),
   ...baseTimeFields
 });

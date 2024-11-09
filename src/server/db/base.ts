@@ -13,8 +13,8 @@ export const baseTimeFields = {
 } as const
 
 export const baseUserFields = {
-  createdBy: integer().references(() => members.id, {onDelete: 'cascade'}),
-  updatedBy: integer().references(() => members.id, {onDelete: 'cascade'}),
-  deletedBy: integer().references(() => members.id, {onDelete: 'cascade'}),
+  createdBy: integer().references(() => members.id),
+  updatedBy: integer().references(() => members.id),
+  deletedBy: integer().references(() => members.id),
   deleted: boolean('deleted').default(false).notNull(),
 } as const

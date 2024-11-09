@@ -58,11 +58,7 @@ const config: Config = {
   				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
-  			},
-			badge: {
-				active: '',
-				terminated: 'bg-red-50 text-red-500 ring-red-600/20'
-			}
+  			}
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

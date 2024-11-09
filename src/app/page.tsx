@@ -110,8 +110,9 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function HomePage() {
+export default async function HomePage() {
   return (
+    
     <PublicLayout>
       <main>
         {/* Hero section */}

@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";
 
-export async function GetData() {
+export async function GetData(records: string[]) {
     const client = new MongoClient(process.env.MONGO, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -9,7 +9,7 @@ export async function GetData() {
     await client.connect();
     const database = client.db("maywood");
     const collection = database.collection("data");
-    const allData = await collection.find({}).toArray();
+    const allData = await collection.find({__type: {$in: records}}).toArray();
 
     const data: any = {}
 

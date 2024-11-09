@@ -6,9 +6,9 @@ export default async function Dashboard() {
 
     return (
         <>
-        <MemberStats />
+        {/* <MemberStats />
             <div>Hello on dashboard</div>
-            <pre>{JSON.stringify(user, null, 2)}</pre>
+            <pre>{JSON.stringify(user, null, 2)}</pre> */}
         </>
     );
 }

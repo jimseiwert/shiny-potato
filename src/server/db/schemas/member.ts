@@ -12,24 +12,24 @@ import { relations } from "drizzle-orm";
 import statements from "./statement";
 import address from "./address";
 import { baseTimeFields } from "../base";
-import memberActivity from "./member-activity";
 import comms, { membersToComms } from "./comms";
 import persons from "./person";
+import activity from "./activity";
 
 
 
 const members = pgTable('members', {
 	id: serial('id').primaryKey(),
   legacyId:varchar({ length: 255 }),
-	status: integer().references(() => statuses.id, {onDelete: 'cascade'}).notNull(),
-  type: integer().references(() => memberTypes.id, {onDelete: 'cascade'}).notNull(),
-  sponsor: integer().references(() => members.id, {onDelete: 'cascade'}),
+	status: integer().references(() => statuses.id).notNull(),
+  type: integer().references(() => memberTypes.id).notNull(),
+  sponsor: integer().references(() => members.id),
   picture: varchar({ length: 255 }),
   workObligation:varchar({ length: 50 }),
   waitingListNumber: integer(),
   suspendedUntil: date(),
-  publish_phone: boolean().notNull().default(false),
-  publish_email: boolean().notNull().default(false),
+  publish_phone: boolean().default(false),
+  publish_email: boolean().default(false),
   ...baseTimeFields
 });
 
@@ -49,8 +49,7 @@ export const memberRelations = relations(members, ({one, many}) => ({
   statements: many(statements),
   address: many(address),
   persons: many(persons),
-  createdActivity: many(memberActivity, {relationName: 'createdBy',}),
-  activity: many(memberActivity, {relationName: 'activity',}),
+  activity: many(activity, {relationName: 'memberActivity',}),
   comms: many(membersToComms),
 
 }));

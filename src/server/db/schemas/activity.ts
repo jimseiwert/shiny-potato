@@ -8,27 +8,32 @@ import { relations } from "drizzle-orm";
 import { baseTimeFields } from "../base";
 import members from "./member";
 import persons from "./person";
+import statements from "./statement";
 
-const memberActivity = pgTable('member_activity', {
+const activity = pgTable('activity', {
   id: serial().primaryKey(),
   member: integer().references(() => members.id),
+  statement: integer().references(() => statements.id),
   activity: varchar({ length: 256 }).notNull(),
   type: varchar({ length: 50 }).notNull(),
   createdBy: integer().references(() => persons.id),
   ...baseTimeFields
 });
 
-export const memberActivityRelations = relations(memberActivity, ({ one }) => ({
+export const activityRelations = relations(activity, ({ one }) => ({
   member: one(members, {
-		fields: [memberActivity.member],
+		fields: [activity.member],
 		references: [members.id],
-    relationName: 'activity',
+     relationName: 'memberActivity'
+	}),
+  statement: one(statements, {
+		fields: [activity.statement],
+		references: [statements.id],
 	}),
   createdBy: one(members, {
-		fields: [memberActivity.createdBy],
-		references: [members.id],
-    relationName: 'createdBy',
+		fields: [activity.createdBy],
+		references: [members.id]
 	}),
 }));
 
-export default memberActivity;
+export default activity;

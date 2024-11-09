@@ -1,6 +1,6 @@
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { db } from "../../../../server/db";
-import { memberActivity, members } from "@/server/db/schemas";
+import { activity, members } from "@/server/db/schemas";
 
 interface Memo {
     _id: string;
@@ -11,6 +11,7 @@ interface Memo {
 }
 
 export async function Memos(importedMembers: any[], data: Memo[]) {
+    await db.execute('TRUNCATE TABLE member_activity RESTART IDENTITY CASCADE');
     console.log(`Migrating ${data.length} memos`);
     let count = 0;
     const activityLog = [];
@@ -50,7 +51,7 @@ export async function Memos(importedMembers: any[], data: Memo[]) {
                 if (memo.message) {
                     const createdBy = await db.query.members.findFirst({ where: eq(members.legacyId, memo.addedBy + '') });
                     if (memberRecord && createdBy) {
-                        activityLog.push({ member: memberRecord.id, type: 'comment', createdBy: memberRecord.id, createdAt: memo.dateAdded, activity: memo.message });
+                        activityLog.push({ member: memberRecord.id, type: 'comment', createdBy: createdBy.id, createdAt: memo.dateAdded, activity: memo.message });
                     }
                 }
             }
@@ -61,7 +62,7 @@ export async function Memos(importedMembers: any[], data: Memo[]) {
     }
 
     console.log('Inserting memos');
-    await db.insert(memberActivity).values(activityLog.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()));
+    await db.insert(activity).values(activityLog.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()));
     console.log('Memos inserted');
 
 }

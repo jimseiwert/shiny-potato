@@ -23,7 +23,7 @@ const persons = pgTable('persons', {
   birthdate: varchar({ length: 20 }),
   comments: varchar({ length: 255 }),
   overrideBirthdate: boolean().notNull().default(false),
-  type: integer().references(() => personTypes.id, {onDelete: 'cascade'}).notNull(),
+  type: integer().references(() => personTypes.id).notNull(),
   ...baseTimeFields
 });
 

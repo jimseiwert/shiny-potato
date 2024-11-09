@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 'use client'
-
+import { auth0 } from "@/lib/auth0"
 import { useState } from "react"
 import { Dialog, DialogPanel } from "@headlessui/react"
 import Image from "next/image"
@@ -90,7 +90,7 @@ export default function PublicTopNav() {
             </div>
             <div className="py-6">
               <a
-                href="#"
+                href="/api/auth/login"
                 className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-white hover:bg-gray-800"
               >
                 Log in

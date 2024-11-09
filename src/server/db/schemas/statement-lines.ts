@@ -1,7 +1,9 @@
 import {
+  decimal,
   integer,
   pgTable,
   serial,
+  varchar,
 } from "drizzle-orm/pg-core";
 
 
@@ -13,9 +15,11 @@ import { baseTimeFields } from "../base";
 
 const statementLines = pgTable('statement_lines', {
   id: serial().primaryKey(),
-  statement: integer().references(() => statements.id),
-  line: integer().references(() => statementConfig.id),
-  qty: integer().default(0).notNull(),
+  statement: integer().references(() => statements.id, { onDelete: 'cascade' }).notNull(),
+  item: integer().references(() => statementConfig.id),
+  qty: decimal().notNull(),
+  unitCost: decimal().notNull(),
+  notes: varchar({ length: 256 }),
   ...baseTimeFields
 });
 
@@ -23,6 +27,10 @@ export const statementLinesRelations = relations(statementLines, ({ one }) => ({
 	statement: one(statements, {
 		fields: [statementLines.statement],
 		references: [statements.id],
+	}),
+  item: one(statementConfig, {
+		fields: [statementLines.item],
+		references: [statementConfig.id],
 	}),
 }));
 

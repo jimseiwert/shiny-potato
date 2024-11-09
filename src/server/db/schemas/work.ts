@@ -1,23 +1,28 @@
 import {
+  date,
   integer,
   pgTable,
   serial,
+  varchar,
 } from "drizzle-orm/pg-core";
 
-import members from "./member";
 import { relations } from "drizzle-orm";
-import { baseTimeFields } from "../base";
+import { baseTimeFields, baseUserFields } from "../base";
+import workRequirement from "./work-requirements";
 
 const work = pgTable('work', {
   id: serial().primaryKey(),
-  member: integer().references(() => members.id),
-  ...baseTimeFields
+  workRequirement: integer().references(() => workRequirement.id),
+  notes: varchar({ length: 256 }),
+  workDate: date().notNull(),
+  ...baseTimeFields,
+  ...baseUserFields
 });
 
 export const workRelations = relations(work, ({ one }) => ({
-	member: one(members, {
-		fields: [work.member],
-		references: [members.id],
+	workRequirement: one(workRequirement, {
+		fields: [work.workRequirement],
+		references: [workRequirement.id],
 	}),
 }));
 

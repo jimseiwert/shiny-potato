@@ -1,32 +1,82 @@
 'use client';
+import ShowDialog from '@/components/msc/dialog';
+import { toast } from "sonner"
+
 
 const projects = [
   {
     id: 1,
     name: 'Migrate Members Data',
-    action: () => migrateMembers(),
+    action: () => migrateMembers('members'),
   },
-  
+  {
+    id: 2,
+    name: 'Migrate Memos',
+    action: () => migrateMembers('memos'),
+  },
+  {
+    id: 3,
+    name: 'Migrate statements',
+    action: () => migrateMembers('statements'),
+  },
+  {
+    id: 4,
+    name: 'Migrate work',
+    action: () => migrateMembers('work'),
+  },
+  {
+    id: 5,
+    name: 'Migrate applications',
+    action: () => migrateMembers('applications'),
+  },
+  {
+    id: 6,
+    name: 'Migrate dinner',
+    action: () => migrateMembers('dinner'),
+  },
+  {
+    id: 7,
+    name: 'Migrate fishing',
+    action: () => migrateMembers('fishing'),
+  },
+  {
+    id: 8,
+    name: 'Migrate forum',
+    action: () => migrateMembers('forum'),
+  },
 ]
 
-function migrateMembers() {
-  fetch('/api/conversion/migrate', {
+function migrateMembers(type: string) {
+  toast("Migration Started",
+   {
+    description: "Running migration for " + type,
+    id: "upload-begin",
+    duration: 100000,
+  })
+
+
+  fetch(`/api/conversion/migrate/${type}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({}),
   }).then((response) => {
+    toast.dismiss("upload-begin");
     if (response.ok) {
-      console.log('Member Data')
+      
+      response.json().then((data) => {
+        toast(data.msg);
+      });
     } else {
-      console.log('Error')
+      toast.error("Migration Failed " + response.statusText);
     }
   })
 }
 
 export default function Conversion() {
   return (
+
     <ul role="list" className="divide-y divide-gray-100 px-2 w-full">
       {projects.map((project) => (
         <li key={project.id} className="flex items-center justify-between gap-x-6 py-5">
@@ -36,13 +86,10 @@ export default function Conversion() {
             </div>
           </div>
           <div className="flex flex-none items-center gap-x-4">
-            <button
-              onClick={() => {project.action()}}
-              className="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block"
-            >
-              Run now <span className="sr-only">, {project.name}</span>
-            </button>
+            <ShowDialog buttonText='Run Now' title="Run Migration" description={"This will run the " + project.name + " migration"} onCancel={()=>{console.log('cancel')}} onConfirm={() => {project.action()}}/>
           </div>
+
+      
         </li>
       ))}
     </ul>
