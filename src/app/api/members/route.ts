@@ -1,4 +1,4 @@
-import { getAllMembers } from "@/server/queries/member/search";
+import { getAllMembers } from "@/server/db/queries/member/search";
 import { type NextRequest } from 'next/server'
 
 export async function GET(request: NextRequest) {

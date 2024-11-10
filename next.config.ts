@@ -7,7 +7,10 @@ const nextConfig: NextConfig = {
 eslint: {
     ignoreDuringBuilds: true,
 },
-transpilePackages: ['lucide-react'] 
+transpilePackages: ['lucide-react'] ,
+images: {
+    domains: ['s.gravatar.com', 'lh3.googleusercontent.com', 'lh5.googleusercontent.com', 'www.facebook.com'],
+},
   /* config options here */
 };
 

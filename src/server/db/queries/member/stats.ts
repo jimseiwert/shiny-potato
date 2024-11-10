@@ -1,8 +1,8 @@
 import "server-only";
-import { db } from "../../db";
-import member from "../../db/schemas/member";
+import { db } from "../..";
+import member from "../../schemas/member";
 import { and, eq, like, or } from "drizzle-orm";
-import { members, memberStatus, memberTypes, persons, personTypes } from "../../db/schemas";
+import { members, memberStatus, memberTypes, persons, personTypes } from "../../schemas";
 
 export interface MemberSearch {
     name?: string;

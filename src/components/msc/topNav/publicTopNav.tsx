@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 'use client'
-import { auth0 } from "@/lib/auth0"
 import { useState } from "react"
 import { Dialog, DialogPanel } from "@headlessui/react"
 import Image from "next/image"

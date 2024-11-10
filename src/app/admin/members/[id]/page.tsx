@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
-import { getMember } from "@/server/queries/member/profile";
+import { getMember } from "@/server/db/queries/member/profile";
 import { redirect } from "next/navigation";
-import InputUpdate from "../components/inputUpdate";
-import AddressWrapper from "@/app/admin/members/components/address";
-import Dependants from "../components/dependants";
+import InputUpdate from "../../../../components/msc/inputUpdate";
+import AddressWrapper from "@/app/admin/members/[id]/address";
+import Dependants from "./dependants";
 import MemberActivity from "./activity";
 import MemberStats from "./stats";
 import Profile from "./profile";

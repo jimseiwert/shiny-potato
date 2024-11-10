@@ -1,5 +1,5 @@
 import "server-only";
-import { db } from "../../db";
+import { db } from "../..";
 import { eq } from "drizzle-orm";
 
 

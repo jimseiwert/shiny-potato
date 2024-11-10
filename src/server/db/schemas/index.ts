@@ -1,5 +1,5 @@
 export { default as memberTypes, typeRelations } from "./types";
-export { default as memberStatus, statusRelations } from "./status";
+export { default as memberStatus, memberStatusRelations } from "./member-status";
 export { default as members, memberRelations } from "./member";
 export { default as roles } from "./roles";
 export { default as applications, applicationRelations } from "./application";

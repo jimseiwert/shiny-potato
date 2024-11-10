@@ -7,7 +7,7 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 import memberTypes from "./types";
-import statuses from "./status";
+import statuses from "./member-status";
 import { relations } from "drizzle-orm";
 import statements from "./statement";
 import address from "./address";

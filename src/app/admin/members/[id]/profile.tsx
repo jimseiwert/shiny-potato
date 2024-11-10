@@ -1,4 +1,4 @@
-import InputUpdate from "../components/inputUpdate";
+import InputUpdate from "../../../../components/msc/inputUpdate";
 
 export default function Profile({firstName, lastName, email, occupation}: {firstName: string, lastName: string, email: string, occupation: string}) {
     return (
