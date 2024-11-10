@@ -1,9 +1,7 @@
-import DataTable from '../../../components/msc/dataTable/data-table'
-import { columns } from "./search/columns"
-import { getAllMemberTypes } from '@/server/db/queries/memberTypes'
-import { getAllPersonTypes } from '@/server/db/queries/personTypes'
-import { getAllmemberStatus } from '@/server/db/queries/memberStatus'
-import { getAllStatements } from '@/server/db/queries/statement/search'
+'use server';
+
+import { getAllStatements } from '@/server/db/queries/statement/search';
+import { SearchTable } from './search/searchTable';
 
 const stats = [
   { name: 'Revenue', value: '$405,091.00', change: '+4.75%', changeType: 'positive' },
@@ -17,37 +15,33 @@ function classNames(...classes: string[]) {
 }
 
 export default async function MemberSearch() {
-  const allMembers = await getAllStatements();
-  const status = (await getAllmemberStatus()).map((status) => ({ label: status.name, value: status.id + ''}));
-  const memberTypes = (await getAllMemberTypes()).map((status) => ({ label: status.name, value: status.id + ''}));
-  
+  const allStatements = await getAllStatements();
+
   return (
-
     <div>
-      <dl className="mx-auto grid grid-cols-1 gap-px bg-gray-900/5 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map((stat) => (
-            <div
-              key={stat.name}
-              className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-gray-100 px-4 py-10 sm:px-6 xl:px-8"
-            >
-              <dt className="text-sm/6 font-medium text-gray-500">{stat.name}</dt>
-              <dd
-                className={classNames(
-                  stat.changeType === 'negative' ? 'text-rose-600' : 'text-gray-700',
-                  'text-xs font-medium',
-                )}
-              >
-                {stat.change}
-              </dd>
-              <dd className="w-full flex-none text-3xl/10 font-medium tracking-tight text-gray-900">{stat.value}</dd>
-            </div>
-          ))}
-        </dl>
-      <main className="w-full px-4">
-        
-        <DataTable columns={columns} data={allMembers} status={status} memberTypes={memberTypes}/>
-      </main>
-    </div>
-
+            <dl className="mx-auto grid grid-cols-1 gap-px bg-gray-900/5 sm:grid-cols-2 lg:grid-cols-4">
+                {stats.map((stat) => (
+                    <div
+                        key={stat.name}
+                        className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-gray-100 px-4 py-10 sm:px-6 xl:px-8"
+                    >
+                        <dt className="text-sm/6 font-medium text-gray-500">{stat.name}</dt>
+                        <dd
+                            className={classNames(
+                                stat.changeType === 'negative' ? 'text-rose-600' : 'text-gray-700',
+                                'text-xs font-medium',
+                            )}
+                        >
+                            {stat.change}
+                        </dd>
+                        <dd className="w-full flex-none text-3xl/10 font-medium tracking-tight text-gray-900">{stat.value}</dd>
+                    </div>
+                ))}
+            </dl>
+            <main className="w-full px-4">
+            <SearchTable statements={allStatements} ></SearchTable>
+            </main>
+        </div>
+   
   )
 }

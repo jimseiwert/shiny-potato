@@ -1,13 +1,9 @@
 'use server';
-import DataTable from '../../../components/msc/dataTable/data-table'
 import { getAllMembers } from '@/server/db/queries/member/search'
-import { generateConfig } from "./search/columns"
 import { getAllMemberTypes } from '@/server/db/queries/memberTypes'
 import { getAllPersonTypes } from '@/server/db/queries/personTypes'
 import { getAllmemberStatus } from '@/server/db/queries/memberStatus'
-import { SearchProvider } from './search/searchContext'
 import { SearchTable } from './search/searchTable';
-import { memberTypes } from '@/server/db/schemas';
 
 const stats = [
   { name: 'Revenue', value: '$405,091.00', change: '+4.75%', changeType: 'positive' },

@@ -28,15 +28,13 @@ import { DataTableToolbar } from "./data-table-toolbar";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  status: { label: string; value: string }[]
-  memberTypes: { label: string; value: string }[]
-  personTypes: { label: string; value: string }[]
+  filters: { title: string; column: string, options:{ label: string; value: string }[] }[]
 }
 
 export default function DataTable<TData, TValue>({
   columns,
   data,
-  status, memberTypes, personTypes,
+  filters,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -60,7 +58,7 @@ export default function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4 py-4">
-      <DataTableToolbar table={table} status={status} memberTypes={memberTypes} personTypes={personTypes} />
+      <DataTableToolbar table={table} filters={filters} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

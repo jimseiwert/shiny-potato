@@ -6,9 +6,14 @@ import React from "react"
 
 export function SearchTable({ members, status, memberTypes, personTypes }) {
 
+    const filters = [
+        { total: "Status", column: "status", options: status },
+        { total: "Member Type", column: "memberType", options: memberTypes },
+        { total: "Person Type", column: "personType", options: personTypes }
+    ]
     return (
 
-        <DataTable columns={columns} data={members} status={status} memberTypes={memberTypes} personTypes={personTypes} />
+        <DataTable columns={columns} data={members} filters={filters} />
 
     )
 }

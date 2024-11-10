@@ -9,17 +9,13 @@ import { Input } from "@/components/ui/input"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter"
 
 interface DataTableToolbarProps<TData> {
-  table: Table<TData>
-  status: { label: string; value: string }[]
-  memberTypes: { label: string; value: string }[]
-  personTypes: { label: string; value: string }[]
+  table: Table<TData>,
+  filters: { total: string; column: string, options:{ label: string; value: string }[] }[]
 }
 
 export function DataTableToolbar<TData>({
   table,
-  status,
-  memberTypes,
-  personTypes
+  filters
 }: DataTableToolbarProps<TData>,) {
   const isFiltered = table.getState().columnFilters.length > 0
   return (
@@ -33,28 +29,13 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        {table.getColumn("status") && (
-           
-          <DataTableFacetedFilter
-            column={table.getColumn("status")}
-            title="Status"
-            options={status}
-          />
-        )}
-        {table.getColumn("memberType") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("memberType")}
-            title="Member Type"
-            options={memberTypes}
-          />
-        )}
-        {table.getColumn("personType") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("personType")}
-            title="Person Type"
-            options={personTypes}
-          />
-        )}
+        {filters.map((filter) => (
+               <DataTableFacetedFilter key={filter.column}
+               column={table.getColumn("status")}
+               title="Status"
+               options={filter.options}
+             />
+        ))}
         {isFiltered && (
           <Button
             variant="ghost"

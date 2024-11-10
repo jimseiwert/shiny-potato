@@ -175,7 +175,7 @@ export async function Members(data: any[]) {
             run.memberRecord = newRecord[0].id
             if (member.memberInfo) {
                 console.log('Member Info');
-                const newPersonRecord = await db.insert(persons).values({ member: newRecord[0].id, occupation: member.occupation, firstName: member.memberInfo.firstName, lastName: member.memberInfo.lastName, email: member.memberInfo.email, type: MemberTypeId }).returning({ id: persons.id });
+                const newPersonRecord = await db.insert(persons).values({ member: newRecord[0].id, occupation: member.occupation, firstName: member.memberInfo.firstName, lastName: member.memberInfo.lastName, email: member.memberInfo.email, homePhone: member.memberInfo.homePhone, cellPhone: member.memberInfo.cellPhone, type: MemberTypeId }).returning({ id: persons.id });
                 run.memberInfo = true
 
                 if (member.declerations) {
@@ -227,7 +227,7 @@ export async function Members(data: any[]) {
             }
             if (member.spouseInfo) {
                 console.log('Spouse Info');
-                await db.insert(persons).values({ member: newRecord[0].id, firstName: member.spouseInfo.firstName, lastName: member.spouseInfo.lastName, email: member.spouseInfo.email, type: SpouseTypeId });
+                await db.insert(persons).values({ member: newRecord[0].id, firstName: member.spouseInfo.firstName, lastName: member.spouseInfo.lastName, email: member.spouseInfo.email, homePhone: member.spouseInfo.homePhone,cellPhone: member.spouseInfo.cellPhone, type: SpouseTypeId });
                 run.spouseInfo = true
             }
             if (member.dependants) {

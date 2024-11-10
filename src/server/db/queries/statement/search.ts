@@ -4,6 +4,7 @@ import member from "../../schemas/member";
 import { and, asc, eq, ilike, like, or } from "drizzle-orm";
 import { members, memberStatus, memberTypes, persons, personTypes, statements, statementTypes } from "../../schemas";
 import { stat } from "fs";
+import HomePage from "@/app/page";
 
 export interface StatementSearch {
     name?: string;
@@ -34,6 +35,9 @@ export async function getAllStatements() {
                         columns: {
                             firstName: true,
                             lastName: true,
+                            email: true,
+                            homePhone: true,
+                            cellPhone: true,
                         },
                         where: eq(persons.type, 1),
                     }
@@ -54,8 +58,11 @@ export async function getAllStatements() {
             type: row.type,
             picture: row.member?.picture,
             name: `${row.member?.persons[0]?.firstName} ${row.member?.persons[0]?.lastName}`,
+            email: row.member?.persons[0]?.email,
             status: row.member.status,
             memberType: row.member.type,
+            homePhone: row.member?.persons[0]?.homePhone,
+            cellPhone: row.member?.persons[0]?.cellPhone,
         }
     })
 
