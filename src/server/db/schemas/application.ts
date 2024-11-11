@@ -15,7 +15,6 @@ import { baseTimeFields } from "../base";
 const applications = pgTable('applications', {
   id: serial().primaryKey(),
   member: integer().references(() => members.id).unique().notNull(),
-  sponsor: integer().references(() => members.id).notNull(),
   status: varchar({ length: 100 }).notNull(),
   club_activity_trap: boolean().notNull().default(false),
   club_activity_pistol: boolean().notNull().default(false),
@@ -41,10 +40,6 @@ const applications = pgTable('applications', {
 export const applicationRelations = relations(applications, ({ one }) => ({
 	member: one(members, {
 		fields: [applications.member],
-		references: [members.id],
-	}),
-  sponsor: one(members, {
-		fields: [applications.sponsor],
 		references: [members.id],
 	}),
 }));

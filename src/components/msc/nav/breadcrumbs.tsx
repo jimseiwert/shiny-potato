@@ -25,12 +25,12 @@ export default function Breadcrumbs() {
 
     if(index < segments.length - 1 ) {
       return (
-        //<>
+        <div key={"b_"  + index}>
          <BreadcrumbItem key={"bc_"  + index}>
           <BreadcrumbLink href={href}>{label}</BreadcrumbLink>
         </BreadcrumbItem>
-        //<BreadcrumbSeparator  key={"bcs_"  + index}/>
-        //</>
+        <BreadcrumbSeparator  key={"bcs_"  + index}/>
+        </div>
       )
     }else{
       return (

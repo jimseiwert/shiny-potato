@@ -4,7 +4,6 @@ import * as React from "react"
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -23,13 +22,14 @@ import {
 } from "@tanstack/react-table"
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
+import { DataTableFilterConfig } from "./filters";
 
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  filters: { title: string; column: string, options:{ label: string; value: string }[] }[]
-  mainFilter: {title: string, column: string}
+  filters: DataTableFilterConfig[]
+  mainFilter: DataTableFilterConfig
 }
 
 export default function DataTable<TData, TValue>({

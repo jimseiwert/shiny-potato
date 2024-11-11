@@ -1,6 +1,6 @@
 'use server';
 
-import { SearchTable } from './search/searchTable';
+import { SearchTable } from './table/table';
 import { getAllApplications } from '@/server/db/queries/application/search';
 
 const stats = [

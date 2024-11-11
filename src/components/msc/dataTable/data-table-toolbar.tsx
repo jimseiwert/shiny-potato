@@ -7,11 +7,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 import { DataTableFacetedFilter } from "./data-table-faceted-filter"
+import { DataTableFilterConfig } from "./filters"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>,
-  filters: { total: string; column: string, options:{ label: string; value: string }[] }[],
-  mainFilter: {title: string, column: string}
+  filters: DataTableFilterConfig[],
+  mainFilter: DataTableFilterConfig
 }
 
 export function DataTableToolbar<TData>({
@@ -35,7 +36,7 @@ export function DataTableToolbar<TData>({
                <DataTableFacetedFilter key={filter.column}
                column={table.getColumn("status")}
                title="Status"
-               options={filter.options}
+               options={filter.options!}
              />
         ))}
         {isFiltered && (
