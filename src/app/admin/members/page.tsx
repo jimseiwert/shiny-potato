@@ -22,6 +22,8 @@ export default async function MemberSearch() {
   const allMemberTypes = (await getAllMemberTypes()).map((type) => ({ label: type.name, value: type.id + ''}));
   const allPersonTypes = (await getAllPersonTypes()).map((type) => ({ label: type.name, value: type.id + ''}));
 
+
+
   return (
     <div>
             <dl className="mx-auto grid grid-cols-1 gap-px bg-gray-900/5 sm:grid-cols-2 lg:grid-cols-4">

@@ -29,12 +29,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   filters: { title: string; column: string, options:{ label: string; value: string }[] }[]
+  mainFilter: {title: string, column: string}
 }
 
 export default function DataTable<TData, TValue>({
   columns,
   data,
   filters,
+  mainFilter
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -58,7 +60,7 @@ export default function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4 py-4">
-      <DataTableToolbar table={table} filters={filters} />
+      <DataTableToolbar table={table} filters={filters} mainFilter={mainFilter}/>
       <div className="rounded-md border">
         <Table>
           <TableHeader>

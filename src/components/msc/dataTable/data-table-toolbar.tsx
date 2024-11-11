@@ -10,22 +10,24 @@ import { DataTableFacetedFilter } from "./data-table-faceted-filter"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>,
-  filters: { total: string; column: string, options:{ label: string; value: string }[] }[]
+  filters: { total: string; column: string, options:{ label: string; value: string }[] }[],
+  mainFilter: {title: string, column: string}
 }
 
 export function DataTableToolbar<TData>({
   table,
-  filters
+  filters,
+  mainFilter
 }: DataTableToolbarProps<TData>,) {
   const isFiltered = table.getState().columnFilters.length > 0
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
         <Input
-          placeholder="Filter tasks..."
-          value={(table.getColumn("member")?.getFilterValue() as string) ?? ""}
+          placeholder={mainFilter.title}
+          value={(table.getColumn(mainFilter.column)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("member")?.setFilterValue(event.target.value)
+            table.getColumn(mainFilter.column)?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />

@@ -3,19 +3,18 @@
 import DataTable from "@/components/msc/dataTable/data-table"
 import { columns } from "./columns"
 import React from "react"
-import { title } from "process"
 
 export function SearchTable({ statements }) {
     const mainFilter = {
-        title: "Search Member....",
-        column: "member"
+        title: "Search Dinners....",
+        column: "name"
     }
     const filters = [
  
     ]
     return (
 
-        <DataTable columns={columns} data={statements} filters={filters} mainFilter={mainFilter} />
+        <DataTable columns={columns} data={statements} filters={filters} mainFilter={mainFilter}/>
 
     )
 }

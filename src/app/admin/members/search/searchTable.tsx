@@ -5,7 +5,10 @@ import { columns } from "./columns"
 import React from "react"
 
 export function SearchTable({ members, status, memberTypes, personTypes }) {
-
+    const mainFilter = {
+        title: "Search Members....",
+        column: "member"
+    }
     const filters = [
         { total: "Status", column: "status", options: status },
         { total: "Member Type", column: "memberType", options: memberTypes },
@@ -13,7 +16,7 @@ export function SearchTable({ members, status, memberTypes, personTypes }) {
     ]
     return (
 
-        <DataTable columns={columns} data={members} filters={filters} />
+        <DataTable columns={columns} data={members} filters={filters} mainFilter={mainFilter}/>
 
     )
 }
