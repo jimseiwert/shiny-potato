@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/sidebar"
 import { ISideBarItem } from "@/app/interfaces/sideBarItem.interface"
 import SideBarItem from "./SideBarItem"
-import { ArrowRightCircle, Calendar, ChartBar, CircleDollarSign, Cog, CookingPot, Files, FileUser, Fish, House, Images, Newspaper, User, Users } from "lucide-react"
+import { ArrowRightCircle, Calendar, ChartBar, CircleDollarSign, Cog, CookingPot, Files, FileUser, Fish, House, IdCard, Images, Newspaper, User, Users } from "lucide-react"
 
 
 const navigation: ISideBarItem[] = [
@@ -26,6 +26,7 @@ const navigation: ISideBarItem[] = [
 const adminNavigation: ISideBarItem[]  = [
   { name: 'Applications', href: '/admin/applications', icon: FileUser },
   { name: 'Bulletins', href: '/admin/bulletins', icon: Newspaper },
+  { name: 'Board', href: '/admin/board', icon: IdCard },
   { name: 'Dinners', href: '/admin/dinners', icon: CookingPot },
   { name: 'Fishing', href: '/admin/fishing', icon: Fish},
   { name: 'Members', href: '/admin/members', icon: Users },

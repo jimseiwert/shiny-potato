@@ -1,12 +1,12 @@
 export { default as memberTypes, typeRelations } from "./types";
 export { default as memberStatus, memberStatusRelations } from "./member-status";
 export { default as members, memberRelations } from "./member";
-export { default as roles } from "./roles";
+export { default as roles, roleRelations } from "./roles";
 export { default as applications, applicationRelations } from "./application";
 export { default as dinners } from "./dinner";
 export { default as dinnersReservation, dinnersReservationRelations } from "./dinner-reservations";
 export { default as permissions } from "./permissions";
-export { default as roleAssignments } from "./role-assignment";
+export { default as roleAssignments, roleAssignmentsRelations } from "./role-assignment";
 export { default as fishingPass, fishingRelations } from "./fishing-pass";
 export { default as statements, statementRelations } from "./statement";
 export { default as statementLines, statementLinesRelations } from "./statement-lines";
