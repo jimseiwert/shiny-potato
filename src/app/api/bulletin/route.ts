@@ -29,7 +29,6 @@ export async function POST(request: Request): Promise<NextResponse> {
 
 export async function PATCH(request: Request): Promise<NextResponse> {
   const data: {id: number, month: number, year: number} = await request.json()
-  console.log(data);
   await editBulletin(data.id, data.year, data.month);
   return NextResponse.json({updated: true});
 }

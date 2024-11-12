@@ -1,9 +1,8 @@
 'use client'
-
 import DataTable from "@/components/msc/dataTable/data-table"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { DataTableFilterConfig } from "@/components/msc/dataTable/filters"
-import { ColumnDef } from "@tanstack/react-table"
+import { Columns } from "./columns"
 
 export interface TableProps {
     mainFilter: {
@@ -12,20 +11,22 @@ export interface TableProps {
         column: string
     }
     data:unknown[],  
-    columns: ColumnDef<unknown>[],
-    filters: DataTableFilterConfig[] ,
+    columnConfig: string,
+    filters?: DataTableFilterConfig[] ,
 }
 
-export function Table({ data, columns }: TableProps) {
+export function Table({ config }: {config: TableProps}) {
     const [tableData, setTableData] = useState<unknown[]>([])
 
     useEffect(() => {
-        setTableData(data)
-    }, [data]);
+        setTableData(config.data)
+    }, [config.data]);
+
+    const columns = useMemo(()=> Columns(config.columnConfig,tableData, setTableData), [config.columnConfig, tableData, setTableData])
 
     return (
 
-        <DataTable columns={columns} data={tableData} filters={data.filters} mainFilter={mainFilter} />
+        <DataTable columns={columns} data={tableData} filters={config.filters} mainFilter={config.mainFilter} />
 
     )
 }

@@ -1,7 +1,7 @@
 'use server';
 
 import { getAllDinners } from '@/server/db/queries/dinner/search';
-import { SearchTable } from './search/searchTable';
+import { Table, TableProps } from '@/components/msc/dataTable/table';
 
 const stats = [
   { name: 'Revenue', value: '$405,091.00', change: '+4.75%', changeType: 'positive' },
@@ -16,6 +16,16 @@ function classNames(...classes: string[]) {
 
 export default async function Dinners() {
   const allDinners = await getAllDinners();
+
+  const tableConfig: TableProps = {
+    mainFilter: {
+      show: true,
+      title: 'Search Dinners',
+      column: 'name'
+    },
+    data: allDinners,
+    columnConfig: 'dinner',
+  }
 
   return (
     <div>
@@ -39,7 +49,7 @@ export default async function Dinners() {
                 ))}
             </dl>
             <main className="w-full px-4">
-            <SearchTable statements={allDinners}></SearchTable>
+            <Table config={tableConfig} ></Table>
             </main>
         </div>
    

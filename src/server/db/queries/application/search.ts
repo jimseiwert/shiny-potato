@@ -2,8 +2,9 @@ import "server-only";
 import { db } from "../..";
 import { eq} from "drizzle-orm";
 import { persons } from "../../schemas";
+import { Applications } from "../../interfaces/application";
 
-export async function getAllApplications() {
+export async function getAllApplications(): Promise<Applications[]> {
     const query = await db.query.applications.findMany({
         columns: {
             id: true,

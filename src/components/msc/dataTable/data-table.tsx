@@ -28,7 +28,7 @@ import { DataTableFilterConfig } from "./filters";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  filters: DataTableFilterConfig[]
+  filters?: DataTableFilterConfig[]
   mainFilter: DataTableFilterConfig
 }
 

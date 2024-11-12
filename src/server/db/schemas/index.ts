@@ -7,7 +7,7 @@ export { default as dinners } from "./dinner";
 export { default as dinnersReservation, dinnersReservationRelations } from "./dinner-reservations";
 export { default as permissions } from "./permissions";
 export { default as roleAssignments } from "./role-assignment";
-export { default as fishing, fishingRelations } from "./fishing-pass";
+export { default as fishingPass, fishingRelations } from "./fishing-pass";
 export { default as statements, statementRelations } from "./statement";
 export { default as statementLines, statementLinesRelations } from "./statement-lines";
 export { default as statementConfig } from "./statement-config";

@@ -2,8 +2,9 @@ import "server-only";
 import { db } from "../..";
 import { dinners, dinnersReservation } from "../../schemas";
 import { desc, sql, eq } from "drizzle-orm";
+import { Dinner } from "../../interfaces/dinner";
 
-export async function getAllDinners() {
+export async function getAllDinners(): Promise<Dinner[]> {
     const query = await  db
   .select({
     id: dinners.id,
@@ -23,9 +24,9 @@ export async function getAllDinners() {
         return {
             id: row.id,
             name: row.name,
-            date: row.date,
-            openReservations: row.openReservations,
-            closeReservations: row.closeReservations,
+            date: new Date(row.date),
+            openReservations: new Date(row.openReservations),
+            closeReservations: new Date(row.closeReservations),
             status: dinnerStatus(row),
             reservations: row.totalReservations
         }
@@ -33,7 +34,7 @@ export async function getAllDinners() {
     return results
 }
 
-function dinnerStatus(dinner: Dinners) {
+function dinnerStatus(dinner: Dinner) {
     const now = new Date();
     const dinnerDate = new Date(dinner.date);
     const openDate = new Date(dinner.openReservations);

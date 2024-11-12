@@ -11,8 +11,8 @@ import { DataTableFilterConfig } from "./filters"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>,
-  filters: DataTableFilterConfig[],
-  mainFilter: DataTableFilterConfig
+  filters?: DataTableFilterConfig[],
+  mainFilter?: DataTableFilterConfig
 }
 
 export function DataTableToolbar<TData>({
@@ -24,6 +24,7 @@ export function DataTableToolbar<TData>({
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
+        {mainFilter && mainFilter.show && (
         <Input
           placeholder={mainFilter.title}
           value={(table.getColumn(mainFilter.column)?.getFilterValue() as string) ?? ""}
@@ -31,11 +32,12 @@ export function DataTableToolbar<TData>({
             table.getColumn(mainFilter.column)?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[250px]"
-        />
-        {filters.map((filter) => (
+        />)}
+
+        {filters && filters.map((filter) => (
                <DataTableFacetedFilter key={filter.column}
-               column={table.getColumn("status")}
-               title="Status"
+               column={table.getColumn(filter.column)}
+               title={filter.title}
                options={filter.options!}
              />
         ))}

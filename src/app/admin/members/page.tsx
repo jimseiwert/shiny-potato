@@ -3,7 +3,8 @@ import { getAllMembers } from '@/server/db/queries/member/search'
 import { getAllMemberTypes } from '@/server/db/queries/memberTypes'
 import { getAllPersonTypes } from '@/server/db/queries/personTypes'
 import { getAllmemberStatus } from '@/server/db/queries/memberStatus'
-import { SearchTable } from './search/searchTable';
+import { Table, TableProps } from '@/components/msc/dataTable/table';
+import { DataTableFilterConfig } from '@/components/msc/dataTable/filters';
 
 const stats = [
   { name: 'Revenue', value: '$405,091.00', change: '+4.75%', changeType: 'positive' },
@@ -22,6 +23,32 @@ export default async function MemberSearch() {
   const allMemberTypes = (await getAllMemberTypes()).map((type) => ({ label: type.name, value: type.id + ''}));
   const allPersonTypes = (await getAllPersonTypes()).map((type) => ({ label: type.name, value: type.id + ''}));
 
+  const tableConfig: TableProps = {
+    mainFilter: {
+      show: true,
+      title: 'Search Members',
+      column: 'member'
+    },
+    data: allMembers,
+    columnConfig: 'member',
+    filters: [
+        {
+            column: 'status',
+            title: 'Status',
+            options: allStatus
+        },
+        {
+            column: 'memberType',
+            title: 'Member Type',
+            options: allMemberTypes
+        },
+        {
+            column: 'personType',
+            title: 'Person Type',
+            options: allPersonTypes
+        }
+    ]
+  }
 
 
   return (
@@ -46,7 +73,7 @@ export default async function MemberSearch() {
                 ))}
             </dl>
             <main className="w-full px-4">
-            <SearchTable members={allMembers} status={allStatus} memberTypes={allMemberTypes} personTypes={allPersonTypes}></SearchTable>
+            <Table config={tableConfig} ></Table>
             </main>
         </div>
    

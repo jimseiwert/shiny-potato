@@ -1,13 +1,9 @@
+import { changeState } from "@/server/db/queries/bulletin";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request): Promise<NextResponse> {
-    // const today = new Date();
-    // const year = today.getFullYear();
-    // const month = today.getMonth() + 1;
-    // const filename = `${uuid()}.pdf`;
+    const data: {id: number} = await request.json()
   
-    // await uploadBlob('bulletin', filename, request.body);
-  
-    // await insertBulletin(year, month, filename);
+    await changeState(data.id, 'publishing');
     return NextResponse.json({published: true});
   }

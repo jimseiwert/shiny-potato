@@ -10,8 +10,8 @@ import {
 
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { capitalizeWords } from '@/lib/utils';
-import { HomeIcon } from '@heroicons/react/20/solid'
 import { usePathname } from "next/navigation";
+import React from "react";
 //import { capitalize } from "@/utils/textUtils"
 
 export default function Breadcrumbs() {
@@ -25,12 +25,12 @@ export default function Breadcrumbs() {
 
     if(index < segments.length - 1 ) {
       return (
-        <div key={"b_"  + index}>
-         <BreadcrumbItem key={"bc_"  + index}>
+        <React.Fragment key={"bc_"  + index}>
+         <BreadcrumbItem >
           <BreadcrumbLink href={href}>{label}</BreadcrumbLink>
         </BreadcrumbItem>
-        <BreadcrumbSeparator  key={"bcs_"  + index}/>
-        </div>
+        <BreadcrumbSeparator/>
+        </React.Fragment>
       )
     }else{
       return (

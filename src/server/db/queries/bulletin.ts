@@ -2,7 +2,7 @@ import "server-only";
 import { db } from "../";
 import { bulletins } from "../schemas";
 import { eq } from "drizzle-orm";
-import { Bulletin } from "@/app/admin/bulletins/table/bulletin";
+import { Bulletin } from "@/server/db/interfaces/bulletin";
 
 export async function getAllBulletins(): Promise<Bulletin[]> {
     const query = await db.query.bulletins.findMany();
@@ -35,4 +35,9 @@ export async function editBulletin(id: number, year: number, month: number) {
         .set({month: month, year: year})
         .where(eq(bulletins.id, id));
 }
-   
+ 
+export async function changeState(id: number, state: string) {
+    await db.update(bulletins)
+        .set({state: state})
+        .where(eq(bulletins.id, id));
+}

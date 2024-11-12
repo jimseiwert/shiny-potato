@@ -1,6 +1,6 @@
 'use server';
 
-import { SearchTable } from './table/table';
+import { Table, TableProps } from '@/components/msc/dataTable/table';
 import { getAllApplications } from '@/server/db/queries/application/search';
 
 const stats = [
@@ -16,6 +16,16 @@ function classNames(...classes: string[]) {
 
 export default async function Applications() {
   const allApplications = await getAllApplications();
+
+  const tableConfig: TableProps = {
+    mainFilter: {
+      show: true,
+      title: 'Search Applicants',
+      column: 'member'
+    },
+    data: allApplications,
+    columnConfig: 'application',
+  }
 
   return (
     <div>
@@ -39,7 +49,7 @@ export default async function Applications() {
                 ))}
             </dl>
             <main className="w-full px-4">
-            <SearchTable statements={allApplications} ></SearchTable>
+            <Table config={tableConfig} ></Table>
             </main>
         </div>
    

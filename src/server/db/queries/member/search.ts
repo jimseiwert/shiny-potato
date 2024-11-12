@@ -3,19 +3,9 @@ import { db } from "../..";
 import member from "../../schemas/member";
 import { and, asc, eq, ilike, like, or } from "drizzle-orm";
 import { members, memberStatus, memberTypes, persons, personTypes } from "../../schemas";
+import { Member } from "../../interfaces/member";
 
-export interface MemberSearch {
-    name?: string;
-    email?: string;
-    phone?: string;
-    memberType?: number | string;
-    status?: number | string;
-    personType?: number | string;
-    page?: number;
-    perPage?: number;
-}
-
-export async function getAllMembers() {
+export async function getAllMembers(): Promise<Member[]> {
     const query = await db.select().from(members)
     .innerJoin(persons, eq(members.id, persons.member))
     .innerJoin(personTypes, eq(personTypes.id, persons.type))
