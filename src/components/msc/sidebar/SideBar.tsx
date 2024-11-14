@@ -2,39 +2,22 @@ import Image from "next/image";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
 } from "@/components/ui/sidebar"
-import { ISideBarItem } from "@/app/interfaces/sideBarItem.interface"
+import { ISideBarItem } from "@/server/db/interfaces/sideBarItem"
 import SideBarItem from "./SideBarItem"
-import { ArrowRightCircle, Calendar, ChartBar, CircleDollarSign, Cog, CookingPot, Files, FileUser, Fish, House, IdCard, Images, Newspaper, User, Users } from "lucide-react"
+import { getUserMenu } from "@/server/db/queries/menu";
 
 
-const navigation: ISideBarItem[] = [
-  { name: 'Dashboard', href: '/member/dashboard', icon: House },
-  // { name: 'Forum', href: '/member/forum', icon: User },
-  // { name: 'Fishing', href: '/member/fishing', icon: Fish },
-  { name: 'Events', href: '/member/events', icon: Calendar },
-  { name: 'Documents', href: '/member/documents', icon: Files },
-  // { name: 'Gallery', href: '/member/gallery', icon: Images   },
-]
 
-const adminNavigation: ISideBarItem[]  = [
-  { name: 'Applications', href: '/admin/applications', icon: FileUser },
-  { name: 'Bulletins', href: '/admin/bulletins', icon: Newspaper },
-  { name: 'Board', href: '/admin/board', icon: IdCard },
-  { name: 'Dinners', href: '/admin/dinners', icon: CookingPot },
-  { name: 'Fishing', href: '/admin/fishing', icon: Fish},
-  { name: 'Members', href: '/admin/members', icon: Users },
-  { name: 'Statements', href: '/admin/statements', icon: CircleDollarSign},
-  { name: 'Reports', href: '/admin/reports', icon: ChartBar},
-  { name: 'Conversion', href: '/admin/conversion', icon: ArrowRightCircle},
-]
-export function AppSidebar() {
+
+export async function AppSidebar() {
+  const userMenu: {member: ISideBarItem[], admin: ISideBarItem[]} = await getUserMenu();
+  
   return (
     <Sidebar>
       <SidebarContent>
@@ -48,25 +31,24 @@ export function AppSidebar() {
           <SidebarGroupLabel>Member</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navigation.map((item) => (
+              {userMenu.member.map((item) => (
                 <SideBarItem key={item.name} item={item} />
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        {userMenu.admin.length > 0 && (
         <SidebarGroup>
           <SidebarGroupLabel>Admin</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {adminNavigation.map((item) => (
+              {userMenu.admin.map((item) => (
                 <SideBarItem key={item.name} item={item} />
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        <SidebarFooter>
-        <SideBarItem key={"profile"} item={{name: 'Settings', href: '/member/profile', icon: Cog}} />
-        </SidebarFooter>
+        )}
       </SidebarContent>
     </Sidebar>
   )

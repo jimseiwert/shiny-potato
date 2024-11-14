@@ -3,14 +3,33 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
-},
-eslint: {
+  },
+  eslint: {
     ignoreDuringBuilds: true,
-},
-transpilePackages: ['lucide-react'] ,
-images: {
-    domains: ['s.gravatar.com', 'lh3.googleusercontent.com', 'lh5.googleusercontent.com', 'www.facebook.com'],
-},
+  },
+  transpilePackages: ['lucide-react'],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.vercel-storage.com',
+        port: '',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.gravatar.com',
+        port: '',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.facebook.com',
+        port: '',
+        pathname: '**',
+      },
+    ],
+  },
   /* config options here */
 };
 

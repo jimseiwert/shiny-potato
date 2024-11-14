@@ -2,6 +2,7 @@ import {
   integer,
   pgTable,
   serial,
+  unique,
 } from "drizzle-orm/pg-core";
 import member from "./member";
 import roles from "./roles";
@@ -15,7 +16,9 @@ const roleAssignments = pgTable('role_assignments', {
   member: integer().references(() => member.id),
   endYear: integer(),
   ...baseTimeFields
-});
+}, (t) => ({
+  userAssignment: unique().on(t.role, t.member),
+}));
 
 export const roleAssignmentsRelations = relations(roleAssignments, ({ one }) => ({
 	member: one(members, {

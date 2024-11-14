@@ -1,6 +1,6 @@
 import Link from "next/link"
 import React from "react";
-import { ISideBarItem } from "@/app/interfaces/sideBarItem.interface";
+import { ISideBarItem } from "@/server/db/interfaces/sideBarItem";
 
 export default function SideBarItem({ item}: { item: ISideBarItem }) {
   //const pathname = usePathname();

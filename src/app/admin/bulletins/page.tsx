@@ -4,9 +4,12 @@ import { FileSelector } from './upload';
 
 import { Bulletin } from '../../../server/db/interfaces/bulletin';
 import { Table, TableProps } from '@/components/msc/dataTable/table';
+import Board from '@/components/msc/board';
+import withAuth from '@/lib/withAuth/serverPage';
+import { Claim } from '@/server/enums/claims';
 
 
-export default async function Bulletins() {
+async function Bulletins() {
   const bulletins: Bulletin[] = await getAllBulletins();
 
   const tableConfig: TableProps = {
@@ -26,3 +29,6 @@ export default async function Bulletins() {
     </div>
   );
 }
+
+
+export default withAuth(Bulletins, Claim.BulletinsRead)

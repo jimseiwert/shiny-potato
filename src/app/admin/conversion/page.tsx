@@ -1,5 +1,7 @@
 'use client';
 import ShowDialog from '@/components/msc/dialog';
+import withAuth from '@/lib/withAuth/serverPage';
+import { Claim } from '@/server/enums/claims';
 import { toast } from "sonner"
 
 
@@ -74,7 +76,7 @@ function migrateMembers(type: string) {
   })
 }
 
-export default function Conversion() {
+function Conversion() {
   return (
 
     <ul role="list" className="divide-y divide-gray-100 px-2 w-full">
@@ -95,3 +97,6 @@ export default function Conversion() {
     </ul>
   )
 }
+
+
+export default withAuth(Conversion, Claim.ConversionRun)

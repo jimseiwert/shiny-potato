@@ -25,5 +25,7 @@ export { default as persons, personsRelations } from "./person";
 export { default as personTypes } from "./person-types";
 export { default as declerations, declerationsRelations } from "./declerations";
 export { default as activity, activityRelations } from "./activity";
+export { default as letterTemplates } from "./letter-templates";
 export { default as comms, commsRelations, membersToComms, membersToCommsRelations } from "./comms";
 export { bulletins, minutes, memberDocuments} from "./documents";
+export { default as permissionAssignments, permissionAssignmentsRelations } from "./permission-assignment";

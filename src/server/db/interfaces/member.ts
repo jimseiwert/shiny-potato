@@ -19,3 +19,10 @@ export interface Member {
     homePhone: string,
     cellPhone: string,
 }
+
+
+export interface UniqueMember {
+    memberId: number
+    personId: number
+    name: string    
+}

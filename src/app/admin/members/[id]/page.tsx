@@ -7,9 +7,12 @@ import Dependants from "./dependants";
 import MemberActivity from "./activity";
 import MemberStats from "./stats";
 import Profile from "./profile";
+import withAuth from "@/lib/withAuth/serverPage";
+import { Claim } from "@/server/enums/claims";
+import MemberSearch from "../../statements/page";
 
 
-export default async function MemberDetail({
+async function MemberDetail({
   params,
 }: {
   params: { id: number; bar: string };
@@ -72,3 +75,5 @@ export default async function MemberDetail({
     </>
   );
 }
+
+export default withAuth(MemberDetail, Claim.MembersRead)

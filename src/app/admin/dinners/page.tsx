@@ -2,6 +2,8 @@
 
 import { getAllDinners } from '@/server/db/queries/dinner/search';
 import { Table, TableProps } from '@/components/msc/dataTable/table';
+import withAuth from '@/lib/withAuth/serverPage';
+import { Claim } from '@/server/enums/claims';
 
 const stats = [
   { name: 'Revenue', value: '$405,091.00', change: '+4.75%', changeType: 'positive' },
@@ -14,7 +16,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default async function Dinners() {
+async function Dinners() {
   const allDinners = await getAllDinners();
 
   const tableConfig: TableProps = {
@@ -55,3 +57,6 @@ export default async function Dinners() {
    
   )
 }
+
+
+export default withAuth(Dinners, Claim.DinnersRead)

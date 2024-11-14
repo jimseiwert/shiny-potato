@@ -5,6 +5,8 @@ import { getAllStatements } from '@/server/db/queries/statement/search';
 import { getAllMemberTypes } from '@/server/db/queries/memberTypes';
 import { DataTableFilterConfig } from '@/components/msc/dataTable/filters';
 import { Table, TableProps } from '@/components/msc/dataTable/table';
+import withAuth from '@/lib/withAuth/serverPage';
+import { Claim } from '@/server/enums/claims';
 
 const stats = [
   { name: 'Revenue', value: '$405,091.00', change: '+4.75%', changeType: 'positive' },
@@ -17,7 +19,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default async function MemberSearch() {
+async function StatementSearch() {
   const allStatements = await getAllStatements();
   const allMemberTypes = (await getAllMemberTypes()).map((type) => ({ label: type.name, value: type.id + '' }));
 
@@ -67,3 +69,6 @@ export default async function MemberSearch() {
 
   )
 }
+
+
+export default withAuth(StatementSearch, Claim.StatementsRead)

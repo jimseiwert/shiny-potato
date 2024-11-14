@@ -46,6 +46,8 @@ import {
 } from '@heroicons/react/20/solid'
 import { BellIcon, XMarkIcon as XMarkIconOutline } from '@heroicons/react/24/outline'
 import { CheckCircleIcon } from '@heroicons/react/24/solid'
+import withAuth from '@/lib/withAuth/serverPage'
+import { Claim } from '@/server/enums/claims'
 
 const navigation = [
   { name: 'Home', href: '#' },
@@ -124,7 +126,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
+function StatementDetail() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [selected, setSelected] = useState(moods[5])
 
@@ -537,3 +539,6 @@ export default function Example() {
       </main>
   )
 }
+
+
+export default withAuth(StatementDetail, Claim.StatementsRead)

@@ -1,6 +1,6 @@
 import "server-only";
 import { db } from "../";
-import { Role } from "../interfaces/role";
+import { AssignedUserRole, Role } from "../interfaces/role";
 import { persons, roleAssignments } from "../schemas";
 import { eq } from "drizzle-orm";
 
@@ -18,7 +18,7 @@ export async function getRoles(): Promise<Role[]> {
 }
 
 
-export async function getRoleAssignments(roleId: number): Promise<any[]> {
+export async function getRoleAssignments(roleId: number): Promise<AssignedUserRole[]> {
     const query = await db.query.roleAssignments.findMany({
         columns: {
             id: true,
@@ -27,8 +27,8 @@ export async function getRoleAssignments(roleId: number): Promise<any[]> {
         with: {
             member: {
                 columns: {
-                    id: true, 
-                    picture: true 
+                    id: true,
+                    picture: true
                 },
                 with: {
                     persons: {
@@ -50,33 +50,49 @@ export async function getRoleAssignments(roleId: number): Promise<any[]> {
             id: row.id,
             memberId: row.member.id,
             picture: row.member.picture,
-            name: `${row.member.persons[0].firstName} ${row.member.persons[0].lastName}`,   
-            endYear: row.endYear         
+            name: `${row.member.persons[0].firstName} ${row.member.persons[0].lastName}`,
+            endYear: row.endYear
         }
     })
-    console.log(results)
     return results
 }
 
 export async function addAssignment(role: number, member: number): Promise<void> {
-    await db.insert(roleAssignments).values({
-        role: role,
-        member: member,
-        endYear: new Date().getFullYear() + 1
-    });
-    return
+    try {
+        await db.insert(roleAssignments).values({
+            role: role,
+            member: member,
+            endYear: new Date().getFullYear() + 1
+        });
+        return
+    } catch (error) {
+        const code: string = error?.code;
+        // Unique constraint:
+        if (code === '23505') {
+            const detail: string = error?.detail;
+            const matches = detail.match(/\((.*?)\)/g);
+            if (matches) {
+                throw new Error(`Duplicate assignment`);
+            }
+        }
+        // Not-Null constraint
+        else if (code === '23502') {
+            const table: string = error?.table;
+            const column: string = error?.column;
+            throw new Error(`The column '${column}' in table '${table}' cannot be null.`);
+        }
+    }
 }
 
 export async function changeAssignment(assignment: number, endYear: number): Promise<void> {
-    console.log(assignment, endYear)
     await db.update(roleAssignments)
-    .set({endYear: endYear})
-    .where(eq(roleAssignments.id, assignment));
+        .set({ endYear: endYear })
+        .where(eq(roleAssignments.id, assignment));
     return
 }
 
 export async function deleteAssignment(assignment: number): Promise<void> {
     await db.delete(roleAssignments).where(eq(roleAssignments.id, assignment));
-        
+
     return
 }

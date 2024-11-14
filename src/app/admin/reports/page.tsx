@@ -1,3 +1,5 @@
+import withAuth from '@/lib/withAuth/serverPage'
+import { Claim } from '@/server/enums/claims'
 import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/20/solid'
 
 const people = [
@@ -13,7 +15,7 @@ const people = [
   // More people...
 ]
 
-export default function Example() {
+function Reports() {
   return (
     <div className='py-2 px-2 flex flex-col'>
     <button className="justify-items-end w-1/6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Create Report</button>
@@ -60,3 +62,6 @@ export default function Example() {
     </div>
   )
 }
+
+
+export default withAuth(Reports, Claim.ReportsRead)

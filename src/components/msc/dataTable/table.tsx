@@ -4,19 +4,19 @@ import React, { useEffect, useMemo, useState } from "react"
 import { DataTableFilterConfig } from "@/components/msc/dataTable/filters"
 import { Columns } from "./columns"
 
-export interface TableProps {
-    mainFilter: {
-        show: boolean,
-        title: string,
-        column: string
+export interface TableProps<TData> {
+    mainFilter?: {
+        show?: boolean,
+        title?: string,
+        column?: string
     }
-    data:unknown[],  
+    data:TData[],  
     columnConfig: string,
     filters?: DataTableFilterConfig[] ,
 }
 
-export function Table({ config }: {config: TableProps}) {
-    const [tableData, setTableData] = useState<unknown[]>([])
+export function Table<TData>({ config }: {config: TableProps<TData>}) {
+    const [tableData, setTableData] = useState<TData[]>([])
 
     useEffect(() => {
         setTableData(config.data)

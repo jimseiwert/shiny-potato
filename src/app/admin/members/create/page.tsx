@@ -1,6 +1,8 @@
+import withAuth from '@/lib/withAuth/serverPage'
+import { Claim } from '@/server/enums/claims'
 import { PaperClipIcon } from '@heroicons/react/20/solid'
 
-export default function Example() {
+function MemberCreate() {
   return (
     <div className="overflow-hidden bg-white shadow sm:rounded-lg">
       <div className="px-4 py-6 sm:px-6">
@@ -73,3 +75,6 @@ export default function Example() {
     </div>
   )
 }
+
+
+export default withAuth(MemberCreate, Claim.MembersCreateNew)

@@ -6,14 +6,11 @@ import { Menu, MenuButton, MenuItem, MenuItems, Popover, PopoverButton, PopoverP
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { getSession } from '@auth0/nextjs-auth0';
+import Image from 'next/image'
 
 const userNavigation = [
     { name: 'Your Profile', href: '/member/profile' },
 ]
-
-function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(' ')
-}
 
 export default async function AuthTopNav() {
     const { user } = await getSession();
@@ -74,7 +71,7 @@ export default async function AuthTopNav() {
                     <div className="border-t border-gray-200 pb-3 py-2">
                         <div className="mx-auto flex max-w-3xl items-center px-4 sm:px-6">
                             <div className="flex-shrink-0">
-                                <img src={user.picture} alt={user.name}className=" w-10 rounded-full" />
+                                <Image src={user.picture} width={10} height={10} alt={user.name} className=" w-10 rounded-full" />
                             </div>
                             <div className="ml-3">
                                 <div className="text-base font-medium text-gray-800">{user.name}</div>
