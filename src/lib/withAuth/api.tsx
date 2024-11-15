@@ -1,5 +1,6 @@
 import { Claim } from '@/server/enums/claims';
-import { getSession } from '@auth0/nextjs-auth0';
+import { auth0 } from "@/lib/auth0"
+
 import { NextRequest, NextResponse } from 'next/server';
 
 const withApiAuth = (handler: any, RequiredClaim: Claim) => {
@@ -11,10 +12,10 @@ const withApiAuth = (handler: any, RequiredClaim: Claim) => {
     }
 
 
-    const { user } = await getSession();
+    const session = await auth0.getSession()
 
     if(RequiredClaim) {
-      if(user.claims.includes(RequiredClaim)) {
+      if(session.user.claims.includes(RequiredClaim)) {
         return handler(req, res);
       }
       return NextResponse.json(

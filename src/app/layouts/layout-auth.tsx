@@ -4,7 +4,6 @@ import { RouteProvider } from "../context/route-context";
 import { AppSidebar } from "@/components/msc/sidebar/SideBar";
 import AuthTopNav from "@/components/msc/topNav/authTopNav";
 import { Toaster } from "@/components/ui/sonner"
-import { UserProvider } from "@auth0/nextjs-auth0/client";
 
 
 export default async function AuthLayout({
@@ -13,7 +12,6 @@ export default async function AuthLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <UserProvider>
         <RouteProvider>
             
             <ThemeProvider
@@ -30,6 +28,5 @@ export default async function AuthLayout({
                 <Toaster />
             </ThemeProvider>
         </RouteProvider>
-        </UserProvider>
     );
 }

@@ -2,10 +2,14 @@ import "server-only";
 import { ISideBarItem } from "../interfaces/sideBarItem";
 import { House, Calendar, Files, ArrowRightCircle, ChartBar, CircleDollarSign, CookingPot, FileUser, Fish, IdCard, Newspaper, Users, User, Images } from "lucide-react";
 import { Claim } from "@/server/enums/claims";
-import { getSession } from '@auth0/nextjs-auth0';
+import { auth0 } from "@/lib/auth0"
+
 
 export async function getUserMenu(): Promise<{member: ISideBarItem[], admin: ISideBarItem[]}> {
-    const { user } = await getSession();
+    const session = await auth0.getSession()
+
+    if(session) {
+    const user = session.user;
 
     const memberItems: ISideBarItem[] = [
         { name: 'Dashboard', href: '/member/dashboard', icon: House },
@@ -18,7 +22,7 @@ export async function getUserMenu(): Promise<{member: ISideBarItem[], admin: ISi
 
     const adminItems: ISideBarItem[] = []
 
-    
+    if(user.claims) {
 
         if (user.claims.includes(Claim.ApplicationsRead)) {
             adminItems.push({ name: 'Applications', href: '/admin/applications', icon: FileUser });
@@ -51,8 +55,14 @@ export async function getUserMenu(): Promise<{member: ISideBarItem[], admin: ISi
         if (user.claims.includes(Claim.ConversionRun)) {
             adminItems.push({ name: 'Conversion', href: '/admin/conversion', icon: ArrowRightCircle});
         }
+    }
     return {
         member: memberItems,
         admin: adminItems
     };
+}
+return {
+    member: [],
+    admin: []
+};
 }

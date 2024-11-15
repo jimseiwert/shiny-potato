@@ -48,7 +48,7 @@ export default function PublicTopNav() {
         ))}
       </div>
       <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-        <a href="/api/auth/login" className="text-sm/6 font-semibold text-white">
+        <a href="/auth/login" className="text-sm/6 font-semibold text-white">
           Log in <span aria-hidden="true">&rarr;</span>
         </a>
       </div>
@@ -89,7 +89,7 @@ export default function PublicTopNav() {
             </div>
             <div className="py-6">
               <a
-                href="/api/auth/login"
+                href="/auth/login"
                 className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-white hover:bg-gray-800"
               >
                 Log in

@@ -5,7 +5,7 @@ import { ModeToggle } from '@/components/msc/theme-toggle'
 import { Menu, MenuButton, MenuItem, MenuItems, Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
-import { getSession } from '@auth0/nextjs-auth0';
+import { auth0 } from "@/lib/auth0"
 import Image from 'next/image'
 
 const userNavigation = [
@@ -13,10 +13,11 @@ const userNavigation = [
 ]
 
 export default async function AuthTopNav() {
-    const { user } = await getSession();
+    const session = await auth0.getSession()
+    const user = session?.user || {}
 
     return (
-        user && (
+        session && (
         <div>
             {/* When the mobile menu is open, add `overflow-hidden` to the `body` element to prevent double scrollbars */}
             <Popover
@@ -58,7 +59,7 @@ export default async function AuthTopNav() {
                                             </Link>
                                         </MenuItem>
                                     ))}
-                                    <a href="/api/auth/logout" className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
+                                    <a href="/auth/logout" className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
                                                 Log Out
                                             </a>
                                 </MenuItems>
@@ -71,7 +72,7 @@ export default async function AuthTopNav() {
                     <div className="border-t border-gray-200 pb-3 py-2">
                         <div className="mx-auto flex max-w-3xl items-center px-4 sm:px-6">
                             <div className="flex-shrink-0">
-                                <Image src={user.picture} width={10} height={10} alt={user.name} className=" w-10 rounded-full" />
+                                <img src={user.picture} width={10} height={10} alt={user.name} className=" w-10 rounded-full" />
                             </div>
                             <div className="ml-3">
                                 <div className="text-base font-medium text-gray-800">{user.name}</div>
@@ -91,7 +92,7 @@ export default async function AuthTopNav() {
                             ))}
                              <a
                                     key={"logout"}
-                                    href={"/api/auth/logout"}
+                                    href={"/auth/logout"}
                                     className="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
                                 >
                                     Log Out
