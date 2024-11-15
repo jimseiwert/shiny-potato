@@ -18,3 +18,10 @@ import {
   
   
   export default letterTemplates;
+
+
+  export const basePDF = pgTable('letter_base_pdf', {
+    id: serial().primaryKey(),
+    name: varchar({length: 255}).notNull(),
+    template: text().notNull(),
+  });

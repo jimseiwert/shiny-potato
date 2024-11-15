@@ -18,14 +18,13 @@ export async function getAllBulletins(): Promise<Bulletin[]> {
     return results
 }
 
-export async function insertBulletin(year: number, month: number, file: string) {
+export async function insertBulletin(year: number, month: number, name: string, file: string) {
     await db.insert(bulletins).values({
+        state: 'Draft',
         year: year,
         month: month,
-        openReservations: new Date(),
-        closeReservations: new Date(),
-        state: 'Draft',
-        file: file
+        file: file,
+        name: name
     });
 }
 

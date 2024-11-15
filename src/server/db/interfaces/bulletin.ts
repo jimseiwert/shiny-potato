@@ -3,4 +3,5 @@ export interface Bulletin {
     year: number
     month: number
     state: string
+    name: string
 }

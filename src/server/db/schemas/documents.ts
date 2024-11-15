@@ -8,6 +8,7 @@ export const bulletins = pgTable('bulletins', {
     state: varchar({length: 25}).default('Draft').notNull(),
     year: integer().notNull(),
     month: integer().notNull(),
+    name: varchar({length: 255}).notNull(),
     file : varchar({length: 255}).notNull(),
     ...baseTimeFields
   });
@@ -20,7 +21,7 @@ export const bulletins = pgTable('bulletins', {
     executive: boolean().default(false).notNull(),
     approved: boolean().default(false).notNull(),
     name: varchar({length: 255}).notNull(),
-    folder: varchar({length: 255}).notNull(),
+    file : varchar({length: 255}).notNull(),
     ...baseTimeFields
   });
 
@@ -31,6 +32,6 @@ export const bulletins = pgTable('bulletins', {
     .references(() => members.id),
     sensitive: boolean().default(false).notNull(),
     name: varchar({length: 255}).notNull(),
-    folder: varchar({length: 255}).notNull(),
+    file : varchar({length: 255}).notNull(),
     ...baseTimeFields
   });

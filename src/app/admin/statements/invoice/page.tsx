@@ -1,25 +1,12 @@
-import { GetTemplates } from '@/server/db/queries/templates';
-import Editor from './editor';
-import Toolbar from './toolbar';
+import { GetAllBase, GetTemplates } from '@/server/db/queries/templates';
+import { LetterProvider } from './context';
+import Toolbar from './toolbar/toolbar';
 
-export default async function Invoice(){
+export default async function Invoice() {
     const templates = await GetTemplates()
-    // generate({ template, inputs }).then((pdf) => {
-    //     console.log(pdf);
-      
-    //     Browser
-    //     const blob = new Blob([pdf.buffer], { type: 'application/pdf' });
-    //     window.open(URL.createObjectURL(blob));
-      
-    //     Node.js
-    //     fs.writeFileSync(path.join(__dirname, `test.pdf`), pdf);
-    //   });
-
-
+    const baseOptions = await GetAllBase()
     return (
-        <div>
-        <Toolbar templates={templates}/>
-        <Editor />
-        </div>
-    )
+        <LetterProvider templates={templates} baseOptions={baseOptions}>
+        <Toolbar/>
+      </LetterProvider>)
 }

@@ -32,6 +32,9 @@ export async function getUserMenu(): Promise<{member: ISideBarItem[], admin: ISi
         if (user.claims.includes(Claim.DinnersRead)) {
             adminItems.push({ name: 'Dinners', href: '/admin/dinners', icon: CookingPot });
         }
+        if (user.claims.includes(Claim.MinutesRead)) {
+            adminItems.push({ name: 'Minutes', href: '/admin/minutes', icon: Newspaper });
+        }
         if (user.claims.includes(Claim.FishingRead)) {
             adminItems.push({ name: 'Fishing', href: '/admin/fishing', icon: Fish});
         }

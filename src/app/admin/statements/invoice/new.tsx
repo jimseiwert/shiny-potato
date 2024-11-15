@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -11,56 +10,60 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { FormEvent } from "react"
+import { Plus } from "lucide-react"
+import { useContext, useState } from "react"
+import { LetterContext } from "./context"
 
 export default function NewTemplate() {
-    const FormAction = async (formData) =>{
+    const [open, setOpen] = useState(false);
+    const { changeTemplate, templates } = useContext(LetterContext);
+    const FormAction = async (formData: FormData) =>{
         try {
-          let response = await fetch('/api/template', {
+          const result = await fetch('/api/template', {
             method: 'POST',
             body: formData,
           });
-          response = await response.json()
-          alert(`${response.name} ${response.age} ${response.city}`)
+          const record = await result.json();
+          console.log(record);
+          templates.push(record);
+          changeTemplate(record.id + '');
+
+          setOpen(false);
         } catch (error) {
           // Handle error
           console.error('Error submitting form:', error);
         }
     }
-    // const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    //     event.preventDefault(); 
 
-    //     const formData = new FormData(event.currentTarget); 
-    // console.log(formData)
-    //     try {
-    //       let response = await fetch('/api/template', {
-    //         method: 'POST',
-    //         body: formData,
-    //       });
-    //       response = await response.json()
-    //       alert(`${response.name} ${response.age} ${response.city}`)
-    //     } catch (error) {
-    //       // Handle error
-    //       console.error('Error submitting form:', error);
-    //     }
-    //   };
     return (
-<form action={FormAction}>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">
-                  Name
-                </Label>
-                <Input
-                  id="name"
-                  name="name"
-                  className="col-span-3"
-                />
-                <button type="submit">Create Template</button>  
-              </div>
+        <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button variant="outline"><Plus/></Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+        <form action={FormAction}>
+          <DialogHeader>
+            <DialogTitle>Create Template</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="text-right">
+                Name
+              </Label>
+              <Input
+                id="name"
+                name="name"
+                className="col-span-3"
+              />
             </div>
-            </form>
-
+           
+          </div>
+          <DialogFooter>
+            <Button type="submit">Create Template</Button>
+          </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       )
 }

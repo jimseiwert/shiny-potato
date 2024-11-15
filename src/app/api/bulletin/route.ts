@@ -16,14 +16,17 @@ export async function GET(request: Request): Promise<NextResponse> {
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
+  const { searchParams } = new URL(request.url);
+  const passedFilename = searchParams.get('filename');
+
   const today = new Date();
   const year = today.getFullYear();
-  const month = today.getMonth() + 1;
+  const month = today.getMonth() + 2;
   const filename = `${uuid()}.pdf`;
 
   await uploadBlob('bulletin', filename, request.body);
 
-  await insertBulletin(year, month, filename);
+  await insertBulletin(year, month, passedFilename, filename);
   return NextResponse.json({uploaded: true});
 }
 

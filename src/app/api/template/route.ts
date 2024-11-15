@@ -1,12 +1,19 @@
-import { put } from '@vercel/blob';
-import { log } from 'console';
+import { CreateTemplate } from "@/server/db/queries/templates";
+import { BLANK_PDF, Template } from "@pdfme/common";
 import { NextResponse } from 'next/server';
 
-export async function POST(request: Request): Promise<NextResponse> {
-  const data = await request.formData()
+export async function POST(req: Request): Promise<NextResponse> {
+  const formData = await req.formData();
+  const name = formData.get('name');
+  if (name) {
+    const template: Template = {
+      basePdf: BLANK_PDF,
+      schemas: [[]],
+    };
 
-  console.log(data)
+    const obj = await CreateTemplate(name.toString(), JSON.stringify(template));
+    return NextResponse.json(obj);
+  }
 
-  return NextResponse.json({test: "foo"});
+  return NextResponse.json({ error: 'Name is required' }, { status: 400 });
 }
-

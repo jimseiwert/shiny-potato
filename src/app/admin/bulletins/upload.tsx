@@ -18,7 +18,7 @@ export function FileSelector() {
             }
             try {
                 toast(`Uploading ${file.name}`);
-                const response = await fetch('/api/bulletin', {
+                const response = await fetch('/api/bulletin?filename=' + file.name, {
                     method: 'POST',
                     body: file,
                 });

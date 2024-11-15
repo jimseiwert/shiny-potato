@@ -7,6 +7,7 @@ import { default as FishingConfig } from "./fishing";
 import { default as MemberConfig } from "./member";
 import { default as StatementConfig } from "./statement";
 import { default as BoardConfig } from "./board";
+import { default as MinuteConfig } from "./minute";
 
 
 export enum ColumnConfigs {
@@ -17,6 +18,7 @@ export enum ColumnConfigs {
     Member = 'member',
     Statement = 'statement',
     Board = 'board',
+    Minute = 'minute'
 }
 
 export function Columns(config: string, data: unknown[], setTableData: Dispatch<SetStateAction<unknown[]>>) {
@@ -35,6 +37,9 @@ export function Columns(config: string, data: unknown[], setTableData: Dispatch<
             return StatementConfig(data, setTableData)
         case ColumnConfigs.Board:
             return BoardConfig(data, setTableData)
+        case ColumnConfigs.Minute:
+            return MinuteConfig(data, setTableData)
+
         default:
             return [];
     }
