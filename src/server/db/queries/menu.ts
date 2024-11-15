@@ -1,6 +1,6 @@
 import "server-only";
 import { ISideBarItem } from "../interfaces/sideBarItem";
-import { House, Calendar, Files, ArrowRightCircle, ChartBar, CircleDollarSign, CookingPot, FileUser, Fish, IdCard, Newspaper, Users, User, Images } from "lucide-react";
+import { House, Calendar, Files, ArrowRightCircle, ChartBar, CircleDollarSign, CookingPot, FileUser, Fish, IdCard, Newspaper, Users, User, Images, Paperclip } from "lucide-react";
 import { Claim } from "@/server/enums/claims";
 import { auth0 } from "@/lib/auth0"
 
@@ -35,6 +35,9 @@ export async function getUserMenu(): Promise<{member: ISideBarItem[], admin: ISi
         }
         if (user.claims.includes(Claim.DinnersRead)) {
             adminItems.push({ name: 'Dinners', href: '/admin/dinners', icon: CookingPot });
+        }
+        if (user.claims.includes(Claim.LettersRead)) {
+            adminItems.push({ name: 'Letters', href: '/admin/letters', icon: Paperclip });
         }
         if (user.claims.includes(Claim.MinutesRead)) {
             adminItems.push({ name: 'Minutes', href: '/admin/minutes', icon: Newspaper });

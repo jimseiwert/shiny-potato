@@ -11,8 +11,9 @@ import { Forum } from "../forum";
 import { Application } from "../application";
 
 export async function POST(req: NextRequest, { params }: { params: { type: string } }) {
+    const { type } = await params
     let data = null;
-    switch (params.type) {
+    switch (type) {
         case "members":
             data = await GetData(['Member']);
             await Members(data['Member']);

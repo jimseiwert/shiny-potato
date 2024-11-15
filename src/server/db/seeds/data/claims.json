@@ -30,5 +30,8 @@
     {"name": "Statements-Write Config", "claimName": "write:statement-config" },
     {"name": "Reports-Read", "claimName": "read:reports" },
     {"name": "Reports-Write", "claimName": "write:reports" },
-    {"name": "Conversion-Run", "claimName": "write:conversion" }
+    {"name": "Conversion-Run", "claimName": "write:conversion" },
+    {"name": "Letters-Read", "claimName": "read:letters" },
+    {"name": "Letters-Write", "claimName": "write:letters" }
+
 ]

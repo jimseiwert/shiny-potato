@@ -147,6 +147,11 @@ import {
     }
   };
   
+  export const uint8ArrayToBase64 = (uint8Array) => {
+    const string = String.fromCharCode.apply(null, uint8Array);
+    return `data:application/pdf;base64,${btoa(string)}`;
+  }
+
   export const IsJsonString = (str: string) => {
     try {
       JSON.parse(str);

@@ -2,8 +2,9 @@ import { DeleteTemplate, GetTemplate, UpdateTemplate } from "@/server/db/queries
 import { NextResponse } from 'next/server';
 
 export async function GET(req: Request, { params }: { params: { id: string } }): Promise<NextResponse> {
-  if (params.id) {
-    const obj = await GetTemplate(Number(params.id));
+  const { id } = await params
+  if (id) {
+    const obj = await GetTemplate(Number(id));
     return NextResponse.json(JSON.parse(obj));
   }
 
@@ -11,9 +12,10 @@ export async function GET(req: Request, { params }: { params: { id: string } }):
 }
 
 export async function POST(req: Request, { params }: { params: { id: string } }): Promise<NextResponse> {
-  if (params.id) {
+  const { id } = await params
+  if (id) {
     const body = await req.json();
-    await UpdateTemplate(Number(params.id), JSON.stringify(body));
+    await UpdateTemplate(Number(id), JSON.stringify(body));
     return NextResponse.json({updated: true});
   }
 
@@ -21,8 +23,9 @@ export async function POST(req: Request, { params }: { params: { id: string } })
 }
 
 export async function DELETE(req: Request, { params }: { params: { id: string } }): Promise<NextResponse> {
-  if (params.id) {
-    await DeleteTemplate(Number(params.id));
+  const { id } = await params
+  if (id) {
+    await DeleteTemplate(Number(id));
     return NextResponse.json({deleted: true});
   }
 

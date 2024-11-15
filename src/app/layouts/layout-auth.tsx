@@ -5,7 +5,6 @@ import { AppSidebar } from "@/components/msc/sidebar/SideBar";
 import AuthTopNav from "@/components/msc/topNav/authTopNav";
 import { Toaster } from "@/components/ui/sonner"
 
-
 export default async function AuthLayout({
     children,
 }: Readonly<{
@@ -13,7 +12,6 @@ export default async function AuthLayout({
 }>) {
     return (
         <RouteProvider>
-            
             <ThemeProvider
                 attribute="class"
                 defaultTheme="system"

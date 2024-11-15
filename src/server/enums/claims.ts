@@ -30,5 +30,7 @@ export enum Claim {
     StatementsWriteConfig = "write:statement-config",
     ReportsRead = "read:reports",
     ReportsWrite = "write:reports",
-    ConversionRun = "write:conversion" 
+    ConversionRun = "write:conversion" ,
+    LettersRead = "read:letters",
+    LettersWrite = "write:letters",
 }
