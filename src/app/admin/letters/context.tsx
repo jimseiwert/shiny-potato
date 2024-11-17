@@ -1,54 +1,65 @@
 'use client';
 import { Designer } from "@pdfme/ui";
 import { createContext, useEffect, useRef, useState } from "react";
-import { DownloadJsonFile, generatePDF, getFontsData, getPlugins, uint8ArrayToBase64 } from "./helper";
-import { BLANK_PDF, checkTemplate, cloneDeep, Template } from "@pdfme/common";
-import { Template as MSCTemplate } from "@/server/db/interfaces/template";
+import { DownloadJsonFile, generatePDF, getFontsData, getPlugins } from "./helper";
+import { checkTemplate, cloneDeep, Template } from "@pdfme/common";
+import { Template as MSCTemplate } from "@/server/interfaces/template";
 import { DeleteTemplate, DownloadBase, DownloadTemplate, SaveTemplate } from "./toolbar/actions";
-import { useRouter } from "next/navigation";
-import { generate } from "@pdfme/generator";
+import { toast } from "sonner";
 
 interface Props {
   children: React.ReactNode;
   templates: MSCTemplate[];
   baseOptions: MSCTemplate[];
+  jsonOptions: MSCTemplate[];
 }
 
 interface LetterContext {
   selectedTemplateId: string | null;
-  templates: MSCTemplate[];
-  baseOptions: MSCTemplate[];
+  avaialbleTemplates: MSCTemplate[];
+  avaialbleBase: MSCTemplate[];
+  avaialbleJson: MSCTemplate[];
   changeTemplate: (templateId: string) => void;
+  addTemplateOptions: (template: MSCTemplate) => void;
+  addBaseOptions: (template: MSCTemplate) => void;
+  addJsonOptions: (template: MSCTemplate) => void;
   deleteTemplate: () => void;
+  closeTemplate: () => void;
   downloadJsonFile: () => void;
   saveTemplate: () => void;
-  addPage: () => void;
-  deletePage: () => void;
   generatePreviewPDF: () => void;
-  changeBase: (templateId: string) => void;
+  changeBase: (templateId: string, type: string) => void;
   uploadJson: (json: string) => void;
 }
 
 export const LetterContext = createContext<LetterContext>({
   selectedTemplateId: null,
-  templates: [],
-  baseOptions: [],
+  avaialbleTemplates: [],
+  avaialbleBase: [],
+  avaialbleJson: [],
+  addTemplateOptions: () => { },
+  addBaseOptions: () => { },
+  addJsonOptions: () => { },
   changeTemplate: () => { },
   deleteTemplate: () => { },
   downloadJsonFile: () => { },
   saveTemplate: () => { },
+  closeTemplate: () => { },
   changeBase: () => { },
   uploadJson: () => { },
-  addPage: () => { },
-  deletePage: () => { },
   generatePreviewPDF: () => { },
 });
 
 const headerHeight = 80;
 
-export const LetterProvider = ({ templates, baseOptions, children }: Props) => {
-  const router = useRouter();
+const blankPDF = {
+  width: 210,
+  height: 297,
+  padding: [5, 5, 5, 5],
+};
 
+
+export const LetterProvider = ({ templates, baseOptions, jsonOptions, children }: Props) => {
   if (!baseOptions.find((base) => base.id === 0)) {
     baseOptions.unshift({ id: 0, name: 'Blank - Single Page' });
   }
@@ -59,82 +70,85 @@ export const LetterProvider = ({ templates, baseOptions, children }: Props) => {
   const [template, setTemplate] = useState<Template | null>(null);
   const [selectedTemplateId, setSelectedTemplate] = useState<string>("");
 
+  const [avaialbleTemplates, setAvailableTemplates] = useState<MSCTemplate[]>(templates);
+  const [avaialbleBase, setAvailableBase] = useState<MSCTemplate[]>(baseOptions);
+  const [avaialbleJson, setAvailableJson] = useState<MSCTemplate[]>(jsonOptions);
+
   const downloadJsonFile = async (): Promise<void> => {
     if (designer.current) {
       const template = designer.current.getTemplate();
       const selectedTemplate = templates.find((template) => template.id === Number(selectedTemplateId));
 
-      await DownloadJsonFile(template, `${selectedTemplate?.name}.json`);
+      await DownloadJsonFile(template, `${selectedTemplate?.name}`);
     }
   }
 
-  const addPage = async (): Promise<void> => {
-    if (designer.current) {
-      const template = designer.current.getTemplate();
-      generateTemplate(template.schemas.length + 1)
-    }
+  const closeTemplate = async (): Promise<void> => {
+    setTemplate(null);
+    designer.current!.destroy();
   }
-const deletePage = async (): Promise<void> => {
-  if (designer.current) {
-    const template = designer.current.getTemplate();
-    generateTemplate(template.schemas.length)
-  }
-}
 
-const generatePreviewPDF = async (): Promise<void> => {
+
+
+  const generatePreviewPDF = async (): Promise<void> => {
     generatePDF(designer.current)
-}
-const generateTemplate = (pages: number) =>{
-  if (designer.current) {
-    const template: Template = {
-      basePdf: BLANK_PDF,
-      schemas: [[]]
-    }
-    const inputs = [];
-    for (let i = 0; i < pages; i++) {
-      inputs.push({})
-    }
-    generate({ template, inputs }).then((pdf) => {
-      const basePdf = uint8ArrayToBase64(pdf);
-      designer.current!.updateTemplate(
-        Object.assign(cloneDeep(designer.current!.getTemplate()), {
-          basePdf,
-        })
-      );
-    });
   }
-}
+
   const changeTemplate = async (templateId: string): Promise<void> => {
     const template = await DownloadTemplate(Number(templateId));
+
     setSelectedTemplate(templateId);
     setTemplate(template)
   }
 
   const saveTemplate = async (): Promise<void> => {
     if (designer.current) {
+      toast('Saving Template');
       const template = designer.current.getTemplate();
       await SaveTemplate(Number(selectedTemplateId), JSON.stringify(template));
+      toast('Template Saved');
     }
   }
 
-  const changeBase = async (templateId: string): Promise<void> => {
-    const setBase = (basePdf: string) => {
+  const changeBase = async (templateId: string, type: string): Promise<void> => {
+    if (templateId === '0') {
       if (designer.current) {
         designer.current.updateTemplate(
           Object.assign(cloneDeep(designer.current.getTemplate()), {
-            basePdf,
+            basePdf: blankPDF
           })
         );
       }
-    }
-    if (templateId === '0') {
-      setBase(BLANK_PDF);
     } else {
       const template = await DownloadBase(Number(templateId));
-      setBase(template.base);
+      if (designer.current) {
+        if (type === 'json') {
+          designer.current.updateTemplate(
+            JSON.parse(template.base)
+          );
+        } else
+          designer.current.updateTemplate(
+            Object.assign(cloneDeep(designer.current.getTemplate()), {
+              basePdf: template.base
+            })
+          );
+
+      }
     }
   }
 
+  const addTemplateOptions = (template: MSCTemplate) => {
+    setAvailableTemplates([...avaialbleTemplates, template]);
+    changeTemplate(template.id.toString());
+  }
+
+  const addBaseOptions = (template: MSCTemplate) => {
+    setAvailableBase([...avaialbleBase, template]);
+  }
+
+  const addJsonOptions = (template: MSCTemplate) => {
+    setAvailableJson([...avaialbleJson, template]);
+  }
   const uploadJson = async (jsonStr: string): Promise<void> => {
     const template: Template = JSON.parse(jsonStr as string);
     checkTemplate(template);
@@ -142,20 +156,26 @@ const generateTemplate = (pages: number) =>{
   }
 
   const deleteTemplate = async (): Promise<void> => {
-    await DeleteTemplate(Number(selectedTemplateId));
-    router.refresh();
+    const con = confirm('Are you sure you want to delete this template?');
+    if (con) {
+      await DeleteTemplate(Number(selectedTemplateId));
+      setTemplate(null)
+      setAvailableTemplates(avaialbleTemplates.filter((template) => template.id !== Number(selectedTemplateId)));
+    }
   }
+
 
   useEffect(() => {
     const buildDesigner = () => {
       getFontsData().then((font) => {
-        if (designerRef.current && template)
+        if (designerRef.current && template) {
 
           designer.current = new Designer({
             domContainer: designerRef.current,
-            template,
+            template: template,
             options: {
               font,
+              lang: 'en',
               labels: {
                 'clear': '🗑️',
               },
@@ -170,6 +190,7 @@ const generateTemplate = (pages: number) =>{
             },
             plugins: getPlugins(),
           });
+        }
       }
       );
     }
@@ -178,7 +199,7 @@ const generateTemplate = (pages: number) =>{
   }, [template])
 
   return (
-    <LetterContext.Provider value={{ selectedTemplateId, changeTemplate, templates, baseOptions, generatePreviewPDF, addPage, deletePage, uploadJson, saveTemplate, deleteTemplate, changeBase, downloadJsonFile }}>
+    <LetterContext.Provider value={{ selectedTemplateId, closeTemplate, addJsonOptions, addTemplateOptions, addBaseOptions, changeTemplate, avaialbleTemplates, avaialbleBase, avaialbleJson, generatePreviewPDF, uploadJson, saveTemplate, deleteTemplate, changeBase, downloadJsonFile }}>
       {children}
       {!template &&
         <div className="px-10 py-10">
@@ -206,7 +227,7 @@ const generateTemplate = (pages: number) =>{
       }
       {template &&
 
-        <div ref={designerRef} style={{ width: '100%', height: `calc(100vh - ${headerHeight}px)` }} />
+        <div ref={designerRef} className="text-gray-900" style={{ width: '100%', height: `calc(100vh - ${headerHeight}px)` }} />
       }
     </LetterContext.Provider>
   )

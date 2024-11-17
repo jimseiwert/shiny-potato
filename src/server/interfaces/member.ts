@@ -26,3 +26,14 @@ export interface UniqueMember {
     personId: number
     name: string    
 }
+
+export interface MemberStatus {
+    id: number
+    name: string
+    color: string
+}
+
+export interface MemberType {
+    id: number
+    name: string
+}

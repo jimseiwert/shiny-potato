@@ -3,7 +3,6 @@
 
 import { CheckCircleIcon } from '@heroicons/react/24/solid'
 import { PaperClipIcon,} from '@heroicons/react/20/solid'
-import { useUser } from '@auth0/nextjs-auth0/client';
 
 
 function classNames(...classes: string[]) {
@@ -11,7 +10,7 @@ function classNames(...classes: string[]) {
 }
 
 export default function MemberActivity({activity}: {activity: any[]}) {
-    const { user, error, isLoading } = useUser();
+    
 
   return (
     <>
@@ -76,10 +75,10 @@ export default function MemberActivity({activity}: {activity: any[]}) {
 
       {/* New comment form */}
       <div className="mt-6 flex gap-x-3">
-        <img
+        {/* <img
           src={user?.picture} alt={user?.name}
           className="h-6 w-6 flex-none rounded-full bg-gray-50"
-        />
+        /> */}
         <form action="#" className="relative flex-auto">
           <div className="overflow-hidden rounded-lg pb-12 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600">
             <label htmlFor="comment" className="sr-only">

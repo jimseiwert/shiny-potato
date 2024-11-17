@@ -1,7 +1,7 @@
 "use client"
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Role } from '@/server/db/interfaces/role'
+import { Role } from '@/server/interfaces/role'
 import { Dispatch, SetStateAction } from 'react'
 
 interface Props {

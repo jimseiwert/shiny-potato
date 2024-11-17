@@ -1,16 +1,17 @@
 import { NextResponse } from 'next/server';
-import { deleteBlob, downloadBlob, uploadBlob } from '@/lib/azure-blob';
 
 import { eq } from 'drizzle-orm';
 import { db } from '@/server/db';
 import { uuid } from 'uuidv4';
 import { editMinute, insertMinute } from '@/server/db/queries/minute';
+import { AzureBlob } from '@/lib/azure-blob';
 
 export async function GET(request: Request): Promise<NextResponse> {
   const { searchParams } = new URL(request.url);
   const filename = `2024/${searchParams.get('filename')}`;
 
-  const blob = await downloadBlob('bulletin', filename);
+  const azureBlob = new AzureBlob('minute');
+  const blob = await azureBlob.downloadBlob(filename);
 
   return NextResponse.json(blob);
 }
@@ -24,7 +25,8 @@ export async function POST(request: Request): Promise<NextResponse> {
   const month = today.getMonth() + 1;
   const filename = `${uuid()}.pdf`;
   
-  await uploadBlob('minute', filename, request.body);
+  const azureBlob = new AzureBlob('minute');
+  await azureBlob.uploadBlob(filename, request.body);
 
   await insertMinute(year, month, passedFilename, filename);
   return NextResponse.json({uploaded: true});
@@ -44,7 +46,8 @@ export async function DELETE(request: Request): Promise<NextResponse> {
     where: eq(minutes.id, id),
   })
 
-  await deleteBlob('minute', minute.file);
+  const azureBlob = new AzureBlob('minute');
+  await azureBlob.deleteBlob(minute.file);
 
   await db.delete(minutes).where(eq(minutes.id, id));
   return NextResponse.json({deleted: true});

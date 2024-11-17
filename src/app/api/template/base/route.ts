@@ -3,8 +3,12 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request): Promise<NextResponse> {
     const body = await req.json();
-    const result = await AddNewBase(body.name, body.template);
-    return NextResponse.json({updated: true, id: result});
+
+    let filename = body.name.replace('.pdf', '').replace('.json', '');
+    filename = filename.charAt(0).toUpperCase() + String(filename).slice(1)
+    
+    const result = await AddNewBase(filename, body.type, body.template);
+    return NextResponse.json({id: result, name: filename});
 }
 
 

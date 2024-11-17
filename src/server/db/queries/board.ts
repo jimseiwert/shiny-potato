@@ -1,6 +1,6 @@
 import "server-only";
 import { db } from "../";
-import { AssignedUserRole, Role } from "../interfaces/role";
+import { AssignedUserRole, Role } from "../../interfaces/role";
 import { persons, roleAssignments } from "../schemas";
 import { eq } from "drizzle-orm";
 

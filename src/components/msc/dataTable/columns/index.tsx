@@ -8,6 +8,7 @@ import { default as MemberConfig } from "./member";
 import { default as StatementConfig } from "./statement";
 import { default as BoardConfig } from "./board";
 import { default as MinuteConfig } from "./minute";
+import { default as GenerateStatementSearch } from "./generateStatement";
 
 
 export enum ColumnConfigs {
@@ -18,7 +19,8 @@ export enum ColumnConfigs {
     Member = 'member',
     Statement = 'statement',
     Board = 'board',
-    Minute = 'minute'
+    Minute = 'minute',
+    StatementGenerate = 'statementGenerate'
 }
 
 export function Columns(config: string, data: unknown[], setTableData: Dispatch<SetStateAction<unknown[]>>) {
@@ -39,7 +41,8 @@ export function Columns(config: string, data: unknown[], setTableData: Dispatch<
             return BoardConfig(data, setTableData)
         case ColumnConfigs.Minute:
             return MinuteConfig(data, setTableData)
-
+        case ColumnConfigs.StatementGenerate:
+            return GenerateStatementSearch(data, setTableData)
         default:
             return [];
     }

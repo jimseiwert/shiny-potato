@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
-import { deleteBlob, downloadBlob, uploadBlob } from '@/lib/azure-blob';
+
 import { editBulletin, insertBulletin } from '@/server/db/queries/bulletin';
 import { eq } from 'drizzle-orm';
 import { bulletins } from '@/server/db/schemas';
 import { db } from '@/server/db';
 import { uuid } from 'uuidv4';
+import { AzureBlob } from '@/lib/azure-blob';
+
 
 export async function GET(request: Request): Promise<NextResponse> {
   const { searchParams } = new URL(request.url);
@@ -24,7 +26,8 @@ export async function POST(request: Request): Promise<NextResponse> {
   const month = today.getMonth() + 2;
   const filename = `${uuid()}.pdf`;
 
-  await uploadBlob('bulletin', filename, request.body);
+  const azureBlob = new AzureBlob('bulletin');
+  await azureBlob.uploadBlob(filename, request.body);
 
   await insertBulletin(year, month, passedFilename, filename);
   return NextResponse.json({uploaded: true});
@@ -44,7 +47,8 @@ export async function DELETE(request: Request): Promise<NextResponse> {
     where: eq(bulletins.id, id),
   })
 
-  await deleteBlob('bulletin', bulletin.file);
+  const azureBlob = new AzureBlob('bulletin');
+  await azureBlob.deleteBlob(bulletin.file);
 
   await db.delete(bulletins).where(eq(bulletins.id, id));
   return NextResponse.json({deleted: true});

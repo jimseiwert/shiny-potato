@@ -1,7 +1,5 @@
 'use client';
 import ShowDialog from '@/components/msc/dialog';
-import withAuth from '@/lib/withAuth/serverPage';
-import { Claim } from '@/server/enums/claims';
 import { toast } from "sonner"
 
 
@@ -84,7 +82,7 @@ function Conversion() {
         <li key={project.id} className="flex items-center justify-between gap-x-6 py-5">
           <div className="min-w-0">
             <div className="flex items-start gap-x-3">
-              <p className="text-sm/6 font-semibold text-gray-900">{project.name}</p>
+              <p className="text-sm/6 font-semibold">{project.name}</p>
             </div>
           </div>
           <div className="flex flex-none items-center gap-x-4">
@@ -99,4 +97,4 @@ function Conversion() {
 }
 
 
-export default withAuth(Conversion, Claim.ConversionRun)
+export default Conversion

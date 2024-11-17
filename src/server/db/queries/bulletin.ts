@@ -2,7 +2,7 @@ import "server-only";
 import { db } from "../";
 import { bulletins } from "../schemas";
 import { eq } from "drizzle-orm";
-import { Bulletin } from "@/server/db/interfaces/bulletin";
+import { Bulletin } from "@/server/interfaces/bulletin";
 
 export async function getAllBulletins(): Promise<Bulletin[]> {
     const query = await db.query.bulletins.findMany();

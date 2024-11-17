@@ -3,7 +3,7 @@ import { db } from "../..";
 import member from "../../schemas/member";
 import { and, asc, eq, ilike, like, or } from "drizzle-orm";
 import { members, memberStatus, memberTypes, persons, personTypes } from "../../schemas";
-import { Member } from "../../interfaces/member";
+import { Member } from "../../../interfaces/member";
 
 export async function getAllMembers(): Promise<Member[]> {
     const query = await db.select().from(members)

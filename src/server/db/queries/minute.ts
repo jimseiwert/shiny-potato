@@ -2,7 +2,7 @@ import "server-only";
 import { db } from "..";
 import { minutes } from "../schemas";
 import { eq } from "drizzle-orm";
-import { Minute } from "../interfaces/minute";
+import { Minute } from "../../interfaces/minute";
 
 
 export async function GetAllMinutes(): Promise<Minute[]> {

@@ -1,8 +1,8 @@
 "use client"
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
-import { Permission } from '@/server/db/interfaces/permission'
-import { Role } from '@/server/db/interfaces/role'
+import { Permission } from '@/server/interfaces/permission'
+import { Role } from '@/server/interfaces/role'
 import { toast } from "sonner"
 import AssignedPermissions from './assigned-permissions'
 import { useState } from 'react'

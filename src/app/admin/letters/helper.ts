@@ -22,6 +22,7 @@ import {
     select,
   } from '@pdfme/schemas';
   import plugins from './plugins';
+import { StatementLetter, StatementPrintData } from '@/server/interfaces/letters/StatementLetter';
   
   const fontObjList = [
     {
@@ -121,16 +122,67 @@ import {
     if (!currentRef) return;
     const template = currentRef.getTemplate();
     const options = currentRef.getOptions();
-    const inputs =
-      typeof (currentRef as Viewer | Form).getInputs === 'function'
-        ? (currentRef as Viewer | Form).getInputs()
-        : getInputFromTemplate(template);
+    // const inputs =
+    //   typeof (currentRef as Viewer | Form).getInputs === 'function'
+    //     ? (currentRef as Viewer | Form).getInputs()
+    //     : getInputFromTemplate(template);
     const font = await getFontsData();
   
+    const testStaementData: StatementLetter = {
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'jimseiwert@gmail.com',
+      cellPhone: '123-555-5555',
+      homePhone: '555-555-5555',
+      spouseName: 'Jane Doe',
+      spouseEmail: 'jane.doe@gmail.com',
+      year: 2025,
+      description: 'Dues',
+      donations: [
+        'Voluntary Archery Contribution',
+        'Voluntary Camping Contribution',
+        'Voluntary Fishing Contribution',
+        'Voluntary Pistol Contribution',
+        'Woman\'s Committee Donation'
+      ],
+      option1: {
+        item: 'Dues',
+        cost: '$450',
+        selected: true,
+      },
+      option2: {
+        item: '2025 Dinners (12)',
+        cost: '$300',
+        selected: false,
+      },
+      option3: {
+        item: 'Paper Bulletin',
+        cost: '$45',
+        selected: false,
+      },
+      option4: {
+        item: 'Guest Fishing Book',
+        cost: '$100',
+        selected: false,
+      },
+      option5: {
+        item: 'Extra Key Card',
+        cost: '$10 / each',
+        selected: false,
+      },
+      option6: {
+        item: 'Extra Window Sticker',
+        cost: '$10 / each',
+        selected: false,
+      }
+    };
+
+    const data = new StatementPrintData(testStaementData).getData();
+
     try {
       const pdf = await generate({
         template,
-        inputs,
+        inputs: [data],
         options: {
           font,
           lang: options.lang,

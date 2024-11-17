@@ -4,9 +4,10 @@ import Toolbar from './toolbar/toolbar';
 
 export default async function Invoice() {
     const templates = await GetTemplates()
-    const baseOptions = await GetAllBase()
+    const baseOptions = await GetAllBase('base')
+    const jsonOptions = await GetAllBase('json')
     return (
-        <LetterProvider templates={templates} baseOptions={baseOptions}>
+        <LetterProvider templates={templates} baseOptions={baseOptions} jsonOptions={jsonOptions}>
         <Toolbar/>
       </LetterProvider>)
 }

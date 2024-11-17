@@ -2,17 +2,15 @@
 import { getAllBulletins } from '@/server/db/queries/bulletin';
 import { FileSelector } from './upload';
 
-import { Bulletin } from '../../../server/db/interfaces/bulletin';
+import { Bulletin } from '../../../server/interfaces/bulletin';
 import { Table, TableProps } from '@/components/msc/dataTable/table';
-import Board from '@/components/msc/board';
-import withAuth from '@/lib/withAuth/serverPage';
-import { Claim } from '@/server/enums/claims';
+
 
 
 async function Bulletins() {
   const bulletins: Bulletin[] = await getAllBulletins();
 
-  const tableConfig: TableProps = {
+  const tableConfig: TableProps<Bulletin> = {
     mainFilter: {
       show: true,
       title: 'Search Bulletins',
@@ -31,4 +29,4 @@ async function Bulletins() {
 }
 
 
-export default withAuth(Bulletins, Claim.BulletinsRead)
+export default Bulletins

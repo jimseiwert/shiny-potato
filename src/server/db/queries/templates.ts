@@ -1,11 +1,15 @@
 
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "..";
-import { Template } from "../interfaces/template";
+import { Template } from "../../interfaces/template";
 import { basePDF, letterTemplates } from "../schemas";
 
 export async function GetTemplates(): Promise<Template[]> {
-    const query = await db.query.letterTemplates.findMany()
+    const query = await db.query.letterTemplates.findMany(
+            {
+                where: eq(letterTemplates.deleted, false)
+            }
+    )
 
     
     return query.map((row) => { return {id: row.id, name: row.name} });
@@ -39,18 +43,22 @@ export async function UpdateTemplate(id: number, template: string): Promise<void
 }
 
 export async function DeleteTemplate(id: number): Promise<void> {
-    await db.delete(letterTemplates).where(eq(letterTemplates.id, id));
+    await db.update(letterTemplates)
+    .set({deleted: true})
+    .where(eq(letterTemplates.id, id));
     return;
 }
 
 
-export async function AddNewBase(name: string, base: string): Promise<number> {
-    const result = await db.insert(basePDF).values({name: name, template: base}).returning({id: basePDF.id});
+export async function AddNewBase(name: string, type: string, base: string): Promise<number> {
+    const result = await db.insert(basePDF).values({name: name, type: type, template: base}).returning({id: basePDF.id});
     return result[0].id
 }
 
-export async function GetAllBase(): Promise<Template[]> {
-    const query = await db.query.basePDF.findMany()
+export async function GetAllBase(type: string): Promise<Template[]> {
+    const query = await db.query.basePDF.findMany({
+        where: eq(basePDF.type, type)
+    })
 
     
     return query.map((row) => { return {id: row.id, name: row.name} });

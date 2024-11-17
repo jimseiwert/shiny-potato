@@ -2,7 +2,7 @@ import "server-only";
 import { db } from "..";
 import { permissionAssignments, permissions } from "../schemas";
 import { asc, eq } from "drizzle-orm";
-import { AssignedPermission, Permission } from "../interfaces/permission";
+import { AssignedPermission, Permission } from "../../interfaces/permission";
 
 export async function getPermissions(): Promise<Permission[]> {
     const query = await db.query.permissions.findMany({

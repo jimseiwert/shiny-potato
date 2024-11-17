@@ -8,7 +8,7 @@ import {
   SidebarHeader,
   SidebarMenu,
 } from "@/components/ui/sidebar"
-import { ISideBarItem } from "@/server/db/interfaces/sideBarItem"
+import { ISideBarItem } from "@/server/interfaces/sideBarItem"
 import SideBarItem from "./SideBarItem"
 import { getUserMenu } from "@/server/db/queries/menu";
 

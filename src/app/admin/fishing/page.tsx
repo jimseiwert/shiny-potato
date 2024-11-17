@@ -1,9 +1,8 @@
 'use server';
 
 import { Table, TableProps } from '@/components/msc/dataTable/table';
-import withAuth from '@/lib/withAuth/serverPage';
 import { getAllPasses } from '@/server/db/queries/fishing';
-import { Claim } from '@/server/enums/claims';
+import { FishingPass } from '@/server/interfaces/fishing';
 
 const stats = [
   { name: 'Revenue', value: '$405,091.00', change: '+4.75%', changeType: 'positive' },
@@ -19,7 +18,7 @@ function classNames(...classes: string[]) {
 async function Fishing() {
   const allPasses = await getAllPasses();
 
-  const tableConfig: TableProps = {
+  const tableConfig: TableProps<FishingPass> = {
     mainFilter: {
       show: true,
       title: 'Search Passes',
@@ -60,4 +59,4 @@ async function Fishing() {
 }
 
 
-export default withAuth(Fishing, Claim.FishingRead)
+export default Fishing

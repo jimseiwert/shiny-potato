@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Bulletin } from "@/server/db/interfaces/bulletin";
+import { Bulletin } from "@/server/interfaces/bulletin";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";

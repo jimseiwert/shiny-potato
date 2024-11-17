@@ -6,7 +6,7 @@ import { MoreHorizontal } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 import { RingLoader } from "react-spinners";
-import { Minute } from "@/server/db/interfaces/minute";
+import { Minute } from "@/server/interfaces/minute";
 
 
 

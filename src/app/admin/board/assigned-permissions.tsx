@@ -4,8 +4,8 @@
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
 import { useEffect, useState } from "react"
-import { Role } from "@/server/db/interfaces/role"
-import { AssignedPermission, Permission } from "@/server/db/interfaces/permission"
+import { Role } from "@/server/interfaces/role"
+import { AssignedPermission, Permission } from "@/server/interfaces/permission"
 
 interface props {
   role: Role | null,

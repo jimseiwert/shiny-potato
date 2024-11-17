@@ -34,6 +34,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '**',
       },
+      {
+        protocol: 'https',
+        hostname: '**.blob.core.windows.net',
+        port: '',
+        pathname: '**',
+      },
     ],
   },
   /* config options here */

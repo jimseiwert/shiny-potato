@@ -5,9 +5,9 @@ import Members from "./members";
 import { useEffect, useState } from "react";
 import { toast } from "sonner"
 import Permissions from "./permissions";
-import { UniqueMember } from "@/server/db/interfaces/member";
-import { AssignedUserRole, Role } from "@/server/db/interfaces/role";
-import { Permission } from "@/server/db/interfaces/permission";
+import { UniqueMember } from "@/server/interfaces/member";
+import { AssignedUserRole, Role } from "@/server/interfaces/role";
+import { Permission } from "@/server/interfaces/permission";
 
 interface props {
   tableConfig: TableProps<AssignedUserRole>,

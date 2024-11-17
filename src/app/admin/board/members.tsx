@@ -1,8 +1,8 @@
 "use client"
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
-import { UniqueMember } from '@/server/db/interfaces/member'
-import { Role } from '@/server/db/interfaces/role'
+import { UniqueMember } from '@/server/interfaces/member'
+import { Role } from '@/server/interfaces/role'
 import { useState } from 'react'
 import { toast } from "sonner"
 

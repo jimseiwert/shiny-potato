@@ -3,9 +3,7 @@ import { AllMembers } from "@/server/db/queries/member/unique"
 import { getRoles } from "@/server/db/queries/board";
 import RoleDetail from "./role-detail";
 import { getPermissions } from "@/server/db/queries/permission";
-import { AssignedUserRole } from "@/server/db/interfaces/role";
-import withAuth from "@/lib/withAuth/serverPage";
-import { Claim } from "@/server/enums/claims";
+import { AssignedUserRole } from "@/server/interfaces/role";
 
 async function Board() {
   const members = await AllMembers()
@@ -27,4 +25,4 @@ async function Board() {
 }
 
 
-export default withAuth(Board, Claim.BoardRead)
+export default Board

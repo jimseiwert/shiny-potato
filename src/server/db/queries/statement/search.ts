@@ -66,7 +66,6 @@ export async function getAllStatements() {
         }
     })
 
-    console.log(results)
     return results
 }
 

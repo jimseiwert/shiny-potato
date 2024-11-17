@@ -1,5 +1,5 @@
 import "server-only";
-import { ISideBarItem } from "../interfaces/sideBarItem";
+import { ISideBarItem } from "../../interfaces/sideBarItem";
 import { House, Calendar, Files, ArrowRightCircle, ChartBar, CircleDollarSign, CookingPot, FileUser, Fish, IdCard, Newspaper, Users, User, Images, Paperclip } from "lucide-react";
 import { Claim } from "@/server/enums/claims";
 import { auth0 } from "@/lib/auth0"

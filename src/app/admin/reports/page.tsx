@@ -1,5 +1,4 @@
-import withAuth from '@/lib/withAuth/serverPage'
-import { Claim } from '@/server/enums/claims'
+
 import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/20/solid'
 
 const people = [
@@ -64,4 +63,4 @@ function Reports() {
 }
 
 
-export default withAuth(Reports, Claim.ReportsRead)
+export default Reports

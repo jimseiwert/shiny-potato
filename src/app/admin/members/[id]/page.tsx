@@ -1,21 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
 import { getMember } from "@/server/db/queries/member/profile";
 import { redirect } from "next/navigation";
-import InputUpdate from "../../../../components/msc/inputUpdate";
 import AddressWrapper from "@/app/admin/members/[id]/address";
 import Dependants from "./dependants";
 import MemberActivity from "./activity";
 import MemberStats from "./stats";
 import Profile from "./profile";
-import withAuth from "@/lib/withAuth/serverPage";
-import { Claim } from "@/server/enums/claims";
-import MemberSearch from "../../statements/page";
+import { MemberProfileProvider } from "./context";
+import MemberStatementsView from "./statements";
 
 
 async function MemberDetail({
   params,
 }: {
-  params: { id: number; bar: string };
+  params: { id: number };
 }) {
 
   const user = await getMember(params.id);
@@ -26,7 +24,7 @@ async function MemberDetail({
 
 
   return (
-    <>
+    <MemberProfileProvider memberId={params.id}>
       <div className="overflow-hidden rounded-lg shadow">
         <h2 id="profile-overview-title" className="sr-only">
           Profile Overview
@@ -38,8 +36,8 @@ async function MemberDetail({
                 <img alt="" src={user.picture} className="h-20 w-20 rounded-full" />
               </div>
               <div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
-                <p className="text-xl font-bold text-gray-900 sm:text-2xl">{user.memberInfo.firstName} {user.memberInfo.lastName}</p>
-                <p className="text-sm font-medium text-gray-600">{user.role}</p>
+                <p className="text-xl font-bold sm:text-2xl">{user.memberInfo.firstName} {user.memberInfo.lastName}</p>
+                <p className="text-sm font-medium">{user.role}</p>
               </div>
             </div>
           </div>
@@ -54,6 +52,7 @@ async function MemberDetail({
                   <Profile firstName={user.memberInfo.firstName} lastName={user.memberInfo.lastName} email={user.memberInfo.email} occupation={user.memberInfo.occupation} />
 
                 <AddressWrapper memberAddress={user.address} />
+                <MemberStatementsView/>
                 <Dependants memberDependants={user.dependents} />
 
 
@@ -72,8 +71,8 @@ async function MemberDetail({
 
 
 
-    </>
+    </MemberProfileProvider>
   );
 }
 
-export default withAuth(MemberDetail, Claim.MembersRead)
+export default MemberDetail

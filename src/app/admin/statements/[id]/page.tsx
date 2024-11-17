@@ -541,4 +541,4 @@ function StatementDetail() {
 }
 
 
-export default withAuth(StatementDetail, Claim.StatementsRead)
+export default StatementDetail

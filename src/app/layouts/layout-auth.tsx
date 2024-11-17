@@ -3,7 +3,8 @@ import { ThemeProvider } from "next-themes";
 import { RouteProvider } from "../context/route-context";
 import { AppSidebar } from "@/components/msc/sidebar/SideBar";
 import AuthTopNav from "@/components/msc/topNav/authTopNav";
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/toaster";
+
 
 export default async function AuthLayout({
     children,
@@ -22,8 +23,8 @@ export default async function AuthLayout({
                         <AuthTopNav />
                         {children}
                     </div>
+                    <Toaster />
                 </SidebarProvider>
-                <Toaster />
             </ThemeProvider>
         </RouteProvider>
     );

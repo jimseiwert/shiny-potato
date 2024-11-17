@@ -2,7 +2,7 @@ import "server-only";
 import { db } from "../..";
 import { dinners, dinnersReservation } from "../../schemas";
 import { desc, sql, eq } from "drizzle-orm";
-import { Dinner } from "../../interfaces/dinner";
+import { Dinner } from "../../../interfaces/dinner";
 
 export async function getAllDinners(): Promise<Dinner[]> {
     const query = await  db

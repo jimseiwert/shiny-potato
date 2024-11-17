@@ -13,6 +13,10 @@ export interface TableProps<TData> {
     data:TData[],  
     columnConfig: string,
     filters?: DataTableFilterConfig[] ,
+    redirectOnClick?: {
+        link: string,
+        replaceParams: { token: string, column: string }[]  
+    }  
 }
 
 export function Table<TData>({ config }: {config: TableProps<TData>}) {
@@ -26,7 +30,7 @@ export function Table<TData>({ config }: {config: TableProps<TData>}) {
 
     return (
 
-        <DataTable columns={columns} data={tableData} filters={config.filters} mainFilter={config.mainFilter} />
+        <DataTable columns={columns} data={tableData} filters={config.filters} mainFilter={config.mainFilter} redirectOnClick={config.redirectOnClick}/>
 
     )
 }

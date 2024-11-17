@@ -2,10 +2,8 @@
 import { FileSelector } from './upload';
 
 import { Table, TableProps } from '@/components/msc/dataTable/table';
-import withAuth from '@/lib/withAuth/serverPage';
-import { Claim } from '@/server/enums/claims';
 import { GetAllMinutes } from '@/server/db/queries/minute';
-import { Minute } from '@/server/db/interfaces/minute';
+import { Minute } from '@/server/interfaces/minute';
 
 
 async function Minutes() {
@@ -30,4 +28,4 @@ async function Minutes() {
 }
 
 
-export default withAuth(Minutes, Claim.MinutesRead)
+export default Minutes

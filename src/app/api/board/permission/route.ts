@@ -1,10 +1,8 @@
 import { handleError } from "@/lib/errorHandler";
 import { addPermission, getAssignedPermissions, deleteAssignedPermission, getPermissions } from "@/server/db/queries/permission";
 import { NextResponse, type NextRequest } from 'next/server'
-import withApiAuth from "@/lib/withAuth/api";
-import { Claim } from "@/server/enums/claims";
 
-export const GET = withApiAuth(async function GetPermissions(request: NextRequest): Promise<NextResponse> {
+export const GET = async function GetPermissions(request: NextRequest): Promise<NextResponse> {
     try {
         const { searchParams } = new URL(request.url);
         if (!searchParams.has('role')) {
@@ -16,9 +14,9 @@ export const GET = withApiAuth(async function GetPermissions(request: NextReques
     } catch (error) {
         return handleError(error);
     }
-}, Claim.BoardRead);
+}
 
-export const POST = withApiAuth(async function AddPermissionToRole(request: NextRequest): Promise<NextResponse> {
+export const POST = async function AddPermissionToRole(request: NextRequest): Promise<NextResponse> {
     try {
         const data: { role: number, permission: number } = await request.json()
         await addPermission(data.role, data.permission);
@@ -26,9 +24,9 @@ export const POST = withApiAuth(async function AddPermissionToRole(request: Next
     } catch (error) {
         return handleError(error);
     }
-}, Claim.BoardWrite);
+}
 
-export const DELETE = withApiAuth(async function DeletePermissionFromRole(request: Request): Promise<NextResponse> {
+export const DELETE = async function DeletePermissionFromRole(request: Request): Promise<NextResponse> {
     try {
         const data: { id: number } = await request.json()
         await deleteAssignedPermission(data.id);
@@ -36,5 +34,5 @@ export const DELETE = withApiAuth(async function DeletePermissionFromRole(reques
     } catch (error) {
         return handleError(error);
     }
-}  , Claim.BoardWrite);
+} 
 

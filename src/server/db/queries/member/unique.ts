@@ -1,7 +1,7 @@
 import { and, eq, or } from 'drizzle-orm';
 import { db } from '../../index';
 import { members, persons } from '../../schemas';
-import { UniqueMember } from '../../interfaces/member';
+import { UniqueMember } from '../../../interfaces/member';
 
 export async function AllMembers(): Promise<UniqueMember[]> {
     const member = await db.query.members.findMany({

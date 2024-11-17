@@ -3,10 +3,10 @@
 import { getAllStatements } from '@/server/db/queries/statement/search';
 
 import { getAllMemberTypes } from '@/server/db/queries/memberTypes';
-import { DataTableFilterConfig } from '@/components/msc/dataTable/filters';
 import { Table, TableProps } from '@/components/msc/dataTable/table';
-import withAuth from '@/lib/withAuth/serverPage';
-import { Claim } from '@/server/enums/claims';
+import { Statement } from '@/server/interfaces/statement';
+import Link from 'next/link';
+
 
 const stats = [
   { name: 'Revenue', value: '$405,091.00', change: '+4.75%', changeType: 'positive' },
@@ -23,7 +23,7 @@ async function StatementSearch() {
   const allStatements = await getAllStatements();
   const allMemberTypes = (await getAllMemberTypes()).map((type) => ({ label: type.name, value: type.id + '' }));
 
-  const tableConfig: TableProps = {
+  const tableConfig: TableProps<Statement> = {
     mainFilter: {
       show: true,
       title: 'Search Statements',
@@ -63,6 +63,9 @@ async function StatementSearch() {
         ))}
       </dl>
       <main className="w-full px-4">
+        <div className='flex justify-between items-center'>
+          <Link href='/admin/statements/generate' className='mt-4'>Create Statement</Link>
+          </div>
         <Table config={tableConfig} ></Table>
       </main>
     </div>
@@ -71,4 +74,4 @@ async function StatementSearch() {
 }
 
 
-export default withAuth(StatementSearch, Claim.StatementsRead)
+export default StatementSearch

@@ -183,7 +183,7 @@ function AddressEdit({ initAddress, onDelete }: { initAddress: Address, onDelete
         <>
           <div className="flex justify-between">
             <div className="w-full">
-              <label htmlFor="street-address" className="block text-sm/6 font-medium text-gray-900">
+              <label htmlFor="street-address" className="block text-sm/6 font-medium">
                 Street address
               </label>
               <div className="mt-2">
@@ -197,13 +197,13 @@ function AddressEdit({ initAddress, onDelete }: { initAddress: Address, onDelete
                   <div className="relative">
                     <div className="flex items-center">
                       <MagnifyingGlassIcon
-                        className="pointer-events-none absolute left-4 h-5 w-5 text-gray-400"
+                        className="pointer-events-none absolute left-4 h-5 w-5"
                         aria-hidden="true"
                       />
                       <ComboboxInput
                         autoFocus
                         value={address.line1}
-                        className="block w-full pl-11 pr-4 rounded-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                        className="block w-full pl-11 pr-4 rounded-full border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
                         placeholder="Search..."
                         onChange={(event) => {
                           setQuery(event.target.value);
@@ -215,7 +215,7 @@ function AddressEdit({ initAddress, onDelete }: { initAddress: Address, onDelete
                   </div>
 
                   {predictions.length > 0 && (
-                    <ComboboxOptions static className="max-h-72 scroll-py-2 overflow-y-auto py-2 text-sm text-gray-800">
+                    <ComboboxOptions static className="max-h-72 scroll-py-2 overflow-y-auto py-2 text-sm">
                       {predictions.map((place) => (
                         <ComboboxOption
                           key={place.place_id}
@@ -236,7 +236,7 @@ function AddressEdit({ initAddress, onDelete }: { initAddress: Address, onDelete
             </div>
 
             <div className="w-full">
-              <label htmlFor="line2" className="block text-sm/6 font-medium text-gray-900">
+              <label htmlFor="line2" className="block text-sm/6 font-medium">
                 Unit/Apt #
               </label>
               <div className="mt-2">
@@ -249,7 +249,7 @@ function AddressEdit({ initAddress, onDelete }: { initAddress: Address, onDelete
                     setAddress({ ...address, city: event.target.value });
                   }}
                   autoComplete="off"
-                  className="block w-full rounded-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                  className="block w-full rounded-full border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
                 />
               </div>
             </div>
@@ -258,7 +258,7 @@ function AddressEdit({ initAddress, onDelete }: { initAddress: Address, onDelete
 
           <div className="flex justify-between">
             <div className="w-full">
-              <label htmlFor="city" className="block text-sm/6 font-medium text-gray-900">
+              <label htmlFor="city" className="block text-sm/6 font-medium">
                 City
               </label>
               <div className="mt-2">
@@ -271,13 +271,13 @@ function AddressEdit({ initAddress, onDelete }: { initAddress: Address, onDelete
                     setAddress({ ...address, city: event.target.value });
                   }}
                   autoComplete="off"
-                  className="block w-full rounded-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                  className="block w-full rounded-full border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
                 />
               </div>
             </div>
 
             <div className="w-full">
-              <label htmlFor="state" className="block text-sm/6 font-medium text-gray-900">
+              <label htmlFor="state" className="block text-sm/6 font-medium">
                 State
               </label>
               <div className="mt-2">
@@ -288,7 +288,7 @@ function AddressEdit({ initAddress, onDelete }: { initAddress: Address, onDelete
                   onChange={(event) => {
                     setAddress({ ...address, state: event.target.value });
                   }}
-                  className="block w-full rounded-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                  className="block w-full rounded-full border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
                 >
                   {states.map((state) => (
                     <option key={state.abbrevation} value={state.abbrevation}>
@@ -299,7 +299,7 @@ function AddressEdit({ initAddress, onDelete }: { initAddress: Address, onDelete
               </div>
             </div>
             <div className="w-full">
-              <label htmlFor="postal-code" className="block text-sm/6 font-medium text-gray-900">
+              <label htmlFor="postal-code" className="block text-sm/6 font-medium">
                 ZIP / Postal code
               </label>
               <div className="mt-2">
@@ -329,8 +329,8 @@ function AddressEdit({ initAddress, onDelete }: { initAddress: Address, onDelete
         </>
         :
         <li key={address.id} className="flex justify-between gap-x-6 py-6">
-          <div className="font-medium text-gray-900">{address.default}</div>
-          <div className="font-medium text-gray-900">{address.line1} {address.line2}, {address.city} {address.state} {address.zip}</div>
+          <div className="font-medium">{address.default}</div>
+          <div className="font-medium">{address.line1} {address.line2}, {address.city} {address.state} {address.zip}</div>
           <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500" onClick={() => setAddress({ ...address, editing: true })}>
             Update
           </button>
@@ -351,7 +351,7 @@ export default function AddressWrapper({ memberAddress }: { memberAddress: Addre
 
   return (
     <div>
-      <h2 className="text-base/7 font-semibold text-gray-900">Address</h2>
+      <h2 className="text-base/7 font-semibold">Address</h2>
       <ul role="list" className="mt-6 divide-y divide-gray-100 border-t border-gray-200 text-sm/6">
         {address.map((address, index) => {
           return (

@@ -1,9 +1,8 @@
 'use server';
 
 import { Table, TableProps } from '@/components/msc/dataTable/table';
-import withAuth from '@/lib/withAuth/serverPage';
 import { getAllApplications } from '@/server/db/queries/application/search';
-import { Claim } from '@/server/enums/claims';
+import { Application } from '@/server/interfaces/application';
 
 const stats = [
   { name: 'Revenue', value: '$405,091.00', change: '+4.75%', changeType: 'positive' },
@@ -19,7 +18,7 @@ function classNames(...classes: string[]) {
 async function Applications() {
   const allApplications = await getAllApplications();
 
-  const tableConfig: TableProps = {
+  const tableConfig: TableProps<Application> = {
     mainFilter: {
       show: true,
       title: 'Search Applicants',
@@ -59,4 +58,4 @@ async function Applications() {
 }
 
 
-export default withAuth(Applications, Claim.ApplicationsRead)
+export default Applications

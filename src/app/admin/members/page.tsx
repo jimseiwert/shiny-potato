@@ -4,10 +4,7 @@ import { getAllMemberTypes } from '@/server/db/queries/memberTypes'
 import { getAllPersonTypes } from '@/server/db/queries/personTypes'
 import { getAllmemberStatus } from '@/server/db/queries/memberStatus'
 import { Table, TableProps } from '@/components/msc/dataTable/table';
-import { DataTableFilterConfig } from '@/components/msc/dataTable/filters';
-import { Fishing } from '@/app/api/conversion/migrate/fishing';
-import withAuth from '@/lib/withAuth/serverPage';
-import { Claim } from '@/server/enums/claims';
+import { Member } from '@/server/interfaces/member';
 
 const stats = [
   { name: 'Revenue', value: '$405,091.00', change: '+4.75%', changeType: 'positive' },
@@ -26,7 +23,7 @@ async function MemberSearch() {
   const allMemberTypes = (await getAllMemberTypes()).map((type) => ({ label: type.name, value: type.id + ''}));
   const allPersonTypes = (await getAllPersonTypes()).map((type) => ({ label: type.name, value: type.id + ''}));
 
-  const tableConfig: TableProps = {
+  const tableConfig: TableProps<Member> = {
     mainFilter: {
       show: true,
       title: 'Search Members',
@@ -50,9 +47,14 @@ async function MemberSearch() {
             title: 'Person Type',
             options: allPersonTypes
         }
-    ]
+    ],
+    redirectOnClick: {
+        link: '/admin/members/{id}',
+        replaceParams:[
+            { token: '{id}', column: 'memberId'}
+        ]
+    }
   }
-
 
   return (
     <div>
@@ -84,4 +86,4 @@ async function MemberSearch() {
 }
 
 
-export default withAuth(MemberSearch, Claim.MembersRead)
+export default MemberSearch

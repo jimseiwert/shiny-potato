@@ -49,14 +49,14 @@ export const SaveTemplate = async (id: number, template: string) => {
 }
 
 
-export const UploadNewBase = async (filename: string, content: string) => {
+export const UploadNewBase = async (filename: string, type: string, content: string) => {
     try {
         return await fetch('/api/template/base', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name: filename, template: content })
+            body: JSON.stringify({ name: filename, type: type, template: content })
         });
     } catch (error) {
         // Handle error

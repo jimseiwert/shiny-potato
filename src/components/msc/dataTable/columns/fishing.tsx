@@ -6,7 +6,7 @@ import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 import { RingLoader } from "react-spinners";
-import { FishingPass } from "@/server/db/interfaces/fishing";
+import { FishingPass } from "@/server/interfaces/fishing";
 import Image from 'next/image';
 
 

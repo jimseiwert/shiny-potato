@@ -1,7 +1,7 @@
 import "server-only";
 import { db } from "..";
 import { fishingPass, persons } from "../schemas";
-import { FishingPass } from "../interfaces/fishing";
+import { FishingPass } from "../../interfaces/fishing";
 import { eq } from "drizzle-orm";
 
 export async function getAllPasses(): Promise<FishingPass[]> {
