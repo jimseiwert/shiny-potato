@@ -1,4 +1,6 @@
 
+import withAuth from '@/lib/withAuth/page/server';
+import { Claim } from '@/server/enums/claims';
 import { PaperClipIcon } from '@heroicons/react/20/solid'
 
 function MemberCreate() {
@@ -75,5 +77,4 @@ function MemberCreate() {
   )
 }
 
-
-export default MemberCreate
+export default withAuth(MemberCreate,Claim.MembersCreateNew);

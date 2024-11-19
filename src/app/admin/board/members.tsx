@@ -24,6 +24,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { Claim } from '@/server/enums/claims'
+import withProtectedComponent from '@/lib/withAuth/component/client'
 
 interface Props {
   members: UniqueMember[],
@@ -31,7 +33,7 @@ interface Props {
   setLastUpdated: React.Dispatch<React.SetStateAction<Date>>
 }
 
-export default function Members({ role, members, setLastUpdated }: Props) {
+const Members = ({ role, members, setLastUpdated }: Props) => {
   const [open, setOpen] = React.useState(false)
   const [selectedMember, setSelectedMember] = useState<UniqueMember | null>(null)
 
@@ -56,7 +58,7 @@ export default function Members({ role, members, setLastUpdated }: Props) {
   
 
   return (
-    <div className='py-2'>
+    <div className='py-2 w-full'>
     <Card>
       <CardHeader>
         <CardTitle>Assign Members</CardTitle>
@@ -127,3 +129,5 @@ export default function Members({ role, members, setLastUpdated }: Props) {
     </div>
   )
 }
+
+export default withProtectedComponent(Members, Claim.BoardWrite);

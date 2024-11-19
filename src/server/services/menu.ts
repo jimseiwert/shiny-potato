@@ -22,6 +22,7 @@ export async function getUserMenu(): Promise<{member: ISideBarItem[], admin: ISi
 
     const adminItems: ISideBarItem[] = []
 
+    console.log(user.claims);
     if(user.claims) {
 
         if (user.claims.includes(Claim.ApplicationsRead)) {

@@ -53,11 +53,11 @@ if (clearTables) {
 }
 
 
-await seeds.status(db);
-await seeds.types(db);
-await seeds.statementTypes(db);
-await seeds.roles(db);
-await seeds.personTypes(db);
-await seeds.comms(db);
+// await seeds.status(db);
+// await seeds.types(db);
+// await seeds.statementTypes(db);
+// await seeds.roles(db);
+// await seeds.personTypes(db);
+// await seeds.comms(db);
 await seeds.claims(db);
 // await seeds.members(db);

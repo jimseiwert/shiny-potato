@@ -11,7 +11,7 @@ interface Props {
 }
 export default function Roles({ roles, selectedRole, setSelectedRole }: Props) {
     return (
-        <div className='py-2'>
+        <div className='py-2 w-full'>
             <Card>
                 <CardHeader>
                     <CardTitle>Select Role</CardTitle>

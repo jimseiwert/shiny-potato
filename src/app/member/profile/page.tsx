@@ -12,6 +12,7 @@ import {
   UsersIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
+import withAuth from '@/lib/withAuth/page/server'
 
 const secondaryNavigation = [
   { name: 'General', href: '#', icon: UserCircleIcon, current: true },
@@ -26,7 +27,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
+function Profile() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [automaticTimezoneEnabled, setAutomaticTimezoneEnabled] = useState(true)
 
@@ -199,3 +200,6 @@ export default function Example() {
    
   )
 }
+
+
+export default withAuth(Profile);

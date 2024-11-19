@@ -1,4 +1,5 @@
 
+import withAuth from '@/lib/withAuth/page/server'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import {
   CalendarIcon,
@@ -70,7 +71,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Events() {
+function Events() {
   return (
     
     <div className='px-4'>
@@ -208,3 +209,6 @@ export default function Events() {
     </div>
   )
 }
+
+
+export default withAuth(Events);

@@ -1,7 +1,9 @@
 'use server';
 
 import { Table, TableProps } from '@/components/msc/dataTable/table';
+import withAuth from '@/lib/withAuth/page/server';
 import { getAllApplications } from '@/server/db/queries/application/search';
+import { Claim } from '@/server/enums/claims';
 import { Application } from '@/server/interfaces/application';
 
 const stats = [
@@ -58,4 +60,4 @@ async function Applications() {
 }
 
 
-export default Applications
+export default withAuth(Applications,Claim.ApplicationsRead);

@@ -2,19 +2,26 @@ import "server-only";
 import { db } from "..";
 import { permissionAssignments, permissions } from "../schemas";
 import { asc, eq } from "drizzle-orm";
-import { AssignedPermission, Permission } from "../../interfaces/permission";
+import { Permission } from "../../interfaces/permission";
 
-export async function getPermissions(): Promise<Permission[]> {
-    const query = await db.query.permissions.findMany({
-        columns: {id: true, name: true},
-        orderBy: [asc(permissions.name)],
-    });
+export async function getPermissions(roleId: number): Promise<Permission[]> {
+    console.log(roleId);
+    const query = await db.select({
+        id: permissions.id,
+        name: permissions.name,
+        group: permissions.group,
+        assigned: permissionAssignments.id
+    }).from(permissions)
+    .fullJoin(permissionAssignments, eq(permissions.id, permissionAssignments.permission))
+    .orderBy(asc(permissions.group), asc(permissions.name));
 
     const results = query.map((row) => {
 
         return {
             id: row.id,
-            name: row.name
+            name: row.name,
+            group: row.group,
+            assigned: row.assigned,
         }
     })
 
@@ -22,32 +29,10 @@ export async function getPermissions(): Promise<Permission[]> {
 }
 
 
-export async function getAssignedPermissions(roleId: number): Promise<AssignedPermission[]> {
-    const query = await db.query.permissionAssignments.findMany({
-        columns: {id: true},
-        with: {
-            permissions: {
-                columns: {
-                    name: true,
-                }
-            }
-        },
-        where: eq(permissionAssignments.role, roleId)
-    });
 
-    const results = query.map((row) => {
-            return {
-                id: row.id,
-                name: row.permissions.name
-            }
-    })
-
-    return results
-}
-
-export async function addPermission(role: number, permission: number): Promise<void> {
-    await db.insert(permissionAssignments).values({role: role, permission: permission});
-    return;
+export async function addPermission(role: number, permission: number): Promise<number> {
+    const result = await db.insert(permissionAssignments).values({ role: role, permission: permission }).returning({id: permissionAssignments.id});
+    return result[0].id;
 }
 
 export async function deleteAssignedPermission(id: number): Promise<void> {

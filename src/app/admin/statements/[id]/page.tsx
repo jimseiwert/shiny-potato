@@ -46,7 +46,7 @@ import {
 } from '@heroicons/react/20/solid'
 import { BellIcon, XMarkIcon as XMarkIconOutline } from '@heroicons/react/24/outline'
 import { CheckCircleIcon } from '@heroicons/react/24/solid'
-import withAuth from '@/lib/withAuth/serverPage'
+import withAuth from '@/lib/withAuth/page/server'
 import { Claim } from '@/server/enums/claims'
 
 const navigation = [
@@ -540,5 +540,4 @@ function StatementDetail() {
   )
 }
 
-
-export default StatementDetail
+export default withAuth(StatementDetail,Claim.StatementsWrite);

@@ -2,7 +2,9 @@
 import { FileSelector } from './upload';
 
 import { Table, TableProps } from '@/components/msc/dataTable/table';
+import withAuth from '@/lib/withAuth/page/server';
 import { GetAllMinutes } from '@/server/db/queries/minute';
+import { Claim } from '@/server/enums/claims';
 import { Minute } from '@/server/interfaces/minute';
 
 
@@ -27,5 +29,4 @@ async function Minutes() {
   );
 }
 
-
-export default Minutes
+export default withAuth(Minutes,Claim.MembersRead);

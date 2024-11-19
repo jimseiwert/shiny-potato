@@ -8,6 +8,8 @@ import MemberStats from "./stats";
 import Profile from "./profile";
 import { MemberProfileProvider } from "./context";
 import MemberStatementsView from "./statements";
+import withAuth from "@/lib/withAuth/page/server";
+import { Claim } from "@/server/enums/claims";
 
 
 async function MemberDetail({
@@ -75,4 +77,5 @@ async function MemberDetail({
   );
 }
 
-export default MemberDetail
+
+export default withAuth(MemberDetail,Claim.MembersRead);

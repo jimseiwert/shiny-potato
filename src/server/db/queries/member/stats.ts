@@ -1,69 +1,52 @@
 import "server-only";
 import { db } from "../..";
-import member from "../../schemas/member";
-import { and, eq, like, or } from "drizzle-orm";
-import { members, memberStatus, memberTypes, persons, personTypes } from "../../schemas";
+import { and, eq, inArray, sql } from "drizzle-orm";
+import { members } from "../../schemas";
+import { MemberType } from "@/server/enums/memberTypes";
+import { MemberStatus } from "@/server/enums/status";
 
-export interface MemberSearch {
-    name?: string;
-    email?: string;
-    phone?: string;
-    memberType?: number;
-    status?: number;
-    personType?: number;
+export interface MemberStats {
+    name: string;
+    value: string;
 }
 
-export async function getDashboardStats() {
-    const query = db.select().from(members)
-    .innerJoin(memberStatus, eq(member.status, memberStatus.id))
-    .innerJoin(memberTypes, eq(member.type, memberTypes.id))
-    .where(eq(member.status, 1));
+export async function GetMemberStats(): Promise<MemberStats[]> {
+    const lifetimeCount = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(members)
+    .where(and(
+        eq(members.type, MemberType.Full),
+        eq(members.status, MemberStatus.Lifetime)
+    ))
 
-    
-    const dynamicQuery = query.$dynamic();
+    const newMemberCount = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(members)
+    .where(and(
+        eq(members.type, MemberType.Full),
+        eq(members.status, MemberStatus.Lifetime)
+    ))
 
-    const queryWheres = [];
+    const fullMemberCount = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(members)
+    .where(and(
+        eq(members.type, MemberType.Full),
+        inArray(members.status, [MemberStatus.Paid, MemberStatus.RenewalPending, MemberStatus.NotInGoodStanding])
+    ))
 
-    if(props.name) {
-        queryWheres.push(like(persons.lastName, props.name));
-    }
+    const waitingMemberCount = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(members)
+    .where(and(
+        eq(members.type, MemberType.Full),
+        eq(members.status, MemberStatus.WaitingList)
+    ))
 
-    if(props.email) {
-        queryWheres.push(like(persons.email, props.email));
-    }
-
-    if(props.phone) {
-        queryWheres.push(or(like(persons.homePhone, props.phone), like(persons.cellPhone, props.phone)));
-    }
-
-    if(props.memberType) {
-        queryWheres.push(eq(member.type, props.memberType));
-    }
-
-    if(props.status) {
-        queryWheres.push(eq(member.status, props.status));
-    }
-
-    if(props.personType) {
-        queryWheres.push(eq(persons.type, props.personType));
-    }
-
-    if(queryWheres.length > 0) {
-        dynamicQuery.where(and(...queryWheres));
-    }
-
-    const results =  (await dynamicQuery).map((row) => {
-        return {
-            id: row.members.id,
-            status: row.member_status,
-            type: row.member_types,
-            personType: row.person_types,
-            picture: row.members.picture,
-            firstName: row.person.firstName,
-            lastName: row.person.lastName,
-            email: row.person.email,
-        }
-    })
-
-    return results
+    return [
+        { name: 'New Members', value: newMemberCount[0].count  + '' },
+        { name: 'Lifetime Members', value: lifetimeCount[0].count  + ''},
+        { name: 'Full Members', value: fullMemberCount[0].count  + '' },
+        { name: 'Waiting List', value: waitingMemberCount[0].count  + ''},
+      ]
 }

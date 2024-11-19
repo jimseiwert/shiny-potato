@@ -5,6 +5,8 @@ import { getAllPersonTypes } from '@/server/db/queries/personTypes'
 import { getAllmemberStatus } from '@/server/db/queries/memberStatus'
 import { Table, TableProps } from '@/components/msc/dataTable/table';
 import { Member } from '@/server/interfaces/member';
+import withAuth from '@/lib/withAuth/page/server';
+import { Claim } from '@/server/enums/claims';
 
 const stats = [
   { name: 'Revenue', value: '$405,091.00', change: '+4.75%', changeType: 'positive' },
@@ -85,5 +87,4 @@ async function MemberSearch() {
   )
 }
 
-
-export default MemberSearch
+export default withAuth(MemberSearch,Claim.MembersRead);

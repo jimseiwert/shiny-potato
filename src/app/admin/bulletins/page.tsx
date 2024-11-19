@@ -4,6 +4,9 @@ import { FileSelector } from './upload';
 
 import { Bulletin } from '../../../server/interfaces/bulletin';
 import { Table, TableProps } from '@/components/msc/dataTable/table';
+import Board from '@/components/msc/board';
+import withAuth from '@/lib/withAuth/page/server';
+import { Claim } from '@/server/enums/claims';
 
 
 
@@ -28,5 +31,4 @@ async function Bulletins() {
   );
 }
 
-
-export default Bulletins
+export default withAuth(Bulletins,Claim.BulletinsRead);

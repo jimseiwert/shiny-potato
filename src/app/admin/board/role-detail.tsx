@@ -7,16 +7,14 @@ import { toast } from "sonner"
 import Permissions from "./permissions";
 import { UniqueMember } from "@/server/interfaces/member";
 import { AssignedUserRole, Role } from "@/server/interfaces/role";
-import { Permission } from "@/server/interfaces/permission";
 
 interface props {
   tableConfig: TableProps<AssignedUserRole>,
   roles: Role[],
-  members: UniqueMember[],
-  permissions: Permission[]
+  members: UniqueMember[]
 }
 
-export default function RoleDetail({ tableConfig, roles, members, permissions }: props) {
+export default function RoleDetail({ tableConfig, roles, members }: props) {
   const [config, setConfig] = useState<TableProps<AssignedUserRole>>(tableConfig)
   const [role, setRole] = useState<Role | null>(null)
   const [lastUpdated, setLastUpdated] = useState(new Date())
@@ -42,17 +40,16 @@ export default function RoleDetail({ tableConfig, roles, members, permissions }:
 
   return (
       <main className="w-full px-4">
-        <div className="flex gap-4">
-          <div className="grow h-14">
-            <Table config={config} ></Table>
-          </div>
-          <div className="flex-none w-80 justify-between gap-4">
-            <Roles roles={roles} selectedRole={role} setSelectedRole={setRole} />
-            <Members members={members} role={role} setLastUpdated={setLastUpdated}/>
-            <Permissions role={role} permissions={permissions} />
+        <div className="flex justify-between items-top gap-4">
+          <Roles roles={roles} selectedRole={role} setSelectedRole={setRole} />
 
-          </div>
+          <Members members={members} role={role} setLastUpdated={setLastUpdated}/>
         </div>
+        <div>
+          <h2 className="text-base/7 font-semibold border-b-2 py-4">Assigned Members</h2>          
+          <Table config={config} ></Table>
+        </div>
+        <Permissions role={role} />    
       </main>
   )
 }

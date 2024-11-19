@@ -1,7 +1,9 @@
 'use server';
 
 import { Table, TableProps } from '@/components/msc/dataTable/table';
+import withAuth from '@/lib/withAuth/page/server';
 import { getAllPasses } from '@/server/db/queries/fishing';
+import { Claim } from '@/server/enums/claims';
 import { FishingPass } from '@/server/interfaces/fishing';
 
 const stats = [
@@ -58,5 +60,4 @@ async function Fishing() {
   )
 }
 
-
-export default Fishing
+export default withAuth(Fishing,Claim.FishingRead);

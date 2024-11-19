@@ -1,8 +1,10 @@
+import withAuth from "@/lib/withAuth/page/server";
+import { Claim } from "@/server/enums/claims";
 import { GenerateStatementProvider } from "./context";
 import { SearchPane } from "./searchPane";
 import DataTable from "./table";
 
-export default function GenerateStatements() {
+function GenerateStatements() {
 
 
     return (
@@ -18,3 +20,5 @@ export default function GenerateStatements() {
         </GenerateStatementProvider>
     )
 }
+
+export default withAuth(GenerateStatements,Claim.StatementsWrite);

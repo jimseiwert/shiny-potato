@@ -2,13 +2,13 @@ import { TableProps } from "@/components/msc/dataTable/table";
 import { AllMembers } from "@/server/db/queries/member/unique"
 import { getRoles } from "@/server/db/queries/board";
 import RoleDetail from "./role-detail";
-import { getPermissions } from "@/server/db/queries/permission";
 import { AssignedUserRole } from "@/server/interfaces/role";
+import withAuth from "@/lib/withAuth/page/server";
+import { Claim } from "@/server/enums/claims";
 
 async function Board() {
   const members = await AllMembers()
   const roles = await getRoles()
-  const permissions = await getPermissions();
 
   const tableConfig: TableProps<AssignedUserRole> = {
     mainFilter: {
@@ -19,10 +19,9 @@ async function Board() {
   }
   
   return (
-    <RoleDetail tableConfig={tableConfig} roles={roles} members={members} permissions={permissions}/>
+    <RoleDetail tableConfig={tableConfig} roles={roles} members={members}/>
     
   )
 }
 
-
-export default Board
+export default withAuth(Board,Claim.BoardRead);

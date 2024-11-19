@@ -1,5 +1,9 @@
 // import { withPageAuthRequired, getSession } from '@auth0/nextjs-auth0';
 
-export default async function Forum() {
+import withAuth from "@/lib/withAuth/page/server";
+
+async function Forum() {
   return <div>Hello on forum</div>;
 }
+
+export default withAuth(Forum);

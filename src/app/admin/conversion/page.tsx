@@ -1,5 +1,7 @@
 'use client';
 import ShowDialog from '@/components/msc/dialog';
+import withAuth from '@/lib/withAuth/page/server';
+import { Claim } from '@/server/enums/claims';
 import { toast } from "sonner"
 
 
@@ -48,6 +50,11 @@ const projects = [
     id: 8,
     name: 'Migrate forum',
     action: () => migrateMembers('forum'),
+  },
+  {
+    id: 10,
+    name: 'Migrate Status Changes',
+    action: () => migrateMembers('statucChanges'),
   },
 ]
 
@@ -101,5 +108,4 @@ function Conversion() {
   )
 }
 
-
-export default Conversion
+export default withAuth(Conversion,Claim.ConversionRun);

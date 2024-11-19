@@ -6,6 +6,8 @@ import { getAllMemberTypes } from '@/server/db/queries/memberTypes';
 import { Table, TableProps } from '@/components/msc/dataTable/table';
 import { Statement } from '@/server/interfaces/statement';
 import Link from 'next/link';
+import withAuth from '@/lib/withAuth/page/server';
+import { Claim } from '@/server/enums/claims';
 
 
 const stats = [
@@ -73,5 +75,4 @@ async function StatementSearch() {
   )
 }
 
-
-export default StatementSearch
+export default withAuth(StatementSearch,Claim.StatementsRead);

@@ -1,4 +1,7 @@
+import withAuth from "@/lib/withAuth/page/server";
 
-export default async function Fishing() {
+async function Fishing() {
   return <div>Hello on fishing</div>;
 }
+
+export default withAuth(Fishing);
