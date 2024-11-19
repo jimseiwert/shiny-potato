@@ -6,7 +6,7 @@ import {
 } from "drizzle-orm/pg-core";
 import members from "./member";
 import { relations } from "drizzle-orm";
-import { baseTimeFields } from "../base";
+import { baseFields } from "../base";
 
 const address = pgTable('address', {
   id: serial().primaryKey(),
@@ -19,7 +19,7 @@ const address = pgTable('address', {
   city: varchar({length: 255}).notNull(),
   state: varchar({length: 2}).notNull(),
   zip: varchar({length: 10}).notNull(),
-  ...baseTimeFields
+  ...baseFields
 });
 
 export const addressRelations = relations(address, ({ one }) => ({

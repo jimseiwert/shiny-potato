@@ -5,17 +5,17 @@ export async function GET(req: Request, { params }: { params: { id: string } }):
   const { id } = await params
   if (id) {
     const obj = await GetTemplate(Number(id));
-    return NextResponse.json(JSON.parse(obj));
+    return NextResponse.json(obj);
   }
 
-  return NextResponse.json({ error: 'Name is required' }, { status: 400 });
+  return NextResponse.json({ error: 'ID is required' }, { status: 400 });
 }
 
 export async function POST(req: Request, { params }: { params: { id: string } }): Promise<NextResponse> {
   const { id } = await params
   if (id) {
     const body = await req.json();
-    await UpdateTemplate(Number(id), JSON.stringify(body));
+    await UpdateTemplate(Number(id), JSON.stringify(body.template), body.print_mailing_template, body.print_duplex, body.print_color);
     return NextResponse.json({updated: true});
   }
 

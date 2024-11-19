@@ -1,19 +1,23 @@
 import {
+  boolean,
     pgTable,
     serial,
     text,
     varchar,
   } from "drizzle-orm/pg-core";
   
-  import { baseTimeFields, baseUserFields } from "../base";
+  import { baseFields } from "../base";
+
 
   
   const letterTemplates = pgTable('letter_template', {
     id: serial().primaryKey(),
     name: varchar({length: 255}).notNull(),
     template: text().notNull(),
-    ...baseTimeFields,
-    ...baseUserFields
+    print_color: boolean().default(true).notNull(),
+    print_duplex: boolean().default(true).notNull(),
+    print_mailing_template: boolean().default(true).notNull(),
+    ...baseFields,
   });
   
   

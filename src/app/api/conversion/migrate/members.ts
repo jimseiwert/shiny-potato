@@ -1,45 +1,77 @@
 import { db } from "../../../../server/db";
-import { eq, ne, or } from "drizzle-orm";
-import { members, address, declerations, memberStatus, memberTypes, membersToComms, persons } from "../../../../server/db/schemas";
+import { members, address, declerations, membersToComms, persons, memberStatusesHistory, memberStatusHistory, activity } from "../../../../server/db/schemas";
+import { MemberStatus } from "@/server/enums/status";
+import { Comms } from "@/server/enums/comms";
+import { MemberType } from "@/server/enums/memberTypes";
+import { PersonType } from "@/server/enums/personType";
+import { printProgress } from "./utils";
 
 export async function Members(data: any[]) {
+    await db.execute('TRUNCATE TABLE activity RESTART IDENTITY CASCADE');
+    await db.execute('TRUNCATE TABLE address RESTART IDENTITY CASCADE');
+    await db.execute('TRUNCATE TABLE persons RESTART IDENTITY CASCADE');
+    await db.execute('TRUNCATE TABLE members RESTART IDENTITY CASCADE');
+    await db.execute('TRUNCATE TABLE member_status_history RESTART IDENTITY CASCADE');
 
-    const statusMapping = {
-        0: 'Bulletin Only',
-        1: 'Deceased',
-        2: 'Dropped Out',
-        3: 'Inactive',
-        4: 'Lifetime',
-        5: 'Paid',
-        6: 'Renewal Pending',
-        7: 'Term By Board',
-        8: 'Waiting List',
-        9: 'Widow',
-        10: 'Undetermined',
-        11: 'Banned',
-        12: 'Non-Payment',
-        13: 'Vendor',
-        14: 'Guest',
-        15: 'Membership Declined',
-        16: 'On Hold',
-        17: 'Application Submitted',
-        18: 'Induct',
-        19: 'Application Requested',
-        20: 'Not In Good Standing'
+    const statusMapping = (oldStatus: number) => {
+        switch (oldStatus) {
+            case 0:
+                return MemberStatus.BulletinOnly;
+            case 1:
+                return MemberStatus.Deceased;
+            case 2:
+                return MemberStatus.DroppedOut;
+            case 3:
+                return MemberStatus.Inactive;
+            case 4:
+                return MemberStatus.Lifetime;
+            case 5:
+                return MemberStatus.Paid;
+            case 6:
+                return MemberStatus.RenewalPending;
+            case 7:
+                return MemberStatus.TermByBoard;
+            case 8:
+                return MemberStatus.WaitingList;
+            case 9:
+                return MemberStatus.Widow;
+            case 10:
+                return MemberStatus.Undetermined;
+            case 11:
+                return MemberStatus.Banned;
+            case 12:
+                return MemberStatus.NonPayment;
+            case 13:
+                return MemberStatus.Vendor;
+            case 14:
+                return MemberStatus.Guest;
+            case 15:
+                return MemberStatus.MembershipDeclined;
+            case 16:
+                return MemberStatus.OnHold;
+            case 17:
+                return MemberStatus.ApplicationSubmitted;
+            case 18:
+                return MemberStatus.Inducted;
+            case 19:
+                return MemberStatus.ApplicationRequested;
+            case 20:
+                return MemberStatus.NotInGoodStanding;
+        }
     }
 
-    const typeMapping = {
-        'full': 'Full',
-        'shooting': 'Shooting',
-        'employee': 'Employee',
-        'aim': 'AIM'
+    const typeMapping = (oldType: string) => {
+        switch (oldType) {
+            case 'full':
+                return MemberType.Full;
+            case 'shooting':
+                return MemberType.Shooting;
+            case 'employee':
+                return MemberType.Employee;
+            case 'aim':
+                return MemberType.AIM;
+        }
     }
-    const personTypes = await db.query.personTypes.findMany();
-    const MemberTypeId = personTypes.find((x) => x.name === 'Member').id
-    const SpouseTypeId = personTypes.find((x) => x.name === 'Spouse').id
-    const SonTypeId = personTypes.find((x) => x.name === 'Son').id
-
-    const memberMapping: any = {};
 
     const states: string[] = [];
     for (const doc in data) {
@@ -62,13 +94,13 @@ export async function Members(data: any[]) {
         if (member.address && (member.address.state.toString().toLowerCase() === 'michigan')) {
             member.address.state = 'MI'
         }
-        if (member.address && (member.address.state.toString().toLowerCase() === 'us' || 
-        member.address.state.toString().toLowerCase() === '60126-2236' || 
-        member.address.state.toString().toLowerCase() === 'illinois' )) {
+        if (member.address && (member.address.state.toString().toLowerCase() === 'us' ||
+            member.address.state.toString().toLowerCase() === '60126-2236' ||
+            member.address.state.toString().toLowerCase() === 'illinois')) {
             member.address.state = 'IL'
         }
 
-        if(states.includes(data[doc].address.state) === false) {
+        if (states.includes(data[doc].address.state) === false) {
             states.push(member.address.state)
         }
     }
@@ -92,7 +124,7 @@ export async function Members(data: any[]) {
             member.address.zip = undefined
         }
 
-       
+
 
         if (!member.address.state || member.address.state === null || member.address.state === '') {
             member.address.state = undefined
@@ -125,128 +157,195 @@ export async function Members(data: any[]) {
     const memberRecordLength = data.length
     let processed = 0;
     for (const doc in data) {
-        const run = {
-            name: `${data[doc].memberInfo.firstName} ${data[doc].memberInfo.lastName}`,
-            memberRecord: 0,
-            statusFound: false,
-            typeFound: false,
-            memberInfo: false,
-            spouseInfo: false,
-            address: false,
-            declerations: false,
-            error: ''
-        }
         try {
             const member = data[doc]
+            const oldStatus = statusMapping(member.status)
+            const oldType = typeMapping(member.memberType)
 
-            const oldStatus = statusMapping[member.status]
-            const foundStatus = await db.query.memberStatus.findFirst({
-                where: eq(memberStatus.name, oldStatus),
-            });
-
-            const oldType = typeMapping[member.memberType]
-            const foundType = await db.query.memberTypes.findFirst({
-                where: eq(memberTypes.name, oldType),
-            });
-
-            if (!foundStatus) {
+            if (!oldStatus) {
                 throw new Error("Status not found " + member.status);
-            } else {
-                run.statusFound = true
-            }
-            if (!foundType) {
+            } 
+            if (!oldType) {
                 throw new Error("Type not found " + member.memberType);
-            } else {
-                run.typeFound = true
-            }
+            } 
 
-            const newRecord = await db.insert(members).values({ 
-                legacyId: member._id, 
-                publish_phone: member.comms?.roster?.publishPhone || false, 
-                publish_email: member.comms?.roster?.publishEmail || false, 
-                waitingListNumber: member.waitingListNumber, 
-                workObligation: member.workObligation, 
-                status: foundStatus.id, 
+            const newRecord = await db.insert(members).values({
+                legacyId: member._id,
+                publish_phone: member.comms?.roster?.publishPhone || false,
+                publish_email: member.comms?.roster?.publishEmail || false,
+                waitingListNumber: member.waitingListNumber,
+                workObligation: member.workObligation,
+                status: oldStatus,
                 picture: member.picture,
-                type: member.aim? 4: 
-                foundType.id }).returning({ id: members.id });
+                type: member.aim ? MemberType.AIM : oldType
+            }).returning({ id: members.id });
 
-            memberMapping[member._id] = newRecord[0].id
-            run.memberRecord = newRecord[0].id
+            const memberId = newRecord[0].id;
+
             if (member.memberInfo) {
-                console.log('Member Info');
-                const newPersonRecord = await db.insert(persons).values({ member: newRecord[0].id, occupation: member.occupation, firstName: member.memberInfo.firstName, lastName: member.memberInfo.lastName, email: member.memberInfo.email, homePhone: member.memberInfo.homePhone, cellPhone: member.memberInfo.cellPhone, type: MemberTypeId }).returning({ id: persons.id });
-                run.memberInfo = true
+                const newPersonRecord = await db.insert(persons).values({ member: memberId, occupation: member.occupation, firstName: member.memberInfo.firstName, lastName: member.memberInfo.lastName, email: member.memberInfo.email, homePhone: member.memberInfo.homePhone, cellPhone: member.memberInfo.cellPhone, type: PersonType.Member }).returning({ id: persons.id });
 
-                if (member.declerations) {
-                    console.log('Declerations');
-                    await db.insert(declerations).values({ person: newPersonRecord[0].id, isArcheryRO: member.declerations.isArcheryRO, isPistolRO: member.declerations.isPistolRO, isVeteran: member.declerations.isVeteran });
-                    run.declerations = true
-                };
-
-                if (member.comms) {
-                    if(member.comms.bulletin) {
-                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 1 });
-                    }
-                    if(member.comms.lists.fishing) {
-                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 2 });
-                    }
-                    if(member.comms.lists.lake) {
-                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 3 });
-                    }
-                    if(member.comms.lists.grounds) {
-                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 4 });
-                    }
-                    if(member.comms.lists.trap) {
-                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 5 });
-                    }
-                    if(member.comms.lists.archery) {
-                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 6 });
-                    }
-                    if(member.comms.lists.pistol) {
-                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 7 });
-                    }
-                    await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 8 });
-                    if(member.comms.lists.dinner) {
-                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 9 });
-                    }
-                    await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 10 });
-
-                    if(member.comms.forum.weeklyDigest) {
-                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 11 });
-                    }
-
-                    if(member.comms.forum.all) {
-                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 12 });
-                    }
-
-                    if(member.comms.forum.responses) {
-                        await db.insert(membersToComms).values({ member: newRecord[0].id, comms: 13 });
-                    }
-                };
-            }
-            if (member.spouseInfo) {
-                console.log('Spouse Info');
-                await db.insert(persons).values({ member: newRecord[0].id, firstName: member.spouseInfo.firstName, lastName: member.spouseInfo.lastName, email: member.spouseInfo.email, homePhone: member.spouseInfo.homePhone,cellPhone: member.spouseInfo.cellPhone, type: SpouseTypeId });
-                run.spouseInfo = true
-            }
-            if (member.dependants) {
-                for (const dep in member.dependants) {
-                    await db.insert(persons).values({ member: newRecord[0].id, birthdate: member.dependants[dep].birthDate, overrideBirthdate: member.dependants[dep].overrideBirthdate, comments: member.dependants[dep].comments, firstName: member.dependants[dep].firstName, lastName: member.dependants[dep].lastName, email: member.dependants[dep].email, type: SonTypeId });
+                if (!newPersonRecord) {
+                    throw new Error('Unable to Create Member Person Entry');
                 }
+                const memberPersonId = newPersonRecord[0].id;
+                await Declerations(memberPersonId, member)
+                await Address(memberId, member)
+                await Spouse(memberId, member)
+                await Dependants(memberId, member)
+                await CommsEntry(memberId, member)
+                await History(memberId, member)
+
+            } else {
+                throw new Error('No Member Info')
             }
-            if (member.address) {
-                console.log('Address Info', member.address);
-                const postalCode = member.address.zip?.replace('-undefined', '');
-                await db.insert(address).values({ member: newRecord[0].id, name: 'Home', line1: member.address.line1, line2: member.address.line2, city: member.address.city, state: member.address.state, zip: postalCode });
-                run.address = true
-            }
-          
+        
         } catch (error) {
-            console.log(run)
-            throw new Error(error.message)
+            throw new Error(error)
         }
         processed++;
-        console.log('Processed:', processed, 'of', memberRecordLength)
+        printProgress(`Processed: ${processed} of ${memberRecordLength}`)
     }
 }
+
+async function History(memberId: number, member: any) {
+    const activityHistory = [];
+    const statusHistory = [];
+
+    if (member.dateInducted) {
+        statusHistory.push({ member: memberId, status: MemberStatus.Inducted, createdBy: memberId, createdAt: member.dateInducted});
+        activityHistory.push({ member: memberId, type: 'system', createdBy: memberId, createdAt: member.dateInducted, activity: `${member?.memberInfo.firstName} was inducted` });
+    };
+    if (member.dateInactive) {
+        statusHistory.push({ member: memberId, status: MemberStatus.Inactive, createdBy: memberId, createdAt: member.dateInactive});
+        activityHistory.push({ member: memberId, type: 'system', createdBy: memberId, createdAt: member.dateInactive, activity: `${member?.memberInfo.firstName} went inactive` });
+    };
+    if (member.dateDropped) {
+        statusHistory.push({ member: memberId, status: MemberStatus.DroppedOut, createdBy: memberId, createdAt: member.dateDropped});
+        activityHistory.push({ member: memberId, type: 'system', createdBy: memberId, createdAt: member.dateDropped, activity: `${member?.memberInfo.firstName} dropped out from the club` });
+    };
+    if (member.dateDeceased) {
+        statusHistory.push({ member: memberId, status: MemberStatus.Deceased, createdBy: memberId, createdAt: member.dateDropped});
+        activityHistory.push({ member: memberId, type: 'system', createdBy: memberId, createdAt: member.dateDropped, activity: `${member?.memberInfo.firstName} was marked as deceased` });
+    };
+
+    if(memberStatusHistory.length > 0) {
+        await db.insert(memberStatusHistory).values(statusHistory);
+    }
+    if(activityHistory.length > 0) {
+        await db.insert(activity).values(activityHistory.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()));
+    }
+}
+
+async function Declerations(memberId: number, member: any) {
+    if (member.declerations) {
+        await db.insert(declerations).values({
+            person: memberId,
+            isArcheryRO: member.declerations.isArcheryRO,
+            isPistolRO: member.declerations.isPistolRO,
+            isVeteran: member.declerations.isVeteran,
+            createdBy: memberId,
+            createdAt: new Date()
+        });
+    };
+}
+async function Spouse(memberId: number, member: any) {
+    if (member.spouseInfo) {
+        await db.insert(persons).values({ 
+            member: memberId, 
+            firstName: member.spouseInfo.firstName, 
+            lastName: member.spouseInfo.lastName, 
+            email: member.spouseInfo.email === "{}" ? null : member.spouseInfo.email, 
+            homePhone: member.spouseInfo.homePhone, 
+            cellPhone: member.spouseInfo.cellPhone, 
+            type: PersonType.Spouse,
+            createdBy: memberId,
+            createdAt: new Date()
+         });
+    }
+}
+async function Dependants(memberId: number, member: any) {
+    if (member.dependants) {
+        for (const dep in member.dependants) {
+            await db.insert(persons).values({ 
+                member: memberId, 
+                birthdate: member.dependants[dep].birthDate, 
+                overrideBirthdate: member.dependants[dep].overrideBirthdate, 
+                comments: member.dependants[dep].comments, 
+                firstName: member.dependants[dep].firstName, 
+                lastName: member.dependants[dep].lastName, 
+                email: member.dependants[dep].email, 
+                type: PersonType.Son,
+                createdBy: memberId,
+                createdAt: new Date()
+             });
+        }
+    }
+}
+async function Address(memberId: number, member: any) {
+    if (member.address) {
+        const postalCode = member.address.zip?.replace('-undefined', '');
+        await db.insert(address).values({ 
+            member: memberId, 
+            name: 'Home', 
+            line1: member.address.line1, 
+            line2: member.address.line2, 
+            city: member.address.city, 
+            state: member.address.state, 
+            zip: postalCode,
+            createdBy: memberId,
+            createdAt: new Date()
+        });
+    }
+}
+async function CommsEntry(memberId: number, member: any) {
+    if (member.comms) {
+        if (member.comms.bulletin) {
+            await db.insert(membersToComms).values({ member: memberId, comms: Comms.Bulletin });
+        }
+        if (member.comms.lists.fishing) {
+            await db.insert(membersToComms).values({ member: memberId, comms: Comms.Fishing });
+        }
+        if (member.comms.lists.lake) {
+            await db.insert(membersToComms).values({ member: memberId, comms: Comms.LakeandBeach });
+        }
+        if (member.comms.lists.grounds) {
+            await db.insert(membersToComms).values({ member: memberId, comms: Comms.GroundsandMaintenance });
+        }
+        if (member.comms.lists.trap) {
+            await db.insert(membersToComms).values({ member: memberId, comms: Comms.Trap });
+        }
+        if (member.comms.lists.archery) {
+            await db.insert(membersToComms).values({ member: memberId, comms: Comms.Archery });
+        }
+        if (member.comms.lists.pistol) {
+            await db.insert(membersToComms).values({ member: memberId, comms: Comms.Pistol });
+        }
+        await db.insert(membersToComms).values({ member: memberId, comms: Comms.Hunting });
+        if (member.comms.lists.dinner) {
+            await db.insert(membersToComms).values({ member: memberId, comms: Comms.Dinner });
+        }
+        await db.insert(membersToComms).values({ member: memberId, comms: Comms.Membership });
+
+        if (member.comms.forum.weeklyDigest) {
+            await db.insert(membersToComms).values({ member: memberId, comms: Comms.ForumWeekly });
+        }
+
+        if (member.comms.forum.all) {
+            await db.insert(membersToComms).values({ member: memberId, comms: Comms.ForumAllPosts });
+        }
+
+        if (member.comms.forum.responses) {
+            await db.insert(membersToComms).values({ member: memberId, comms: Comms.ForumResponses });
+        }
+    };
+}
+
+
+
+
+
+
+
+
+

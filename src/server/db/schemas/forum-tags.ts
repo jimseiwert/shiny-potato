@@ -13,7 +13,6 @@ import forum from "./forum";
 const forumTags = pgTable('forum_tags', {
   id: serial().primaryKey(),
   name: varchar({length: 255}).notNull().unique(),
-  ...baseTimeFields
 });
 
 export const forumTagsRelations = relations(forumTags, ({many}) => ({

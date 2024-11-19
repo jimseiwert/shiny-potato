@@ -10,5 +10,5 @@ export async function MemberStatements(id:number): Promise<any[]> {
 
     console.log(query);
     
-    return [];
+    return query;
 }

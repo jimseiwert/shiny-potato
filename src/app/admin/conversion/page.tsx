@@ -10,6 +10,11 @@ const projects = [
     action: () => migrateMembers('members'),
   },
   {
+    id: 9,
+    name: 'Migrate Sponsor Data',
+    action: () => migrateMembers('sponsors'),
+  },
+  {
     id: 2,
     name: 'Migrate Memos',
     action: () => migrateMembers('memos'),

@@ -10,7 +10,7 @@ import {
 import statementConfig from "./statement-config";
 import statements from "./statement";
 import { relations } from "drizzle-orm";
-import { baseTimeFields } from "../base";
+import { baseFields } from "../base";
 
 
 const statementLines = pgTable('statement_lines', {
@@ -20,7 +20,7 @@ const statementLines = pgTable('statement_lines', {
   qty: decimal().notNull(),
   unitCost: decimal().notNull(),
   notes: varchar({ length: 256 }),
-  ...baseTimeFields
+  ...baseFields
 });
 
 export const statementLinesRelations = relations(statementLines, ({ one }) => ({

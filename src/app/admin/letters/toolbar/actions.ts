@@ -32,14 +32,19 @@ export const DeleteTemplate = async (id: number) => {
     }
 }
 
-export const SaveTemplate = async (id: number, template: string) => {
+export const SaveTemplate = async (id: number, template: string, print_mailing_template: boolean, print_duplex: boolean, print_color: boolean) => {
     try {
         await fetch('/api/template/' + id, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: template
+            body: JSON.stringify({
+                template,
+                print_color,
+                print_duplex,
+                print_mailing_template
+            })
         })
 
         return;

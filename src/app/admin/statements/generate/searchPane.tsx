@@ -15,9 +15,10 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { GenerateStatementContext } from "./context"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { toast } from "sonner"
 
 
 
@@ -45,7 +46,9 @@ const formSchema = z.object({
 })
 
 export function SearchPane() {
-    const { search, memberTypes, memberStatus, letterTemplates } = useContext(GenerateStatementContext);
+    const [letter, setLetter] = useState<number>(0);
+    const [year,setYear] = useState<number>(new Date().getFullYear() + 1);
+    const { data, setData, memberTypes, memberStatus, letterTemplates } = useContext(GenerateStatementContext);
 
     const today = new Date();
 
@@ -56,8 +59,43 @@ export function SearchPane() {
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        search(values)
+    async function generate(dryRun: boolean) {
+        console.log('Generating Statements');
+        toast('Generating Statements');
+        const ids = data.filter(x=> !x.exclude).map((d) => d.memberId);
+        const response = await fetch('/api/statement/generate', {
+            method: 'PUT',
+            body: JSON.stringify({dryRun: dryRun, members: ids, year: year, letter: letter}),
+        });
+        const results = await response.json();
+        if(response.ok) {
+            toast('Statements Generated');
+            //update data with values from results
+
+            
+            const _tempdata = data.map((d) => {
+                const index = results.findIndex((r) => d.memberId === r.memberId);
+                if(index !== -1) {
+                    return {...d, success: results[index].success, error: results[index].error, msg: results[index].msg}
+                }else{
+                    return {...d}
+                }
+            });
+
+            setData(_tempdata);
+        }else {
+            toast.error('Failed to generate statements');
+        }
+    }
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        setLetter(Number(values.letter));
+        const response = await fetch('/api/statement/generate', {
+            method: 'POST',
+            body: JSON.stringify(values),
+        });
+        const results = await response.json();
+        setData([results[0]]);
+        //setData(results);
     }
 
 
@@ -78,7 +116,7 @@ export function SearchPane() {
                                 </FormControl>
                                 <SelectContent>
                                     {memberTypes.map((memberType) => (
-                                        <SelectItem key={memberType.id} value={memberType.id + ''}>
+                                        <SelectItem key={memberType.id + '_type'} value={memberType.id + ''}>
                                             {memberType.name}
                                         </SelectItem>
                                     ))}
@@ -102,7 +140,7 @@ export function SearchPane() {
                                 </FormControl>
                                 <SelectContent>
                                     {memberStatus.map((status) => (
-                                        <SelectItem key={status.id} value={status.id + ''}>
+                                        <SelectItem key={status.id + '_status'} value={status.id + ''}>
                                             {status.name}
                                         </SelectItem>
                                     ))}
@@ -163,9 +201,13 @@ export function SearchPane() {
 
                 <Button type="submit" className="w-full">Load Members</Button>
 
-                <Button type="submit" className="w-full">Dry Run</Button>
+                <Button type="button" onClick={(e)=>{
+                    e.preventDefault();
+                    generate(true)}} className="w-full" disabled={data.length==0}>Dry Run</Button>
 
-                <Button type="submit" className="w-full">Generate</Button>
+                <Button type="button" onClick={(e)=>{
+                    e.preventDefault();
+                    generate(false)}} className="w-full" disabled={data.length==0}>Generate</Button>
             </form>
         </Form>
     )

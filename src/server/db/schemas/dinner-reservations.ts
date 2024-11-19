@@ -6,7 +6,7 @@ import {
   pgTable,
   serial,
 } from "drizzle-orm/pg-core";
-import { baseTimeFields } from "../base";
+import { baseFields } from "../base";
 import members from "./member";
 import dinners from "./dinner";
 import { relations } from "drizzle-orm";
@@ -20,7 +20,7 @@ const dinnersReservation = pgTable('dinner_reservations', {
   ticketMembers: integer().default(0).notNull(),
   ticketGuests: integer().default(0).notNull(),
   payment: integer().references(() => payments.id),
-  ...baseTimeFields
+  ...baseFields
 });
 
 export const dinnersReservationRelations = relations(dinnersReservation, ({ one }) => ({

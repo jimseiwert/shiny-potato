@@ -5,9 +5,8 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
-import { baseTimeFields } from "../base";
+import { createdAt, createdBy } from "../base";
 import members from "./member";
-import persons from "./person";
 import statements from "./statement";
 
 const activity = pgTable('activity', {
@@ -16,8 +15,8 @@ const activity = pgTable('activity', {
   statement: integer().references(() => statements.id),
   activity: varchar({ length: 256 }).notNull(),
   type: varchar({ length: 50 }).notNull(),
-  createdBy: integer().references(() => persons.id),
-  ...baseTimeFields
+  ...createdAt,
+  ...createdBy,
 });
 
 export const activityRelations = relations(activity, ({ one }) => ({

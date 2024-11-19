@@ -8,7 +8,7 @@ import {
 } from "drizzle-orm/pg-core";
 import members from "./member";
 import { relations } from "drizzle-orm";
-import { baseTimeFields } from "../base";
+import { baseFields } from "../base";
 import payments from "./payments";
 
 
@@ -20,7 +20,7 @@ const fishingPass = pgTable('fishing_pass', {
   used: boolean().notNull().default(false),
   member: integer().references(() => members.id),
   payment: integer().references(() => payments.id),
-  ...baseTimeFields
+  ...baseFields
 }, (t) => ({
   passNumber: unique().on(t.year, t.pass),
 }));

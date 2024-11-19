@@ -1,6 +1,7 @@
 import { db } from "@/server/db";
 import { dinners, dinnersReservation, members, payments } from "@/server/db/schemas";
 import { eq } from "drizzle-orm";
+import { printProgress } from "./utils";
 
 
 export async function Dinner(data: any[]) {
@@ -46,6 +47,6 @@ export async function Dinner(data: any[]) {
         }
 
         count++;
-        console.log(`Dinner migrated: ${count} of ${data.length}`);
+        printProgress(`Dinner migrated: ${count} of ${data.length}`);
     }
 }

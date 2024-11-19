@@ -6,50 +6,68 @@ import { bulletins } from '@/server/db/schemas';
 import { db } from '@/server/db';
 import { uuid } from 'uuidv4';
 import { AzureBlob } from '@/lib/azure-blob';
+import { handleError } from '@/lib/errorHandler';
 
 
 export async function GET(request: Request): Promise<NextResponse> {
-  const { searchParams } = new URL(request.url);
-  const filename = `2024/${searchParams.get('filename')}`;
+  try {
+    const { searchParams } = new URL(request.url);
+    const filename = `2024/${searchParams.get('filename')}`;
 
-  const blob = await downloadBlob('bulletin', filename);
+    const blob = await downloadBlob('bulletin', filename);
 
-  return NextResponse.json(blob);
+    return NextResponse.json(blob);
+  } catch (error) {
+    return handleError(error);
+  }
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
-  const { searchParams } = new URL(request.url);
-  const passedFilename = searchParams.get('filename');
+  try {
 
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 2;
-  const filename = `${uuid()}.pdf`;
+    const { searchParams } = new URL(request.url);
+    const passedFilename = searchParams.get('filename');
 
-  const azureBlob = new AzureBlob('bulletin');
-  await azureBlob.uploadBlob(filename, request.body);
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 2;
+    const filename = `${uuid()}.pdf`;
 
-  await insertBulletin(year, month, passedFilename, filename);
-  return NextResponse.json({uploaded: true});
+    const azureBlob = new AzureBlob('bulletin');
+    await azureBlob.uploadBlob(filename, request.body);
+
+    await insertBulletin(year, month, passedFilename, filename);
+    return NextResponse.json({ uploaded: true });
+  } catch (error) {
+    return handleError(error);
+  }
 }
 
 export async function PATCH(request: Request): Promise<NextResponse> {
-  const data: {id: number, month: number, year: number} = await request.json()
-  await editBulletin(data.id, data.year, data.month);
-  return NextResponse.json({updated: true});
+  try {
+    const data: { id: number, month: number, year: number } = await request.json()
+    await editBulletin(data.id, data.year, data.month);
+    return NextResponse.json({ updated: true });
+  } catch (error) {
+    return handleError(error);
+  }
 }
 
 export async function DELETE(request: Request): Promise<NextResponse> {
-  const { searchParams } = new URL(request.url);
-  const id = Number(searchParams.get('id'));
-  
-  const bulletin = await db.query.bulletins.findFirst({
-    where: eq(bulletins.id, id),
-  })
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = Number(searchParams.get('id'));
 
-  const azureBlob = new AzureBlob('bulletin');
-  await azureBlob.deleteBlob(bulletin.file);
+    const bulletin = await db.query.bulletins.findFirst({
+      where: eq(bulletins.id, id),
+    })
 
-  await db.delete(bulletins).where(eq(bulletins.id, id));
-  return NextResponse.json({deleted: true});
+    const azureBlob = new AzureBlob('bulletin');
+    await azureBlob.deleteBlob(bulletin.file);
+
+    await db.delete(bulletins).where(eq(bulletins.id, id));
+    return NextResponse.json({ deleted: true });
+  } catch (error) {
+    return handleError(error);
+  }
 }

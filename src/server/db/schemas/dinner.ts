@@ -10,7 +10,7 @@ import {
   serial,
   varchar,
 } from "drizzle-orm/pg-core";
-import { baseTimeFields } from "../base";
+import { baseFields } from "../base";
 
 const dinners = pgTable('dinner', {
   id: serial().primaryKey(),
@@ -24,7 +24,7 @@ const dinners = pgTable('dinner', {
   openReservations: date().notNull(),
   closeReservations: date().notNull(),
   maxReservations: integer().default(200).notNull(),
-  ...baseTimeFields
+  ...baseFields
 });
 
 export default dinners

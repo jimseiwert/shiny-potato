@@ -8,7 +8,7 @@ export enum Claim {
     MinutesReadDraft ="read:minutes-draft" ,
     MinutesRead = "read:minutes" ,
     MinutesWrite= "write:minutes", 
-    MinutesExecutiveUpload= "write:minutes-executive" ,
+    MinutesUpload= "upload:minutes" ,
     MinutesExecutiveRead= "read:minutes-executive" ,
     BoardRead= "read:board" ,
     BoardWrite= "write:board", 

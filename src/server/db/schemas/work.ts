@@ -7,7 +7,7 @@ import {
 } from "drizzle-orm/pg-core";
 
 import { relations } from "drizzle-orm";
-import { baseTimeFields, baseUserFields } from "../base";
+import { baseFields } from "../base";
 import workRequirement from "./work-requirements";
 
 const work = pgTable('work', {
@@ -15,8 +15,7 @@ const work = pgTable('work', {
   workRequirement: integer().references(() => workRequirement.id),
   notes: varchar({ length: 256 }),
   workDate: date().notNull(),
-  ...baseTimeFields,
-  ...baseUserFields
+  ...baseFields,
 });
 
 export const workRelations = relations(work, ({ one }) => ({

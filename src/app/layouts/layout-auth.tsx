@@ -4,6 +4,7 @@ import { RouteProvider } from "../context/route-context";
 import { AppSidebar } from "@/components/msc/sidebar/SideBar";
 import AuthTopNav from "@/components/msc/topNav/authTopNav";
 import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner"
 
 
 export default async function AuthLayout({
@@ -24,6 +25,7 @@ export default async function AuthLayout({
                         {children}
                     </div>
                     <Toaster />
+                    <Sonner/>
                 </SidebarProvider>
             </ThemeProvider>
         </RouteProvider>

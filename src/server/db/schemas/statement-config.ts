@@ -6,7 +6,7 @@ import {
   serial,
   varchar,
 } from "drizzle-orm/pg-core";
-import { baseTimeFields } from "../base";
+import { baseFields } from "../base";
 import memberTypes from "./types";
 
 
@@ -26,7 +26,7 @@ const statementConfig = pgTable('statement_config', {
   prorate: varchar({ length: 50 }).notNull(),
   memberType: integer().references(() => memberTypes.id).notNull(),
   cost: decimal().default('0').notNull(),
-  ...baseTimeFields
+  ...baseFields
 });
 
 export default statementConfig;

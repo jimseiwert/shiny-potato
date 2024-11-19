@@ -6,7 +6,7 @@ import {
 import members from "./member";
 import statementTypes from "./statement-types";
 import { relations } from "drizzle-orm";
-import { baseTimeFields } from "../base";
+import { baseFields } from "../base";
 import statementLines from "./statement-lines";
 import payments from "./payments";
 
@@ -15,7 +15,7 @@ const statements = pgTable('statement', {
   member: integer().references(() => members.id),
   year: integer().default(0).notNull(),
   type: integer().references(() => statementTypes.id),
-  ...baseTimeFields
+  ...baseFields
 });
 
 export const statementRelations = relations(statements, ({ one, many }) => ({

@@ -1,55 +1,40 @@
 
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MoreHorizontal } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { MoreHorizontal, TriangleAlert } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 import Image from 'next/image';
 import { GenerateStatementSearchType } from "@/server/db/queries/statement";
 
 
-
-
 export default function ColumnConfig(data: GenerateStatementSearchType[], setData: Dispatch<SetStateAction<GenerateStatementSearchType[]>>) {
 
-
-
-    const exclude = async (minute: GenerateStatementSearchType): Promise<void> => {
-        toast(`Publishing Bulletin`);
-        const response = await fetch(`/api/bulletin/publish`, {
-            method: 'POST',
-            body: JSON.stringify({ id: minute.id }),
+    const preview = async (member: GenerateStatementSearchType): Promise<void> => {
+        toast(`Getting Preview`);
+       
+        const response = await fetch(`/api/statement/generate`, {
+            method: 'PATCH',
+            body: JSON.stringify({members: [member.memberId], year: new Date().getFullYear() + 1, letter: 1}),
         })
         if (response.ok) {
-            toast('Bulletin Published');
-            minute.state = 'Publishing';
-            setData(data.map(b => b.id === minute.id ? minute : b))
-            return;
+            const pdf = await response.arrayBuffer();
+            const blob = new Blob([pdf], { type: 'application/pdf' });
+            window.open(URL.createObjectURL(blob));
         } else {
-            toast.error('Failed to publish bulletin');
+            toast.error('Failed to preview statement');
             return;
         }
     }
 
-    // member: {
-    //     id: number;
-    //     firstName: string | null;
-    //     lastName: string | null;
-    //     email: string | null;
-    //     homePhone: string | null;
-    //     cellPhone: string | null;
-    // } | null,
-    // spouse: {
-    //     id: number;
-    //     firstName: string | null;
-    //     lastName: string | null;
-    //     email: string | null;
-    // } | null,
-    // statement: {
-    //     id: number;
-    //     year: number;
-    // } | null
+    const exclude = async (statement: GenerateStatementSearchType): Promise<void> => {
+        setData(data.map((d) => {
+            if(d.memberId === statement.memberId) {
+                return {...d, exclude: !d.exclude}
+            }
+            return d;
+        }))
+    }
 
     return [
         {
@@ -94,8 +79,31 @@ export default function ColumnConfig(data: GenerateStatementSearchType[], setDat
             }
         },
         {
+            accessorKey: "sendStatus",
+            header: "Send Status",
+            cell: ({ row }) => {
+                const excluded: boolean = row.original.exclude;
+                const success: boolean = row.original.success;
+                const error: boolean = row.original.error;
+                const msg: string = row.original.msg;
+
+                if(excluded) {
+                    return <div className="text-gray-500"><span><TriangleAlert size={12}/></span></div>
+                } else {
+                if(success == false && error == false) {
+                    return <div className="text-gray-500">Pending</div>
+                } else if(success) {
+                    return <div className="text-green-500">Success</div>
+                } else {
+                    return <div className="text-red-500">{msg}</div>
+                }
+            }
+            }
+        },
+        {
             id: "actions",
             cell: ({ row }: {row: any}) => {
+                const exluded = row.original.exclude;
                 return (
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -105,8 +113,10 @@ export default function ColumnConfig(data: GenerateStatementSearchType[], setDat
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => preview(row.original)}
+                            >Preview</DropdownMenuItem>
                             <DropdownMenuItem onClick={() => exclude(row.original)}
-                            >Exclude</DropdownMenuItem>
+                            > {exluded ? "Include" : "Exclude"}</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 )

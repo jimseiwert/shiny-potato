@@ -2,6 +2,7 @@ import { db } from "@/server/db";
 import { forum, forumComments, forumCommentsReaction, forumTagAssignments, forumTags, members } from "@/server/db/schemas";
 import { error } from "console";
 import { eq } from "drizzle-orm";
+import { printProgress } from "./utils";
 
 
 export async function Forum(data: any) {
@@ -168,7 +169,7 @@ export async function Forum(data: any) {
             }
         }
         count++;
-        console.log('Forum posts migrated: ' + count + ' of ' + data.post.length);
+        printProgress('Forum posts migrated: ' + count + ' of ' + data.post.length);
     }
 
 

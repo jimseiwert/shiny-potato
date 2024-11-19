@@ -15,7 +15,6 @@ const declerations = pgTable('declerations', {
 	isArcheryRO: boolean().notNull().default(false),
   isPistolRO: boolean().notNull().default(false),
   isVeteran: boolean().notNull().default(false),
-  ...baseTimeFields
 });
 
 export const declerationsRelations = relations(declerations, ({ one }) => ({

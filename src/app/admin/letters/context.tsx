@@ -6,7 +6,13 @@ import { checkTemplate, cloneDeep, Template } from "@pdfme/common";
 import { Template as MSCTemplate } from "@/server/interfaces/template";
 import { DeleteTemplate, DownloadBase, DownloadTemplate, SaveTemplate } from "./toolbar/actions";
 import { toast } from "sonner";
+import Options from "./options";
 
+interface baseProps {
+  width: number;
+  height: number;
+  padding: number[];
+}
 interface Props {
   children: React.ReactNode;
   templates: MSCTemplate[];
@@ -19,6 +25,7 @@ interface LetterContext {
   avaialbleTemplates: MSCTemplate[];
   avaialbleBase: MSCTemplate[];
   avaialbleJson: MSCTemplate[];
+  selectedBase: baseProps | string | null;
   changeTemplate: (templateId: string) => void;
   addTemplateOptions: (template: MSCTemplate) => void;
   addBaseOptions: (template: MSCTemplate) => void;
@@ -27,16 +34,27 @@ interface LetterContext {
   closeTemplate: () => void;
   downloadJsonFile: () => void;
   saveTemplate: () => void;
+  fields: string[];
   generatePreviewPDF: () => void;
   changeBase: (templateId: string, type: string) => void;
+  changeBaseOptions: (width: number, height: number, padding: number[]) => void;
   uploadJson: (json: string) => void;
+  setMailTemplateUsed: (value: boolean) => void,
+  setPrintColor: (value: boolean) => void,
+  setPrintDuplex: (value: boolean) => void,
+  mailTemplateUsed: boolean,
+  printColor: boolean,
+  printDuplex: boolean,
 }
 
 export const LetterContext = createContext<LetterContext>({
   selectedTemplateId: null,
+  selectedBase: null,
   avaialbleTemplates: [],
   avaialbleBase: [],
   avaialbleJson: [],
+  fields: [],
+  changeBaseOptions: () => { },
   addTemplateOptions: () => { },
   addBaseOptions: () => { },
   addJsonOptions: () => { },
@@ -48,6 +66,12 @@ export const LetterContext = createContext<LetterContext>({
   changeBase: () => { },
   uploadJson: () => { },
   generatePreviewPDF: () => { },
+  setMailTemplateUsed: () => { },
+  setPrintColor: () => { },
+  setPrintDuplex: () => { },
+  mailTemplateUsed: false,
+  printColor: false,
+  printDuplex: false,
 });
 
 const headerHeight = 80;
@@ -73,6 +97,13 @@ export const LetterProvider = ({ templates, baseOptions, jsonOptions, children }
   const [avaialbleTemplates, setAvailableTemplates] = useState<MSCTemplate[]>(templates);
   const [avaialbleBase, setAvailableBase] = useState<MSCTemplate[]>(baseOptions);
   const [avaialbleJson, setAvailableJson] = useState<MSCTemplate[]>(jsonOptions);
+  const [mailTemplateUsed, setMailTemplateUsed] = useState<boolean>(false);
+  const [printColor, setPrintColor] = useState<boolean>(false);
+  const [printDuplex, setPrintDuplex] = useState<boolean>(false);
+
+  const [selectedBase, setSelectedBase] = useState<baseProps | string | null>(null);
+
+  const [fields, setFields] = useState([]);
 
   const downloadJsonFile = async (): Promise<void> => {
     if (designer.current) {
@@ -88,7 +119,62 @@ export const LetterProvider = ({ templates, baseOptions, jsonOptions, children }
     designer.current!.destroy();
   }
 
+  const changeBaseOptions = async (basePdf: baseProps): Promise<void> => {
+    console.log(basePdf)
+    if (designer.current) {
+      console.log('changing base')
+      setSelectedBase(basePdf)
+      designer.current.updateTemplate(
+        Object.assign(cloneDeep(designer.current.getTemplate()), {
+          basePdf
+        })
+      );
+    }
+  }
+  const templateChanged = async (template: Template | undefined) => {
+    if (!template) {
+      template = designer.current?.getTemplate();
+    }
+    if (typeof template === "object") {
+      if (typeof template.basePdf === "string") {
+        setSelectedBase(null)
+      }
 
+      if (typeof template.basePdf === "object" && template.basePdf !== null) {
+        setSelectedBase(template.basePdf)
+      }
+
+      const fields = template.schemas.flatMap((schema) => 
+        schema.flatMap((field) => {
+          if(field.readOnly) {
+            if(field.content?.includes('{')) {
+              const words = findWordsBetweenChars(field.content, '{', '}')
+              return words
+            }
+          }else {
+            return field.name
+          }
+        })
+      );
+
+      const uniqueStrings = new Set(fields.filter((field) => field));
+
+      const uniqueArray = [...uniqueStrings];
+
+      setFields(uniqueArray);
+    }
+  }
+function findWordsBetweenChars(str, startChar, endChar) {
+  const regex = new RegExp(`${startChar}(.*?)${endChar}`, 'g');
+  const matches = [];
+  let match;
+
+  while (match = regex.exec(str)) {
+    matches.push(match[1]);
+  }
+
+  return matches;
+}
 
   const generatePreviewPDF = async (): Promise<void> => {
     generatePDF(designer.current)
@@ -97,15 +183,20 @@ export const LetterProvider = ({ templates, baseOptions, jsonOptions, children }
   const changeTemplate = async (templateId: string): Promise<void> => {
     const template = await DownloadTemplate(Number(templateId));
 
+    setMailTemplateUsed(template.print_mailing_template);
+    setPrintColor(template.print_color);
+    setPrintDuplex(template.print_duplex);
+
     setSelectedTemplate(templateId);
-    setTemplate(template)
+    setTemplate(template.template)
+    templateChanged(template.template)
   }
 
   const saveTemplate = async (): Promise<void> => {
     if (designer.current) {
       toast('Saving Template');
       const template = designer.current.getTemplate();
-      await SaveTemplate(Number(selectedTemplateId), JSON.stringify(template));
+      await SaveTemplate(Number(selectedTemplateId), template, mailTemplateUsed, printDuplex, printColor);
       toast('Template Saved');
     }
   }
@@ -132,9 +223,9 @@ export const LetterProvider = ({ templates, baseOptions, jsonOptions, children }
               basePdf: template.base
             })
           );
-
       }
     }
+    templateChanged()
   }
 
   const addTemplateOptions = (template: MSCTemplate) => {
@@ -190,6 +281,8 @@ export const LetterProvider = ({ templates, baseOptions, jsonOptions, children }
             },
             plugins: getPlugins(),
           });
+
+          designer.current.onChangeTemplate = { templateChanged }
         }
       }
       );
@@ -199,7 +292,7 @@ export const LetterProvider = ({ templates, baseOptions, jsonOptions, children }
   }, [template])
 
   return (
-    <LetterContext.Provider value={{ selectedTemplateId, closeTemplate, addJsonOptions, addTemplateOptions, addBaseOptions, changeTemplate, avaialbleTemplates, avaialbleBase, avaialbleJson, generatePreviewPDF, uploadJson, saveTemplate, deleteTemplate, changeBase, downloadJsonFile }}>
+    <LetterContext.Provider value={{ selectedTemplateId, selectedBase, setMailTemplateUsed, changeBaseOptions, setPrintColor, setPrintDuplex, mailTemplateUsed, printColor, printDuplex, fields, closeTemplate, addJsonOptions, addTemplateOptions, addBaseOptions, changeTemplate, avaialbleTemplates, avaialbleBase, avaialbleJson, generatePreviewPDF, uploadJson, saveTemplate, deleteTemplate, changeBase, downloadJsonFile }}>
       {children}
       {!template &&
         <div className="px-10 py-10">
@@ -226,8 +319,13 @@ export const LetterProvider = ({ templates, baseOptions, jsonOptions, children }
         </div>
       }
       {template &&
+        <div className="flex justify-between">
+          <div ref={designerRef} className="text-gray-900" style={{ width: '100%', height: `calc(100vh - ${headerHeight}px)` }} />
+          <div className="w-80">
+            <Options />
+          </div>
+        </div>
 
-        <div ref={designerRef} className="text-gray-900" style={{ width: '100%', height: `calc(100vh - ${headerHeight}px)` }} />
       }
     </LetterContext.Provider>
   )

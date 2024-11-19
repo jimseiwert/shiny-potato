@@ -3,6 +3,7 @@ import { members } from "@/server/db/schemas";
 import fishingPass from "@/server/db/schemas/fishing-pass";
 import { error } from "console";
 import { eq } from "drizzle-orm";
+import { printProgress } from "./utils";
 
 export async function Fishing(data: any[]) {
     await db.execute('TRUNCATE TABLE fishing_pass RESTART IDENTITY CASCADE');
@@ -67,11 +68,7 @@ export async function Fishing(data: any[]) {
         }
     }
 
-    function printProgress(progress: string) {
-        process.stdout.clearLine(0);
-        process.stdout.cursorTo(0);
-        process.stdout.write(progress);
-    }
+
 
 
 }

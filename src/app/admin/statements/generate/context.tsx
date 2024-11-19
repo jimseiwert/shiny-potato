@@ -5,12 +5,13 @@ import { MemberStatus, MemberType } from "@/server/interfaces/member";
 import { Template } from "@/server/interfaces/template";
 import { createContext, useEffect, useState } from "react";
 
+
 interface GenerateStatementContext {
     data: GenerateStatementSearchType[];
     memberTypes: MemberType[];
     memberStatus: MemberStatus[];
     letterTemplates: Template[];
-    search: (data: any) => void;
+    setData: (data: GenerateStatementSearchType[]) => void;
 }
 
 type Props = {
@@ -19,10 +20,10 @@ type Props = {
 
 export const GenerateStatementContext = createContext<GenerateStatementContext>({
     data: [],
-    search: () => { },
+    setData: () => { },
     memberTypes: [],
     memberStatus: [],
-    letterTemplates: []
+    letterTemplates: [],
 });
 
 export const GenerateStatementProvider = ({ children }: Props) => {
@@ -46,18 +47,8 @@ export const GenerateStatementProvider = ({ children }: Props) => {
         loadInitialData();
     },[]);
 
-    const search = async (searchForm: any) => {
-          const response = await fetch('/api/statement/generate', {
-              method: 'POST',
-              body: JSON.stringify(searchForm),
-          });
-            const results = await response.json();
-        setData(results);
-    }
-
-
     return (
-        <GenerateStatementContext.Provider value={{ data , memberTypes, letterTemplates, memberStatus, search}}>
+        <GenerateStatementContext.Provider value={{ data ,memberTypes, letterTemplates, memberStatus, setData}}>
            {children}
         </GenerateStatementContext.Provider>
     )

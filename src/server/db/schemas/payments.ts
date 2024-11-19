@@ -7,7 +7,7 @@ import {
 } from "drizzle-orm/pg-core";
 import statements from "./statement";
 import { relations } from "drizzle-orm";
-import { baseTimeFields } from "../base";
+import { baseTimeFields, createdAt, createdBy } from "../base";
 import dinners from "./dinner";
 
 
@@ -20,7 +20,8 @@ const payments = pgTable('payments', {
   fee: decimal().notNull(),
   confirmation: varchar({ length: 50 }).notNull(),
   batch: varchar({ length: 50 }).notNull(),
-  ...baseTimeFields
+  ...createdAt,
+  ...createdBy,
 });
 
 export const paymentsRelations = relations(payments, ({ one }) => ({

@@ -9,19 +9,24 @@ import { Dinner } from "../dinner";
 import { Fishing } from "../fishing";
 import { Forum } from "../forum";
 import { Application } from "../application";
+import { handleError } from "@/lib/errorHandler";
 
 export async function POST(req: NextRequest, { params }: { params: { type: string } }) {
+    try{
     const { type } = await params
     let data = null;
     switch (type) {
+        case "sponsors":
+            data = await GetData(['Member']);
+            await Sponsors(data['Member']);
+            return NextResponse.json({ msg: `${data['Member'].length} memebrs migrated.` });
         case "members":
             data = await GetData(['Member']);
             await Members(data['Member']);
-            await Sponsors(data['Member']);
             return NextResponse.json({ msg: `${data['Member'].length} memebrs migrated.` });
         case "memos":
             data = await GetData(['Memo']);
-            await Memos(data['Member'], data['Memo']);
+            await Memos(data['Memo']);
             return NextResponse.json({ msg: `${data['Memo'].length} memos migrated.` });
         case "statements":
             data = await GetData(['Statement', 'StatementConfig']);
@@ -59,7 +64,9 @@ export async function POST(req: NextRequest, { params }: { params: { type: strin
             })
     }
 
+} catch (error) {
+    return handleError(error);
+  }
 
-
-    return NextResponse.json({ msg: "Hello World" });
+    
 }

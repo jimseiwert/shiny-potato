@@ -9,7 +9,7 @@ import {
 
 import members from "./member";
 import { relations } from "drizzle-orm";
-import { baseTimeFields } from "../base";
+import { baseFields } from "../base";
 
 
 const applications = pgTable('applications', {
@@ -34,7 +34,7 @@ const applications = pgTable('applications', {
   sponsor_extent_known: varchar({ length: 1000 }),
   sponsor_involvement: varchar({ length: 1000 }),
   sponsor_candidate_activity: varchar({ length: 1000 }),
-  ...baseTimeFields
+  ...baseFields
 });
 
 export const applicationRelations = relations(applications, ({ one }) => ({

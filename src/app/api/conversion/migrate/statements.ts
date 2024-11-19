@@ -1,7 +1,9 @@
-import { members, statementConfig, statementLines } from "@/server/db/schemas";
+import { members, payments, statementConfig, statementLines } from "@/server/db/schemas";
 import { db } from "../../../../server/db";
 import statement from "@/server/db/schemas/statement";
 import { eq } from "drizzle-orm";
+import { printProgress } from "./utils";
+import { StatementType } from "@/server/enums/statementTypes";
 
 interface Item {
     item: string,
@@ -71,8 +73,8 @@ async function insertItem(memberType: number, item: Item) {
     });
 }
 export async function Statements(data: Statement[], config: Config[]) {
-    await db.execute('TRUNCATE TABLE statement_activity RESTART IDENTITY CASCADE');
-    await db.execute('TRUNCATE TABLE statement_payments RESTART IDENTITY CASCADE');
+    //await db.execute('TRUNCATE TABLE statement_activity RESTART IDENTITY CASCADE');
+    await db.execute('TRUNCATE TABLE payments RESTART IDENTITY CASCADE');
     await db.execute('TRUNCATE TABLE statement_lines RESTART IDENTITY CASCADE');
     await db.execute('TRUNCATE TABLE statement RESTART IDENTITY CASCADE');
     await db.execute('TRUNCATE TABLE statement_config RESTART IDENTITY CASCADE');
@@ -179,15 +181,15 @@ export async function Statements(data: Statement[], config: Config[]) {
 
 
     const typeMapping = [
-        { "type": 'Dues', id: 2 },
-        { "type": 'Initiation', id: 1 },
-        { "type": 'Initation', id: 1 },
-        { "type": 'Work Fine', id: 3 },
-        { "type": 'Supplemental', id: 3 },
-        { "type": 'Special Assessment', id: 4 },
-        { "type": 'Picnic', id: 3 },
-        { "type": '10 Year Buyout', id: 3 },
-        { "type": 'Guest Fishing', id: 3 },
+        { "type": 'Dues', id: StatementType.Dues },
+        { "type": 'Initiation', id: StatementType.Initiation },
+        { "type": 'Initation', id: StatementType.Initiation },
+        { "type": 'Work Fine', id: StatementType.Supplemental },
+        { "type": 'Supplemental', id: StatementType.Supplemental },
+        { "type": 'Special Assessment', id: StatementType.SpecialAssessment },
+        { "type": 'Picnic', id: StatementType.Supplemental },
+        { "type": '10 Year Buyout', id: StatementType.Supplemental },
+        { "type": 'Guest Fishing', id: StatementType.Supplemental },
     ]
     data = data.filter((m) => m.batch);
     let count = 0;
@@ -277,7 +279,7 @@ export async function Statements(data: Statement[], config: Config[]) {
 
         await db.insert(statementLines).values(lines);
 
-        await db.insert(statementPayments).values({
+        await db.insert(payments).values({
             statement: StmntRecord[0].id,
             method: doc.cash ? 'cash' : doc.batch.toLowerCase().includes('stripe') ? 'credit' : 'check',
             batch: doc.batch,
@@ -290,6 +292,6 @@ export async function Statements(data: Statement[], config: Config[]) {
         });
 
         count++;
-        console.log(`Statements migrated: ${count} of ${data.length}`);
+        printProgress(`Statements migrated: ${count} of ${data.length}`);
     }
 }

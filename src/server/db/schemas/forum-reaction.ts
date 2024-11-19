@@ -6,7 +6,7 @@ import {
 } from "drizzle-orm/pg-core";
 
 import { relations } from "drizzle-orm";
-import { baseTimeFields } from "../base";
+import { createdAt, createdBy } from "../base";
 import members from "./member";
 import forumComments from "./forum-comments";
 
@@ -16,7 +16,8 @@ const forumCommentsReaction = pgTable('forum_comment_reaction', {
   comment: integer().references(() => forumComments.id),
   member: integer().references(() => members.id),
   reaction: varchar({length: 25}).notNull(),
-  ...baseTimeFields
+  ...createdBy,
+  ...createdAt,
 });
 
 export const forumCommentsReactionRelations = relations(forumCommentsReaction, ({one}) => ({

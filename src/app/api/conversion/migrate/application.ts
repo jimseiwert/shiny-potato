@@ -2,31 +2,33 @@ import { db } from "@/server/db";
 import { eq } from "drizzle-orm";
 import { address, applications, members, persons } from "@/server/db/schemas";
 import { error } from "console";
+import { printProgress } from "./utils";
+import { PersonType } from "@/server/enums/personType";
+import { MemberType } from "@/server/enums/memberTypes";
+import { MemberStatus } from "@/server/enums/status";
 
 
 export async function Application(data: any[]) {
     await db.execute('TRUNCATE TABLE applications RESTART IDENTITY CASCADE');
+    let count = 0;
     for (const doc of data) {
         const sponsorRecord =  await db.query.members.findFirst({ where: eq(members.legacyId, doc.sponsor.id + '') });
 
         if(!sponsorRecord){
             throw new Error(`Sponsor not found for application ${doc.id}`);
-        }else{
-            console.log('Sponsor Found')
         }
 
+        
         let personRecord =  await db.query.persons.findFirst({ where: eq(persons.email, doc.applicant.email + '') });
 
         if(!personRecord){
-            console.log('Creating new member record');
             const memberRecord = await db.insert(members).values({
-                type: 1,
-                status: 18,
+                type: MemberType.Full,
+                status: MemberStatus.ApplicationRequested,
                 dateCreated: doc.createdAt,
                 sponsor: sponsorRecord.id,
             }).returning({ id: members.id });
 
-            console.log('Creating new address record');
             await db.insert(address).values({
                 member: memberRecord[0].id,
                 name: 'Home',
@@ -37,7 +39,7 @@ export async function Application(data: any[]) {
                 zip: doc.applicant.zip||'',
             });
             
-            console.log('Creating new person record', doc.applicant.occupation);
+
             personRecord = await db.insert(persons).values({
                 member: memberRecord[0].id,
                 firstName: doc.applicant.firstName,
@@ -46,12 +48,11 @@ export async function Application(data: any[]) {
                 homePhone: doc.applicant.homePhone,
                 cellPhone: doc.applicant.cellhone,
                 occupation: doc.applicant.occupation,
-                type: 1,
+                type: PersonType.Member,
             }).returning({ id: persons.id, member: persons.member });
             personRecord = personRecord[0];
         }
-        console.log(personRecord);
-        console.log(sponsorRecord);
+
         await db.insert(applications).values({
             member: personRecord.member,
             sponsor: sponsorRecord.id,
@@ -76,6 +77,9 @@ export async function Application(data: any[]) {
             sponsor_candidate_activity: doc.sponsor.candidateActivity,
             createdAt: doc.createdAt,
         });
+
+        count++;
+        printProgress(`Applications migrated: ${count} of ${data.length}`);
 
     }
 }

@@ -1,5 +1,5 @@
 import { pgTable, integer, serial, varchar, boolean } from "drizzle-orm/pg-core";
-import { baseTimeFields } from "../base";
+import { baseFields } from "../base";
 import members from "./member";
 
 
@@ -10,7 +10,7 @@ export const bulletins = pgTable('bulletins', {
     month: integer().notNull(),
     name: varchar({length: 255}).notNull(),
     file : varchar({length: 255}).notNull(),
-    ...baseTimeFields
+    ...baseFields
   });
 
 
@@ -22,7 +22,7 @@ export const bulletins = pgTable('bulletins', {
     approved: boolean().default(false).notNull(),
     name: varchar({length: 255}).notNull(),
     file : varchar({length: 255}).notNull(),
-    ...baseTimeFields
+    ...baseFields
   });
 
   export const memberDocuments = pgTable('member_documents', {
@@ -33,5 +33,5 @@ export const bulletins = pgTable('bulletins', {
     sensitive: boolean().default(false).notNull(),
     name: varchar({length: 255}).notNull(),
     file : varchar({length: 255}).notNull(),
-    ...baseTimeFields
+    ...baseFields
   });

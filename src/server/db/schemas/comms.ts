@@ -7,6 +7,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import members from "./member";
+import { createdBy } from "../base";
 
 
 const comms = pgTable('comms', {

@@ -6,7 +6,7 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 
-import { baseTimeFields } from "../base";
+import { baseFields } from "../base";
 import members from "./member";
 import { relations } from "drizzle-orm";
 import personTypes from "./person-types";
@@ -24,7 +24,7 @@ const persons = pgTable('persons', {
   comments: varchar({ length: 255 }),
   overrideBirthdate: boolean().notNull().default(false),
   type: integer().references(() => personTypes.id).notNull(),
-  ...baseTimeFields
+  ...baseFields
 });
 
 export const personsRelations = relations(persons, ({ one }) => ({

@@ -8,7 +8,7 @@ import {
 
 import members from "./member";
 import { relations } from "drizzle-orm";
-import { baseTimeFields, baseUserFields } from "../base";
+import { baseFields } from "../base";
 import work from "./work";
 
 const workRequirement = pgTable('work_requirement', {
@@ -18,8 +18,7 @@ const workRequirement = pgTable('work_requirement', {
   startDate: date(),
   endDate: date(),
   notes: varchar({ length: 256 }),
-  ...baseTimeFields,
-  ...baseUserFields
+  ...baseFields,
 });
 
 export const workRequirementRelations = relations(workRequirement, ({ one, many }) => ({

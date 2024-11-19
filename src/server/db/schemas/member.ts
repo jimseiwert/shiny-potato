@@ -11,8 +11,8 @@ import statuses from "./member-status";
 import { relations } from "drizzle-orm";
 import statements from "./statement";
 import address from "./address";
-import { baseTimeFields } from "../base";
-import comms, { membersToComms } from "./comms";
+import { baseFields } from "../base";
+import  { membersToComms } from "./comms";
 import persons from "./person";
 import activity from "./activity";
 
@@ -31,7 +31,7 @@ const members = pgTable('members', {
   suspendedUntil: date(),
   publish_phone: boolean().default(false),
   publish_email: boolean().default(false),
-  ...baseTimeFields
+  ...baseFields
 });
 
 export const memberRelations = relations(members, ({one, many}) => ({

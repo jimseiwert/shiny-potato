@@ -3,7 +3,6 @@ import {
   serial,
   varchar,
 } from "drizzle-orm/pg-core";
-import { baseTimeFields } from "../base";
 import { relations } from "drizzle-orm";
 import roleAssignments from "./role-assignment";
 
@@ -12,7 +11,6 @@ const roles = pgTable('roles', {
   name: varchar({ length: 50 }).unique().notNull(),
   group: varchar({ length: 50 }).notNull(),
   email: varchar({ length: 50 }),
-  ...baseTimeFields
 });
 
 export const roleRelations = relations(roles, ({ many }) => ({
