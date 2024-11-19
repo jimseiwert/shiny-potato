@@ -5,6 +5,7 @@ import { AppSidebar } from "@/components/msc/sidebar/SideBar";
 import AuthTopNav from "@/components/msc/topNav/authTopNav";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner"
+import Maintenance from "../maintenance";
 
 
 export default async function AuthLayout({
@@ -12,6 +13,7 @@ export default async function AuthLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    return (<Maintenance/>)
     return (
         <RouteProvider>
             <ThemeProvider
@@ -19,11 +21,11 @@ export default async function AuthLayout({
                 defaultTheme="system"
                 enableSystem>
                 <SidebarProvider>
-                    <AppSidebar />
+                    {/* <AppSidebar />
                     <div className="w-full">
                         <AuthTopNav />
                         {children}
-                    </div>
+                    </div> */}
                     <Toaster />
                     <Sonner/>
                 </SidebarProvider>

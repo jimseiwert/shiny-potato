@@ -1,20 +1,29 @@
-import { auth0 } from "@/lib/auth0"
+"use client"
+
+import { useUser } from "@auth0/nextjs-auth0"
 import MemberStats from './stats';
 import withAuth from '@/lib/withAuth/serverPage'
 import { Claim } from '@/server/enums/claims';
+import Maintenance from "@/app/maintenance";
 
-async function Dashboard() {
-    
-    const session = await auth0.getSession()
+function Dashboard() {
+
+    // const { user, isLoading, error } = useUser()
+
+    return (
+        <Maintenance />
+    )
 
     return (
         <>
-        <pre>{JSON.stringify(session, null, 2)}</pre>
-        {/* <MemberStats />
+
+            {/* <MemberStats />
             <div>Hello on dashboard</div>
             <pre>{JSON.stringify(user, null, 2)}</pre> */}
         </>
     );
+
+
 }
 
 

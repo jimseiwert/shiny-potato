@@ -1,5 +1,5 @@
 import "server-only";
-import { ISideBarItem } from "../../interfaces/sideBarItem";
+import { ISideBarItem } from "../interfaces/sideBarItem";
 import { House, Calendar, Files, ArrowRightCircle, ChartBar, CircleDollarSign, CookingPot, FileUser, Fish, IdCard, Newspaper, Users, User, Images, Paperclip } from "lucide-react";
 import { Claim } from "@/server/enums/claims";
 import { auth0 } from "@/lib/auth0"
@@ -13,11 +13,11 @@ export async function getUserMenu(): Promise<{member: ISideBarItem[], admin: ISi
 
     const memberItems: ISideBarItem[] = [
         { name: 'Dashboard', href: '/member/dashboard', icon: House },
-        { name: 'Forum', href: '/member/forum', icon: User },
-        { name: 'Fishing', href: '/member/fishing', icon: Fish },
-        { name: 'Events', href: '/member/events', icon: Calendar },
-        { name: 'Documents', href: '/member/documents', icon: Files },
-        { name: 'Gallery', href: '/member/gallery', icon: Images   },
+        // { name: 'Forum', href: '/member/forum', icon: User },
+        // { name: 'Fishing', href: '/member/fishing', icon: Fish },
+        // { name: 'Events', href: '/member/events', icon: Calendar },
+        // { name: 'Documents', href: '/member/documents', icon: Files },
+        // { name: 'Gallery', href: '/member/gallery', icon: Images   },
     ]
 
     const adminItems: ISideBarItem[] = []

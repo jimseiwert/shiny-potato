@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/sidebar"
 import { ISideBarItem } from "@/server/interfaces/sideBarItem"
 import SideBarItem from "./SideBarItem"
-import { getUserMenu } from "@/server/db/queries/menu";
+import { getUserMenu } from "@/server/services/menu";
 
 
 
