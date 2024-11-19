@@ -8,18 +8,15 @@ import Maintenance from "@/app/maintenance";
 
 function Dashboard() {
 
-    // const { user, isLoading, error } = useUser()
+    const { user, isLoading, error } = useUser()
 
-    return (
-        <Maintenance />
-    )
 
     return (
         <>
 
-            {/* <MemberStats />
+            <MemberStats />
             <div>Hello on dashboard</div>
-            <pre>{JSON.stringify(user, null, 2)}</pre> */}
+            <pre>{JSON.stringify(user, null, 2)}</pre>
         </>
     );
 

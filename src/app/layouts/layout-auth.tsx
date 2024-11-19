@@ -13,7 +13,10 @@ export default async function AuthLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    return (<Maintenance/>)
+
+    if (process.env.NEXT_PUBLIC_MAINTENANCE === "true") {
+        return (<Maintenance />)
+    }
     return (
         <RouteProvider>
             <ThemeProvider
@@ -21,11 +24,11 @@ export default async function AuthLayout({
                 defaultTheme="system"
                 enableSystem>
                 <SidebarProvider>
-                    {/* <AppSidebar />
+                    <AppSidebar />
                     <div className="w-full">
                         <AuthTopNav />
                         {children}
-                    </div> */}
+                    </div>
                     <Toaster />
                     <Sonner/>
                 </SidebarProvider>
