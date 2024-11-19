@@ -4,7 +4,7 @@ import { GetMemberStats } from "@/server/db/queries/member/stats";
   export default async function MemberStats() {
     const stats = await GetMemberStats();
     return (
-      <div className="bg-gray-900 shadow-sm">
+      <div className="bg-gray-900 shadow-sm dark:shadow-white">
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 gap-px bg-white/5 sm:grid-cols-2 lg:grid-cols-4 items-center">
             {stats.map((stat) => (

@@ -133,10 +133,10 @@ export async function GetBoardView(): Promise<any[]> {
         orderBy: [asc(roleAssignments.role)],
     });
 
-    console.log(query)
 
     const results = query.map((row) => {
         return {
+            id: row.id,
             role: row.role.name,
             picture: row.member.picture,
             name: `${row.member.persons[0].firstName} ${row.member.persons[0].lastName}`,
@@ -145,6 +145,5 @@ export async function GetBoardView(): Promise<any[]> {
         }
     })
 
-    console.log(results)
     return results;
 }
