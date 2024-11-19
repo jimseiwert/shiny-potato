@@ -9,8 +9,8 @@ import Breadcrumbs from '@/components/msc/nav/breadcrumbs'
 import { ModeToggle } from '@/components/msc/theme-toggle'
 import Link from 'next/link'
 import { useUser } from "@auth0/nextjs-auth0"
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import React from "react"
+import AvatarImg from "../avatar"
 
 const userNavigation = [
     { name: 'Your Profile', href: '/member/profile' },
@@ -30,10 +30,9 @@ export default function AuthTopNav() {
             <div className="w-8"><ModeToggle /></div>
             <div className="w-8 items-end">
                 <DropdownMenu open={open} onOpenChange={setOpen}>
-                    <DropdownMenuTrigger> <Avatar>
-                        <AvatarImage src={user.picture} />
-                        <AvatarFallback>{user.name?.split(' ').map((n: string) => n[0]).join('')}</AvatarFallback>
-                    </Avatar></DropdownMenuTrigger>
+                    <DropdownMenuTrigger>
+                        <AvatarImg image={user.picture} name={user.name} />
+                    </DropdownMenuTrigger>
                     <DropdownMenuContent>
                         <Link href="/member/profile" legacyBehavior passHref>
                             <DropdownMenuItem onClick={() => setOpen(false)}>Profile</DropdownMenuItem>

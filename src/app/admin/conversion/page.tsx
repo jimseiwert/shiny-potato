@@ -1,6 +1,6 @@
 'use client';
 import ShowDialog from '@/components/msc/dialog';
-import withAuth from '@/lib/withAuth/page/server';
+import withAuth from '@/lib/withAuth/page/client';
 import { Claim } from '@/server/enums/claims';
 import { toast } from "sonner"
 

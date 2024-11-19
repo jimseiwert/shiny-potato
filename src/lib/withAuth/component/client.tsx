@@ -5,6 +5,7 @@ import React, { useEffect } from 'react';
 
 const withProtectedComponent = (WrappedComponent: React.JSX.Element, RequiredClaim: Claim) => {
     return (props) => {
+        return <Component {...props} />;
         const { user } = useUser()
         const [show, setShow] = React.useState<boolean>(false)
 

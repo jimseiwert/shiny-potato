@@ -1,9 +1,8 @@
-import { Claim } from "@/server/enums/claims";
 import { eq } from "drizzle-orm";
 import { db } from "..";
 import { permissions, members, roleAssignments, permissionAssignments } from "../schemas";
 
-export async function GetClaims(auth0Id: string): Promise<Claim[]> {
+export async function GetClaims(auth0Id: string): Promise<string[]> {
     const query = await db.selectDistinctOn([permissions.id], {
         claim: permissions.claimName
     })
@@ -13,6 +12,6 @@ export async function GetClaims(auth0Id: string): Promise<Claim[]> {
     .innerJoin(permissions, eq(permissionAssignments.permission, permissions.id))
     .where(eq(members.auth0, auth0Id));
 
-    const claims = query.map((row) => { return <Claim>row.claim });
+    const claims = query.map((row) => { return row.claim });
     return claims
 }

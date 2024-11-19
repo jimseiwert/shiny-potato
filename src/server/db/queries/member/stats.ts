@@ -1,7 +1,7 @@
 import "server-only";
 import { db } from "../..";
-import { and, eq, inArray, sql } from "drizzle-orm";
-import { members } from "../../schemas";
+import { and, gte, eq, inArray, sql, between } from "drizzle-orm";
+import { members, memberStatusHistory } from "../../schemas";
 import { MemberType } from "@/server/enums/memberTypes";
 import { MemberStatus } from "@/server/enums/status";
 
@@ -20,11 +20,13 @@ export async function GetMemberStats(): Promise<MemberStats[]> {
     ))
 
     const newMemberCount = await db
-    .select({ count: sql<number>`count(*)` })
-    .from(members)
+    .selectDistinct({id: memberStatusHistory.member})
+    .from(memberStatusHistory)
+    .innerJoin(members, eq(memberStatusHistory.member, members.id))
     .where(and(
+        eq(memberStatusHistory.status, MemberStatus.Inducted),
         eq(members.type, MemberType.Full),
-        eq(members.status, MemberStatus.Lifetime)
+        between(memberStatusHistory.createdAt, new Date('2024-01-01'), new Date('2025-01-01'))
     ))
 
     const fullMemberCount = await db
@@ -44,7 +46,7 @@ export async function GetMemberStats(): Promise<MemberStats[]> {
     ))
 
     return [
-        { name: 'New Members', value: newMemberCount[0].count  + '' },
+        { name: 'New Members', value: newMemberCount.length  + '' },
         { name: 'Lifetime Members', value: lifetimeCount[0].count  + ''},
         { name: 'Full Members', value: fullMemberCount[0].count  + '' },
         { name: 'Waiting List', value: waitingMemberCount[0].count  + ''},

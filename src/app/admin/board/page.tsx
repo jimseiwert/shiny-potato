@@ -3,7 +3,6 @@ import { AllMembers } from "@/server/db/queries/member/unique"
 import { getRoles } from "@/server/db/queries/board";
 import RoleDetail from "./role-detail";
 import { AssignedUserRole } from "@/server/interfaces/role";
-import withAuth from "@/lib/withAuth/page/server";
 import { Claim } from "@/server/enums/claims";
 
 async function Board() {
@@ -24,4 +23,4 @@ async function Board() {
   )
 }
 
-export default withAuth(Board,Claim.BoardRead);
+export default Board;

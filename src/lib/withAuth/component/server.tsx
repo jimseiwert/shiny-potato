@@ -6,8 +6,8 @@ import { auth0 } from "@/lib/auth0"
 
 const withComponentAuth = (Component: React.FC<any>, RequiredClaim?: Claim) => {
 
-
   return async function Authenticated(props: any) {
+    return <Component {...props} />;
     const session = await auth0.getSession()
 
     if(!session) {

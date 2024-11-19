@@ -47,7 +47,6 @@ export async function getAllApplications(): Promise<Applications[]> {
     });
 
     const results = query.map((row) => {
-console.log(row)
         return {
             id: row.id,
             status: row.status,

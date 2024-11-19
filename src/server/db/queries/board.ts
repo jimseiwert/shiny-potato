@@ -1,8 +1,10 @@
 import "server-only";
 import { db } from "../";
 import { AssignedUserRole, Role } from "../../interfaces/role";
-import { persons, roleAssignments } from "../schemas";
-import { eq } from "drizzle-orm";
+import { persons, roleAssignments, roles } from "../schemas";
+import { asc, eq } from "drizzle-orm";
+import { MemberType } from "@/server/enums/memberTypes";
+import { PersonType } from "@/server/enums/personType";
 
 export async function getRoles(): Promise<Role[]> {
     const query = await db.query.roles.findMany();
@@ -95,4 +97,54 @@ export async function deleteAssignment(assignment: number): Promise<void> {
     await db.delete(roleAssignments).where(eq(roleAssignments.id, assignment));
 
     return
+}
+
+
+export async function GetBoardView(): Promise<any[]> {
+    const query = await db.query.roleAssignments.findMany({
+        columns: {
+            endYear: true
+        },
+        with: {
+            role: {
+                columns: {
+                    id: true,
+                    name: true,
+                    email: true
+                }
+            },
+            member: {
+                columns: {
+                    id: true,
+                    picture: true
+                },
+                with: {
+                    persons: {
+                        columns: {
+                            firstName: true,
+                            lastName: true,
+                            email: true
+                        },
+                        where: eq(persons.type, PersonType.Member)
+                    }
+                }
+            }
+        },
+        orderBy: [asc(roleAssignments.role)],
+    });
+
+    console.log(query)
+
+    const results = query.map((row) => {
+        return {
+            role: row.role.name,
+            picture: row.member.picture,
+            name: `${row.member.persons[0].firstName} ${row.member.persons[0].lastName}`,
+            endYear: row.endYear,
+            email: row.role.email || row.member.persons[0].email
+        }
+    })
+
+    console.log(results)
+    return results;
 }

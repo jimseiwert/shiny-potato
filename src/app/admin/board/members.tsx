@@ -25,7 +25,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Claim } from '@/server/enums/claims'
-import withProtectedComponent from '@/lib/withAuth/component/client'
+import withProtectedComponent from '@/lib/withAuth/page/client'
 
 interface Props {
   members: UniqueMember[],
@@ -130,4 +130,4 @@ const Members = ({ role, members, setLastUpdated }: Props) => {
   )
 }
 
-export default withProtectedComponent(Members, Claim.BoardWrite);
+export default Members;

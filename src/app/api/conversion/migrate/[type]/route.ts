@@ -10,6 +10,7 @@ import { Fishing } from "../fishing";
 import { Forum } from "../forum";
 import { Application } from "../application";
 import { handleError } from "@/lib/errorHandler";
+import { StatusHistory } from "../status";
 
 export async function POST(req: NextRequest, { params }: { params: { type: string } }) {
     try{
@@ -50,6 +51,10 @@ export async function POST(req: NextRequest, { params }: { params: { type: strin
             return NextResponse.json({
                 msg: `${data['GuestFishing'].length} fishing records migrate`
             })
+        case "statucChanges":
+            data = await GetData(['Member']);
+            await StatusHistory(data['Member']);
+            return NextResponse.json({ msg: `${data['Member'].length} status migrated.` });
         case "forum":
             data = await GetData(['Category', 'Discussion', 'Comment', 'Post']);
             await Forum({

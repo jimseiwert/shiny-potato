@@ -194,7 +194,6 @@ export async function Members(data: any[]) {
                 await Spouse(memberId, member)
                 await Dependants(memberId, member)
                 await CommsEntry(memberId, member)
-                await History(memberId, member)
 
             } else {
                 throw new Error('No Member Info')
@@ -208,34 +207,7 @@ export async function Members(data: any[]) {
     }
 }
 
-async function History(memberId: number, member: any) {
-    const activityHistory = [];
-    const statusHistory = [];
 
-    if (member.dateInducted) {
-        statusHistory.push({ member: memberId, status: MemberStatus.Inducted, createdBy: memberId, createdAt: member.dateInducted});
-        activityHistory.push({ member: memberId, type: 'system', createdBy: memberId, createdAt: member.dateInducted, activity: `${member?.memberInfo.firstName} was inducted` });
-    };
-    if (member.dateInactive) {
-        statusHistory.push({ member: memberId, status: MemberStatus.Inactive, createdBy: memberId, createdAt: member.dateInactive});
-        activityHistory.push({ member: memberId, type: 'system', createdBy: memberId, createdAt: member.dateInactive, activity: `${member?.memberInfo.firstName} went inactive` });
-    };
-    if (member.dateDropped) {
-        statusHistory.push({ member: memberId, status: MemberStatus.DroppedOut, createdBy: memberId, createdAt: member.dateDropped});
-        activityHistory.push({ member: memberId, type: 'system', createdBy: memberId, createdAt: member.dateDropped, activity: `${member?.memberInfo.firstName} dropped out from the club` });
-    };
-    if (member.dateDeceased) {
-        statusHistory.push({ member: memberId, status: MemberStatus.Deceased, createdBy: memberId, createdAt: member.dateDropped});
-        activityHistory.push({ member: memberId, type: 'system', createdBy: memberId, createdAt: member.dateDropped, activity: `${member?.memberInfo.firstName} was marked as deceased` });
-    };
-
-    if(memberStatusHistory.length > 0) {
-        await db.insert(memberStatusHistory).values(statusHistory);
-    }
-    if(activityHistory.length > 0) {
-        await db.insert(activity).values(activityHistory.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()));
-    }
-}
 
 async function Declerations(memberId: number, member: any) {
     if (member.declerations) {
