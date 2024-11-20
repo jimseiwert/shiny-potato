@@ -28,10 +28,7 @@ export const statementRelations = relations(statements, ({ one, many }) => ({
 		fields: [statements.type],
 		references: [statementTypes.id],
 	}),
-  payments: one(payments, {
-		fields: [statements.id],
-		references: [payments.id],
-	}),
+  payments: many(payments),
 }));
 
 export default statements;

@@ -30,3 +30,4 @@ export { bulletins, minutes, memberDocuments} from "./documents";
 export { default as memberStatusHistory, memberStatusHistoryRelations} from "./member-status-history";
 export { default as permissionAssignments, permissionAssignmentsRelations } from "./permission-assignment";
 export { default as paymentHooks} from "./payment-hook";
+export { default as integrations, integrationsRelations } from "./integrations";

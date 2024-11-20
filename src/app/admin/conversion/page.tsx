@@ -56,6 +56,26 @@ const projects = [
     name: 'Migrate Status Changes',
     action: () => migrateMembers('statucChanges'),
   },
+  {
+    id: 11,
+    name: 'Link Auth0 Accounts',
+    action: () => migrateMembers('auth0'),
+  },
+  {
+    id: 12,
+    name: 'Link Stripe Accounts',
+    action: () => migrateMembers('stripe'),
+  },
+  {
+    id: 13,
+    name: 'Link OpenPath Accounts',
+    action: () => migrateMembers('openPath'),
+  },
+  {
+    id: 14,
+    name: 'Link Click Send Accounts',
+    action: () => migrateMembers('clicksend'),
+  },
 ]
 
 function migrateMembers(type: string) {

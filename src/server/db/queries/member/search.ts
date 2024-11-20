@@ -5,6 +5,7 @@ import { and, asc, eq, ilike, like, or } from "drizzle-orm";
 import { members, memberStatus, memberTypes, persons, personTypes } from "../../schemas";
 import { Member } from "../../../interfaces/member";
 
+
 export async function getAllMembers(): Promise<Member[]> {
     const query = await db.select().from(members)
     .innerJoin(persons, eq(members.id, persons.member))

@@ -26,7 +26,6 @@ const members = pgTable('members', {
   sponsor: integer().references(() => members.id),
   picture: varchar({ length: 255 }),
   workObligation:varchar({ length: 50 }),
-  auth0: varchar({ length: 50 }),
   waitingListNumber: integer(),
   suspendedUntil: date(),
   publish_phone: boolean().default(false),

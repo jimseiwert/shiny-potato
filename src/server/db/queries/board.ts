@@ -103,6 +103,7 @@ export async function deleteAssignment(assignment: number): Promise<void> {
 export async function GetBoardView(): Promise<any[]> {
     const query = await db.query.roleAssignments.findMany({
         columns: {
+            id: true,
             endYear: true
         },
         with: {

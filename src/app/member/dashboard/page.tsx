@@ -6,7 +6,6 @@ import InviteCallToAction from '../invite/callToCation';
 import FishingCallToAction from '../fishing/fishingCallToAction';
 import LatestBulletin from '../documents/latestBulletin';
 import BoardView from './boardview';
-import LoadStripe from '@/components/PaymentForm/LoadStripe';
 
 async function Dashboard() {
     return (
@@ -16,8 +15,7 @@ async function Dashboard() {
                 <div className="basis-full">
                     <div className="flex flex-col gap-4 px-4">
                         <Maintenance />
-                        <LoadStripe/>
-                        <div className="flex flex-row gap-4 px-4 justify-between">
+                         <div className="flex flex-row gap-4 px-4 justify-between">
                             <InviteCallToAction />
                             <FishingCallToAction />
                             <LatestBulletin />

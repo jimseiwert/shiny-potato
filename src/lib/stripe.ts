@@ -1,11 +1,77 @@
-import { Stripe, loadStripe } from '@stripe/stripe-js';
+import Stripe from "stripe";
 
-let stripePromise: Promise<Stripe | null>;
-const getStripe = () => {
-  if (!stripePromise) {
-    stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
-  }
-  return stripePromise;
-};
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    typescript: true,
+    apiVersion: "2022-11-15",
+});
 
-export default getStripe;
+export const GetCustomers = async () => {
+    try {
+
+        let hasMore = true;
+        const customersList = [];
+
+        do {
+            let searchObj = { limit: 100 };
+
+            if (customersList.length > 0) {
+                searchObj.starting_after = customersList[customersList.length - 1].id;
+            }
+
+            const customers = await stripe.customers.list(searchObj);
+            customersList.push(...customers.data);
+            hasMore = customers.has_more;
+        } while (hasMore)
+
+        return customersList;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+export const GetPaymentMethods = async (customerId: string) => {
+    try {
+        const paymentMethods = await stripe.customers.listPaymentMethods(
+            customerId
+        );
+        console.log(paymentMethods)
+        return paymentMethods.data;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const GetSubscriptions = async (customerId: string) => {
+    try {
+        const subscriptions = await stripe.subscriptions.list({
+            customer: customerId
+    });
+
+        return subscriptions.data;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const GetPayments = async (customerId: string) => {
+    try {
+        const subscriptions = await stripe.paymentIntents.list({
+            customer: customerId
+    });
+
+        return subscriptions.data;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const DeleteCustomer = async (customerId: string) => {
+    try {
+        const deleteConfirmation = await stripe.customers.del(customerId);
+console.log(deleteConfirmation)
+        return;
+    } catch (error) {
+        console.log(error)
+    }
+}

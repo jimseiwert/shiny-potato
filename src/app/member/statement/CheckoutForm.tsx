@@ -1,6 +1,7 @@
 'use client';
 import React, {useState} from 'react';
 import {useStripe, useElements, PaymentElement} from '@stripe/react-stripe-js';
+import { Button } from '@/components/ui/button';
 
 export default function CheckoutForm() {
     const stripe = useStripe();
@@ -69,9 +70,9 @@ export default function CheckoutForm() {
     return (
       <form onSubmit={handleSubmit}>
         <PaymentElement />
-        <button type="submit" disabled={!stripe || loading}>
+        <Button type="submit" disabled={!stripe || loading}>
           Submit Payment
-        </button>
+        </Button>
         {errorMessage && <div>{errorMessage}</div>}
       </form>
     );
