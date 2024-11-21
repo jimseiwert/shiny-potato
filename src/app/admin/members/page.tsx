@@ -3,7 +3,7 @@ import { getAllMembers } from '@/server/db/queries/member/search'
 import { getAllMemberTypes } from '@/server/db/queries/memberTypes'
 import { getAllPersonTypes } from '@/server/db/queries/personTypes'
 import { getAllmemberStatus } from '@/server/db/queries/memberStatus'
-import { Table, TableProps } from '@/components/msc/dataTable/table';
+import { Table, TableProps } from '@/components/dataTable/table';
 import { Member } from '@/server/interfaces/member';
 import withAuth from '@/lib/withAuth/page/server';
 import { Claim } from '@/server/enums/claims';

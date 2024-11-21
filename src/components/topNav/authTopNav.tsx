@@ -5,8 +5,8 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import Breadcrumbs from '@/components/msc/nav/breadcrumbs'
-import { ModeToggle } from '@/components/msc/theme-toggle'
+import Breadcrumbs from '@/components/nav/breadcrumbs'
+import { ModeToggle } from '@/components/theme-toggle'
 import Link from 'next/link'
 import { useUser } from "@auth0/nextjs-auth0"
 import React from "react"
@@ -34,9 +34,9 @@ export default function AuthTopNav() {
                         <AvatarImg image={user.picture} name={user.name} />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <Link href="/member/profile" legacyBehavior passHref>
+                        {/* <Link href="/member/profile" legacyBehavior passHref>
                             <DropdownMenuItem onClick={() => setOpen(false)}>Profile</DropdownMenuItem>
-                        </Link>
+                        </Link> */}
                         <a href="/auth/logout">
                             <DropdownMenuItem onClick={() => setOpen(false)}>Logout</DropdownMenuItem>
                         </a>

@@ -1,5 +1,4 @@
-'use client'
-
+'use client';
 import { useState } from 'react'
 import { Dialog, DialogPanel, Field, Label, Switch } from '@headlessui/react'
 import { Bars3Icon } from '@heroicons/react/20/solid'
@@ -12,7 +11,8 @@ import {
   UsersIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
-import withAuth from '@/lib/withAuth/page/server'
+import withAuth from '@/lib/withAuth/page/client'
+import { cn } from '@/lib/utils';
 
 const secondaryNavigation = [
   { name: 'General', href: '#', icon: UserCircleIcon, current: true },
@@ -22,10 +22,6 @@ const secondaryNavigation = [
   { name: 'Billing', href: '#', icon: CreditCardIcon, current: false },
   { name: 'Team members', href: '#', icon: UsersIcon, current: false },
 ]
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
 
 function Profile() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -43,7 +39,7 @@ function Profile() {
                 <li key={item.name}>
                   <a
                     href={item.href}
-                    className={classNames(
+                    className={cn(
                       item.current
                         ? 'bg-gray-50 text-indigo-600'
                         : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
@@ -52,7 +48,7 @@ function Profile() {
                   >
                     <item.icon
                       aria-hidden="true"
-                      className={classNames(
+                      className={cn(
                         item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600',
                         'h-6 w-6 shrink-0',
                       )}

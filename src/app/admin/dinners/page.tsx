@@ -1,7 +1,7 @@
 'use server';
 
 import { getAllDinners } from '@/server/db/queries/dinner/search';
-import { Table, TableProps } from '@/components/msc/dataTable/table';
+import { Table, TableProps } from '@/components/dataTable/table';
 import { Dinner } from '@/server/interfaces/dinner';
 import withAuth from '@/lib/withAuth/page/server';
 import { Claim } from '@/server/enums/claims';

@@ -1,5 +1,5 @@
-import Footer from "@/components/msc/footer/public-footer";
-import PublicTopNav from "@/components/msc/topNav/publicTopNav";
+import Footer from "@/components/footer/public-footer";
+import PublicTopNav from "@/components/topNav/publicTopNav";
 
 export default function PublicLayout({
     children,

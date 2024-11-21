@@ -1,8 +1,8 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ThemeProvider } from "next-themes";
 import { RouteProvider } from "../context/route-context";
-import { AppSidebar } from "@/components/msc/sidebar/SideBar";
-import AuthTopNav from "@/components/msc/topNav/authTopNav";
+import { AppSidebar } from "@/components/sidebar/SideBar";
+import AuthTopNav from "@/components/topNav/authTopNav";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner"
 import Maintenance from "../maintenance";

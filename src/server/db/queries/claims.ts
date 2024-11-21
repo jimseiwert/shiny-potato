@@ -2,9 +2,9 @@ import { eq } from "drizzle-orm";
 import { db } from "..";
 import { permissions, members, roleAssignments, permissionAssignments, integrations } from "../schemas";
 
-export async function GetClaims(auth0Id: string): Promise<string[]> {
+export async function GetClaims(auth0Id: string): Promise<number[]> {
     const query = await db.selectDistinctOn([permissions.id], {
-        claim: permissions.claimName
+        claim: permissions.id
     })
     .from(members)
     .leftJoin(roleAssignments, eq(members.id, roleAssignments.member))

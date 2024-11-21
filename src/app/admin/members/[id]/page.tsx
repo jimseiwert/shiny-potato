@@ -39,7 +39,7 @@ async function MemberDetail({
               </div>
               <div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
                 <p className="text-xl font-bold sm:text-2xl">{user.memberInfo.firstName} {user.memberInfo.lastName}</p>
-                <p className="text-sm font-medium">{user.role}</p>
+                {/* <p className="text-sm font-medium">{user.role}</p> */}
               </div>
             </div>
           </div>

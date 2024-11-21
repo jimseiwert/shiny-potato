@@ -3,7 +3,7 @@
 import { getAllStatements } from '@/server/db/queries/statement/search';
 
 import { getAllMemberTypes } from '@/server/db/queries/memberTypes';
-import { Table, TableProps } from '@/components/msc/dataTable/table';
+import { Table, TableProps } from '@/components/dataTable/table';
 import { Statement } from '@/server/interfaces/statement';
 import Link from 'next/link';
 import withAuth from '@/lib/withAuth/page/server';

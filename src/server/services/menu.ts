@@ -11,7 +11,7 @@ export async function getUserMenu(): Promise<{ member: ISideBarItem[], admin: IS
 
     if (session) {
         const user = session.user;
-        const sessionClaims = await GetClaims(user.sub);
+
         const memberItems: ISideBarItem[] = [
             { name: 'Dashboard', href: '/member/dashboard', icon: House },
             // { name: 'Forum', href: '/member/forum', icon: User },
@@ -23,40 +23,40 @@ export async function getUserMenu(): Promise<{ member: ISideBarItem[], admin: IS
 
         const adminItems: ISideBarItem[] = []
 
-        if (sessionClaims) {
+        if (user.claims) {
 
-            if (sessionClaims.includes(Claim.ApplicationsRead)) {
+            if (user.claims.includes(Claim.ApplicationsRead)) {
                 adminItems.push({ name: 'Applications', href: '/admin/applications', icon: FileUser });
             }
-            if (sessionClaims.includes(Claim.BulletinsRead)) {
+            if (user.claims.includes(Claim.BulletinsRead)) {
                 adminItems.push({ name: 'Bulletins', href: '/admin/bulletins', icon: Newspaper });
             }
-            if (sessionClaims.includes(Claim.BoardRead)) {
+            if (user.claims.includes(Claim.BoardRead)) {
                 adminItems.push({ name: 'Board', href: '/admin/board', icon: IdCard });
             }
-            if (sessionClaims.includes(Claim.DinnersRead)) {
+            if (user.claims.includes(Claim.DinnersRead)) {
                 adminItems.push({ name: 'Dinners', href: '/admin/dinners', icon: CookingPot });
             }
-            if (sessionClaims.includes(Claim.LettersRead)) {
+            if (user.claims.includes(Claim.LettersRead)) {
                 adminItems.push({ name: 'Letters', href: '/admin/letters', icon: Paperclip });
             }
-            if (sessionClaims.includes(Claim.MinutesRead)) {
+            if (user.claims.includes(Claim.MinutesRead)) {
                 adminItems.push({ name: 'Minutes', href: '/admin/minutes', icon: Newspaper });
             }
-            if (sessionClaims.includes(Claim.FishingRead)) {
+            if (user.claims.includes(Claim.FishingRead)) {
                 adminItems.push({ name: 'Fishing', href: '/admin/fishing', icon: Fish });
             }
-            if (sessionClaims.includes(Claim.MembersRead)) {
+            if (user.claims.includes(Claim.MembersRead)) {
                 adminItems.push({ name: 'Members', href: '/admin/members', icon: Users });
             }
-            if (sessionClaims.includes(Claim.StatementsRead)) {
+            if (user.claims.includes(Claim.StatementsRead)) {
                 adminItems.push({ name: 'Statements', href: '/admin/statements', icon: CircleDollarSign });
             }
-            if (sessionClaims.includes(Claim.ReportsRead)) {
+            if (user.claims.includes(Claim.ReportsRead)) {
                 adminItems.push({ name: 'Reports', href: '/admin/reports', icon: ChartBar });
             }
 
-            if (sessionClaims.includes(Claim.ConversionRun)) {
+            if (user.claims.includes(Claim.ConversionRun)) {
                 adminItems.push({ name: 'Conversion', href: '/admin/conversion', icon: ArrowRightCircle });
             }
         }

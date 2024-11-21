@@ -1,12 +1,25 @@
 import { Auth0Client } from "@auth0/nextjs-auth0/server";
+import { GetClaims } from "@/server/db/queries/claims";
 
 export const auth0 = new Auth0Client({
-  authorizationParameters: {
-    scope: "openid profile email offline_access",
-    audience: "https://maywoodsc.org/api",
-  },
   signInReturnToPath: "/member",
+  async beforeSessionSaved(session) {
+    const sessionClaims = await GetClaims(session.user.sub);
+    return {
+      ...session,
+      user: {
+        sub: session.user.sub,
+        given_name: "Jim",
+        family_name: "Seiwert",
+        nickname: "jimseiwert",
+        name: "Jim Seiwert",
+        picture: "https://lh3.googleusercontent.com/a/ACg8ocLbV9l4RhqpAKTH-LpZ5MyfmRTiX-z9foHs9d6yR1J8pHMj28FkPg=s96-c",
+        claims: sessionClaims,
+      },
+    };
+  },
 });
+
 
 const GetManagementToken = async () => {
   const request = await fetch('https://msc.auth0.com/oauth/token', {
@@ -27,6 +40,18 @@ const GetManagementToken = async () => {
   return token;
 }
 
+export const GetRules = async () => {
+  const token = await GetManagementToken();
+  const request = await fetch('https://msc.auth0.com/api/v2/rules', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+  const response = await request.json();
+
+  console.log(response)
+}
 export const GetUsers = async () => {
   const token = await GetManagementToken();
 

@@ -1,4 +1,4 @@
-import Renewal from "@/components/msc/renewal";
+import Renewal from "@/components/renewal";
 import AuthLayout from "../layouts/layout-auth";
 
 export default function Layout({ children }: { children: React.ReactNode }) {

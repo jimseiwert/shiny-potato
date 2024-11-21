@@ -6,8 +6,10 @@ import InviteCallToAction from '../invite/callToCation';
 import FishingCallToAction from '../fishing/fishingCallToAction';
 import LatestBulletin from '../documents/latestBulletin';
 import BoardView from './boardview';
+import { auth0 } from "@/lib/auth0"
 
 async function Dashboard() {
+    const session = await auth0.getSession()
     return (
         <>
             <MemberStats />

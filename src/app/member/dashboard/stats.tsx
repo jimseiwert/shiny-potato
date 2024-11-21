@@ -12,7 +12,6 @@ import { GetMemberStats } from "@/server/db/queries/member/stats";
                 <p className="text-sm/6 font-medium text-gray-400">{stat.name}</p>
                 <p className="mt-2 flex items-baseline gap-x-2">
                   <span className="text-4xl font-semibold tracking-tight text-white">{stat.value}</span>
-                  {stat.unit ? <span className="text-sm text-gray-400">{stat.unit}</span> : null}
                 </p>
               </div>
             ))}

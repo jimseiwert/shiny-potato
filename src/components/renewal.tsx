@@ -4,8 +4,8 @@ import React from 'react';
 import 'server-only'
 
 const Renewal = async () => {
-  let statements = await MemberStatements(118);
-  statements = statements.filter((statement) => statement.status === 'Unpaid');
+  let statements = await MemberStatements(118, true);
+  console.log(statements);
 
   if (!statements || statements.length === 0) {
     return null;

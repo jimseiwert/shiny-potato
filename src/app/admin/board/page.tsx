@@ -1,4 +1,4 @@
-import { TableProps } from "@/components/msc/dataTable/table";
+import { TableProps } from "@/components/dataTable/table";
 import { AllMembers } from "@/server/db/queries/member/unique"
 import { getRoles } from "@/server/db/queries/board";
 import RoleDetail from "./role-detail";

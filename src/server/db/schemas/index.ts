@@ -31,3 +31,4 @@ export { default as memberStatusHistory, memberStatusHistoryRelations} from "./m
 export { default as permissionAssignments, permissionAssignmentsRelations } from "./permission-assignment";
 export { default as paymentHooks} from "./payment-hook";
 export { default as integrations, integrationsRelations } from "./integrations";
+export { default as statementTasks, statementTasksRelations } from "./statement-tasks";

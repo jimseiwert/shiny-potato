@@ -9,6 +9,7 @@ import { PersonType } from '@/server/enums/personType';
 export interface WaitingList {
     memberId: number;
     name: string;
+    picture:string;
     waitingListNumber: number;
     sponsor: string;
 }
@@ -17,6 +18,7 @@ export async function GetWaitingList(): Promise<WaitingList[]> {
         columns: {
             id: true,
             waitingListNumber: true,
+            picture: true,
         },
         where: and(eq(members.type, MemberType.Full), eq(members.status, MemberStatus.WaitingList)),
         with: {
@@ -46,6 +48,7 @@ export async function GetWaitingList(): Promise<WaitingList[]> {
 
     const results = member.map((row) => {
         return {
+            picture: row.picture,
             memberId: row.id,
             name: `${row.persons[0].firstName} ${row.persons[0].lastName}`,
             waitingListNumber: row.waitingListNumber,

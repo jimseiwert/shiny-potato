@@ -1,4 +1,4 @@
-import AvatarImg from "@/components/msc/avatar";
+import AvatarImg from "@/components/avatar";
 import { GetBoardView } from "@/server/db/queries/board";
 
 

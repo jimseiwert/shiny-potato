@@ -3,8 +3,8 @@ import { getAllBulletins } from '@/server/db/queries/bulletin';
 import { FileSelector } from './upload';
 
 import { Bulletin } from '../../../server/interfaces/bulletin';
-import { Table, TableProps } from '@/components/msc/dataTable/table';
-import Board from '@/components/msc/board';
+import { Table, TableProps } from '@/components/dataTable/table';
+import Board from '@/components/board';
 import withAuth from '@/lib/withAuth/page/server';
 import { Claim } from '@/server/enums/claims';
 

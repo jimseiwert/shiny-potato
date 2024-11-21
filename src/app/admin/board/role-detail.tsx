@@ -1,5 +1,5 @@
 'use client';
-import { Table, TableProps } from "@/components/msc/dataTable/table";
+import { Table, TableProps } from "@/components/dataTable/table";
 import Roles from "./roles";
 import Members from "./members";
 import { useEffect, useState } from "react";

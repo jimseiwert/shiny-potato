@@ -1,5 +1,5 @@
 'use client';
-import { Table, TableProps } from "@/components/msc/dataTable/table";
+import { Table, TableProps } from "@/components/dataTable/table";
 import { useContext, useEffect, useState } from "react";
 import { GenerateStatementContext } from "./context";
 import { GenerateStatementSearchType } from "@/server/db/queries/statement";

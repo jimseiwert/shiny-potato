@@ -1,6 +1,6 @@
 'use server';
 
-import { Table, TableProps } from '@/components/msc/dataTable/table';
+import { Table, TableProps } from '@/components/dataTable/table';
 import withAuth from '@/lib/withAuth/page/server';
 import { getAllPasses } from '@/server/db/queries/fishing';
 import { Claim } from '@/server/enums/claims';

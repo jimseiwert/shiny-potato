@@ -1,7 +1,7 @@
 'use client'
-import DataTable from "@/components/msc/dataTable/data-table"
+import DataTable from "@/components/dataTable/data-table"
 import React, { useEffect, useMemo, useState } from "react"
-import { DataTableFilterConfig } from "@/components/msc/dataTable/filters"
+import { DataTableFilterConfig } from "@/components/dataTable/filters"
 import { Columns } from "./columns"
 
 export interface TableProps<TData> {
